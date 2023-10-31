@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+  go-app:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "80:8080"
