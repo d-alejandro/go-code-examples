@@ -4,14 +4,19 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 )
+
+const port = 8080
 
 func main() {
 	http.HandleFunc("/test", func(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "The server started successfully!")
 	})
 
-	fmt.Println("Http server started on :8080")
+	portString := strconv.Itoa(port)
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("Http server started on :" + portString)
+
+	log.Fatal(http.ListenAndServe(":"+portString, nil))
 }
