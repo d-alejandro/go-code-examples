@@ -1,3 +1,11 @@
+.DEFAULT_GOAL := run
+
+go-build:
+	go mod download && go build -o ./.bin/go-code-examples ./cmd/api/main.go
+
+run: go-build
+	docker-compose up -d --build
+
 build:
 	docker-compose build
 
@@ -10,7 +18,7 @@ down:
 ps:
 	docker-compose ps
 
-run:
+exec:
 	docker container exec -it $(var) /bin/sh
 
 logs:
