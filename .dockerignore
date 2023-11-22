@@ -1,6 +1,6 @@
 /.git
 /.idea
-/.bin
+#/.bin
 /docker
 .dockerignore
 .gitignore
