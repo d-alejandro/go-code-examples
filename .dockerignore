@@ -5,5 +5,5 @@
 .dockerignore
 .gitignore
 Makefile
-README.md
+readme.md
 docker-compose.yml

@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := run
 
 go-build:
-	go mod download && go build -gcflags "all=-N -l" -o ./.bin/go-code-examples ./cmd/api/main.go
+	go mod download && go build -gcflags "all=-N -l" -o ./.bin/go-code-examples ./cmd/http/main.go
 
 run: go-build
 	docker-compose up -d --build
