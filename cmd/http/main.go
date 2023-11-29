@@ -2,21 +2,24 @@ package main
 
 import (
 	"fmt"
+	"github.com/d-alejandro/go-code-examples/internal/app/http"
+	"github.com/gin-gonic/gin"
 	"log"
-	"net/http"
 	"strconv"
 )
 
 const port = 8080
 
 func main() {
-	http.HandleFunc("/test", func(w http.ResponseWriter, req *http.Request) {
-		fmt.Fprintf(w, "The server started successfully!")
-	})
+	router := gin.Default()
+	http.Init(router)
 
 	portString := strconv.Itoa(port)
 
 	fmt.Println("Http server started on :" + portString)
 
-	log.Fatal(http.ListenAndServe(":"+portString, nil))
+	err := router.Run(":" + portString)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
