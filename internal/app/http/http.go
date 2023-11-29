@@ -7,4 +7,5 @@ import (
 
 func Init(router *gin.Engine) {
 	routes.InitApiRoutes(router)
+	routes.InitWebRoutes(router)
 }
