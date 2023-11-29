@@ -12,7 +12,7 @@ const port = 8080
 
 func main() {
 	router := gin.Default()
-	http.Init(router)
+	http.InitRoutes(router)
 
 	portString := strconv.Itoa(port)
 

@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Init(router *gin.Engine) {
+func InitRoutes(router *gin.Engine) {
 	routes.InitApiRoutes(router)
 	routes.InitWebRoutes(router)
 }
