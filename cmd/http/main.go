@@ -2,8 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/d-alejandro/go-code-examples/internal/app/http"
-	"github.com/gin-gonic/gin"
+	"github.com/d-alejandro/go-code-examples/internal/bootstrap"
 	"log"
 	"strconv"
 )
@@ -11,8 +10,7 @@ import (
 const port = 8080
 
 func main() {
-	router := gin.Default()
-	http.InitRoutes(router)
+	router := bootstrap.InitRoutes()
 
 	portString := strconv.Itoa(port)
 
