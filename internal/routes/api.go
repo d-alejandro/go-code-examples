@@ -6,5 +6,11 @@ import (
 )
 
 func InitApiRoutes(router *gin.Engine) {
-	router.GET("/orders", api.NewOrderIndexController().Index)
+	apiGroup := router.Group("/api")
+	{
+		orders := apiGroup.Group("/orders")
+		{
+			orders.GET("", api.NewOrderIndexController().Index)
+		}
+	}
 }
