@@ -3,20 +3,19 @@ package main
 import (
 	"fmt"
 	"github.com/d-alejandro/go-code-examples/internal/bootstrap"
+	"github.com/spf13/viper"
 	"log"
-	"strconv"
 )
 
-const port = 8080
-
 func main() {
+	bootstrap.InitConfig()
 	router := bootstrap.InitRoutes()
 
-	portString := strconv.Itoa(port)
+	port := viper.GetString("HTTP_PORT")
 
-	fmt.Println("Http server started on :" + portString)
+	fmt.Println("Http server started on :" + port)
 
-	err := router.Run(":" + portString)
+	err := router.Run(":" + port)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
