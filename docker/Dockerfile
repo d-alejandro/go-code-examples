@@ -4,9 +4,16 @@ RUN go install github.com/go-delve/delve/cmd/dlv@v1.21.2
 
 FROM busybox:1.36.1
 
-EXPOSE 8080 7000
+ARG http_port
+ARG debug_port
 
-COPY --from=golang /go/bin/dlv /
-COPY ./.bin/go-code-examples /
+#RUN echo "http_port=$http_port debug_port=$debug_port"
 
-CMD ["/dlv", "--listen=:7000", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "/go-code-examples"]
+EXPOSE $http_port $debug_port
+
+COPY --from=golang /go/bin/dlv /usr/app/
+COPY ./docker/entrypoint.sh /usr/app/
+COPY ./.env /usr/app/
+COPY ./.bin/go-code-examples /usr/app/
+
+CMD ["/usr/app/entrypoint.sh"]

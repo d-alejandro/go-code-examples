@@ -2,8 +2,13 @@ version: '3.7'
 services:
   go-app:
     build:
+      args:
+        http_port: ${HTTP_PORT}
+        debug_port: ${DELVE_DEBUG_PORT}
       context: .
       dockerfile: ./docker/Dockerfile
+    environment:
+      DELVE_DEBUG_PORT: ${DELVE_DEBUG_PORT}
     ports:
-      - "8080:8080"
-      - "7000:7000"
+      - "${HOST_HTTP_PORT}:${HTTP_PORT}"
+      - "${DELVE_DEBUG_PORT}:${DELVE_DEBUG_PORT}"
