@@ -1,8 +1,8 @@
 /.git
 /.idea
-/docker
 .dockerignore
 .gitignore
 Makefile
 readme.md
 docker-compose.yml
+.env.example
