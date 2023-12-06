@@ -2,13 +2,14 @@ package bootstrap
 
 import (
 	"fmt"
+	"github.com/d-alejandro/go-code-examples/internal/app/identifiers"
 	"github.com/d-alejandro/go-code-examples/internal/config"
 	"github.com/spf13/viper"
 )
 
-func InitConfig() map[string]any {
+func InitConfig() identifiers.ConfigMap {
 	initViper()
-	return map[string]any{
+	return identifiers.ConfigMap{
 		"http":     config.GetHTTPConfigList(),
 		"database": config.GetDatabaseConfigList(),
 	}
