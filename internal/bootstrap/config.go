@@ -6,11 +6,11 @@ import (
 	"github.com/spf13/viper"
 )
 
-func InitConfig() map[string]map[string]string {
+func InitConfig() map[string]any {
 	initViper()
-	return map[string]map[string]string{
-		"http":     config.InitHTTP(),
-		"database": config.InitDatabase(),
+	return map[string]any{
+		"http":     config.GetHTTPConfigList(),
+		"database": config.GetDatabaseConfigList(),
 	}
 }
 

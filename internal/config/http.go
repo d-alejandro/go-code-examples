@@ -2,8 +2,8 @@ package config
 
 import "github.com/spf13/viper"
 
-func InitHTTP() map[string]string {
-	return map[string]string{
+func GetHTTPConfigList() map[string]any {
+	return map[string]any{
 		"port": viper.GetString("HTTP_PORT"),
 	}
 }

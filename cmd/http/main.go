@@ -10,9 +10,11 @@ func main() {
 	config := bootstrap.InitConfig()
 	router := bootstrap.InitRoutes()
 
-	fmt.Println("Http server started on :" + config["http"]["port"])
+	port := config["http"].(map[string]any)["port"].(string)
 
-	err := router.Run(":" + config["http"]["port"])
+	fmt.Println("Http server started on :" + port)
+
+	err := router.Run(":" + port)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
