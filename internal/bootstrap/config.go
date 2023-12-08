@@ -10,8 +10,9 @@ import (
 func InitConfig() {
 	initViper()
 	identifiers.Config = identifiers.ConfigMap{
-		"http":     config.GetHTTPConfigList(),
+		"app":      config.GetAppConfigList(),
 		"database": config.GetDatabaseConfigList(),
+		"http":     config.GetHTTPConfigList(),
 	}
 }
 
