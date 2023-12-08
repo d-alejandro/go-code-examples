@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile
     volumes:
-      - ./internal/storage/logs:/usr/app/logs
+      - ./storage/logs:/usr/app/storage/logs
     working_dir: /usr/app
     environment:
       DELVE_DEBUG_PORT: ${DELVE_DEBUG_PORT}
