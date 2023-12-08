@@ -5,17 +5,26 @@ import (
 	"github.com/sirupsen/logrus"
 	"io"
 	"os"
+	"time"
+	_ "time/tzdata"
+)
+
+const (
+	fileFlag       = os.O_RDWR | os.O_CREATE | os.O_APPEND
+	filePermission = 0666
+	layoutISO      = "2006-01-02"
 )
 
 func InitLogger() *os.File {
 	identifiers.Logger = logrus.New()
 
-	file, err := os.OpenFile("./storage/logs/logrus.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	fileName := getFileName()
+	file, err := os.OpenFile(fileName, fileFlag, filePermission)
 	if err != nil {
 		identifiers.Logger.Fatalf("error opening file: %v", err)
 	}
 
-	chmodErr := file.Chmod(0666)
+	chmodErr := file.Chmod(filePermission)
 	if chmodErr != nil {
 		identifiers.Logger.Fatalf("error chmod file: %v", chmodErr)
 	}
@@ -24,4 +33,21 @@ func InitLogger() *os.File {
 	identifiers.Logger.SetOutput(writer)
 
 	return file
+}
+
+func getFileName() string {
+	date := getCurrentDate()
+	return "./storage/logs/golang-" + date + ".log"
+}
+
+func getCurrentDate() string {
+	timezone := identifiers.Config["app"].(identifiers.ConfigMap)["timezone"].(string)
+
+	location, err := time.LoadLocation(timezone)
+	if err != nil {
+		identifiers.Logger.Fatal(err.Error())
+	}
+
+	timeNow := time.Now()
+	return timeNow.In(location).Format(layoutISO)
 }
