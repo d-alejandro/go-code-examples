@@ -1,22 +1,30 @@
 package main
 
 import (
-	"fmt"
 	"github.com/d-alejandro/go-code-examples/internal/app/identifiers"
 	"github.com/d-alejandro/go-code-examples/internal/bootstrap"
-	"log"
+	"os"
 )
 
 func main() {
-	config := bootstrap.InitConfig()
+	bootstrap.InitConfig()
+	file := bootstrap.InitLogger()
+	defer closeFile(file)
 	router := bootstrap.InitRoutes()
 
-	port := config["http"].(identifiers.ConfigMap)["port"].(string)
+	port := identifiers.Config["http"].(identifiers.ConfigMap)["port"].(string)
 
-	fmt.Println("Http server started on :" + port)
+	identifiers.Logger.Info("Http server started on : " + port)
 
 	err := router.Run(":" + port)
 	if err != nil {
-		log.Fatal(err.Error())
+		identifiers.Logger.Error(err.Error())
+	}
+}
+
+func closeFile(file *os.File) {
+	err := file.Close()
+	if err != nil {
+		identifiers.Logger.Fatalf("error closing file: %v", err)
 	}
 }
