@@ -7,9 +7,9 @@ import (
 	"github.com/spf13/viper"
 )
 
-func InitConfig() identifiers.ConfigMap {
+func InitConfig() {
 	initViper()
-	return identifiers.ConfigMap{
+	identifiers.Config = identifiers.ConfigMap{
 		"http":     config.GetHTTPConfigList(),
 		"database": config.GetDatabaseConfigList(),
 	}
