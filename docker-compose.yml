@@ -13,5 +13,19 @@ services:
     environment:
       DELVE_DEBUG_PORT: ${DELVE_DEBUG_PORT}
     ports:
-      - "${HOST_HTTP_PORT}:${HTTP_PORT}"
-      - "${DELVE_DEBUG_PORT}:${DELVE_DEBUG_PORT}"
+      - ${HOST_HTTP_PORT}:${HTTP_PORT}
+      - ${DELVE_DEBUG_PORT}:${DELVE_DEBUG_PORT}
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16.1
+    restart: always
+    volumes:
+      - ./storage/docker/postgres/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT_IDE}:5432
