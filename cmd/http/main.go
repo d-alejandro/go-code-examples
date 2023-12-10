@@ -10,6 +10,7 @@ func main() {
 	bootstrap.InitConfig()
 	file := bootstrap.InitLogger()
 	defer closeFile(file)
+	bootstrap.InitDBConnection()
 	router := bootstrap.InitRoutes()
 
 	port := identifiers.Config["http"].(identifiers.ConfigMap)["port"].(string)
