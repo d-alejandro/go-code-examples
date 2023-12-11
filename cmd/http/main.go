@@ -4,6 +4,7 @@ import (
 	"github.com/d-alejandro/go-code-examples/internal/app"
 	"github.com/d-alejandro/go-code-examples/internal/bootstrap"
 	"os"
+	_ "time/tzdata"
 )
 
 func main() {

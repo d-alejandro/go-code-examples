@@ -6,7 +6,6 @@ import (
 	"io"
 	"os"
 	"time"
-	_ "time/tzdata"
 )
 
 const (
