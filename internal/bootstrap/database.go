@@ -5,7 +5,6 @@ import (
 	"github.com/d-alejandro/go-code-examples/internal/app"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
 )
 
 func InitDBConnection() {
@@ -26,6 +25,6 @@ func InitDBConnection() {
 
 	app.DBConnection, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Failed to connect to the Database")
+		app.Logger.Fatal("Failed to connect to the Database")
 	}
 }
