@@ -1,9 +1,11 @@
 package config
 
-import "github.com/d-alejandro/go-code-examples/internal/app/identifiers"
+import (
+	"github.com/d-alejandro/go-code-examples/internal/app"
+)
 
-func GetAppConfigList() identifiers.ConfigMap {
-	return identifiers.ConfigMap{
+func GetAppConfigList() app.Arr {
+	return app.Arr{
 		"timezone": "Europe/Moscow",
 	}
 }

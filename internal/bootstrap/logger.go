@@ -1,7 +1,7 @@
 package bootstrap
 
 import (
-	"github.com/d-alejandro/go-code-examples/internal/app/identifiers"
+	"github.com/d-alejandro/go-code-examples/internal/app"
 	"github.com/sirupsen/logrus"
 	"io"
 	"os"
@@ -16,21 +16,21 @@ const (
 )
 
 func InitLogger() *os.File {
-	identifiers.Logger = logrus.New()
+	app.Logger = logrus.New()
 
 	fileName := getFileName()
 	file, err := os.OpenFile(fileName, fileFlag, filePermission)
 	if err != nil {
-		identifiers.Logger.Fatalf("error opening file: %v", err)
+		app.Logger.Fatalf("error opening file: %v", err)
 	}
 
 	chmodErr := file.Chmod(filePermission)
 	if chmodErr != nil {
-		identifiers.Logger.Fatalf("error chmod file: %v", chmodErr)
+		app.Logger.Fatalf("error chmod file: %v", chmodErr)
 	}
 
 	writer := io.MultiWriter(os.Stdout, file)
-	identifiers.Logger.SetOutput(writer)
+	app.Logger.SetOutput(writer)
 
 	return file
 }
@@ -41,11 +41,11 @@ func getFileName() string {
 }
 
 func getCurrentDate() string {
-	timezone := identifiers.Config["app"].(identifiers.ConfigMap)["timezone"].(string)
+	timezone := app.Config["app"].(app.Arr)["timezone"].(string)
 
 	location, err := time.LoadLocation(timezone)
 	if err != nil {
-		identifiers.Logger.Fatal(err.Error())
+		app.Logger.Fatal(err.Error())
 	}
 
 	timeNow := time.Now()

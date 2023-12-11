@@ -2,14 +2,14 @@ package bootstrap
 
 import (
 	"fmt"
-	"github.com/d-alejandro/go-code-examples/internal/app/identifiers"
+	"github.com/d-alejandro/go-code-examples/internal/app"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
 )
 
 func InitDBConnection() {
-	databaseConfig := identifiers.Config["database"].(identifiers.ConfigMap)["connections"].(identifiers.ConfigMap)["pgsql"].(identifiers.ConfigMap)
+	databaseConfig := app.Config["database"].(app.Arr)["connections"].(app.Arr)["pgsql"].(app.Arr)
 
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
@@ -19,12 +19,12 @@ func InitDBConnection() {
 		databaseConfig["database"].(string),
 		databaseConfig["port"].(string),
 		databaseConfig["sslmode"].(string),
-		identifiers.Config["app"].(identifiers.ConfigMap)["timezone"].(string),
+		app.Config["app"].(app.Arr)["timezone"].(string),
 	)
 
 	var err error
 
-	identifiers.DBConnection, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	app.DBConnection, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to the Database")
 	}
