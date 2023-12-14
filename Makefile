@@ -27,4 +27,10 @@ logs:
 	docker logs $(var) -f
 
 migration:
-	./.bin/goose-custom create $(var) go
+	./.bin/goose-custom -dir ./internal/database/migrations create $(var) go
+
+status:
+	docker-compose exec go-app ./goose-custom status
+
+migrate:
+	docker-compose exec go-app ./goose-custom up
