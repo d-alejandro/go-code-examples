@@ -14,6 +14,8 @@ EXPOSE $http_port $debug_port
 COPY --from=golang /go/bin/dlv /usr/app/
 COPY ./docker/entrypoint.sh /usr/app/
 COPY ./.env /usr/app/
+COPY ./internal/database /usr/app/database
+COPY ./.bin/goose-custom /usr/app/
 COPY ./.bin/go-code-examples /usr/app/
 
 CMD ["/usr/app/entrypoint.sh"]

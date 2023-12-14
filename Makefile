@@ -1,7 +1,9 @@
 .DEFAULT_GOAL := run
 
 go-build:
-	go mod download && go build -gcflags "all=-N -l" -o ./.bin/go-code-examples ./cmd/http/main.go
+	go mod download && \
+    go build -o ./.bin/goose-custom ./cmd/tools/goose/main.go && \
+    go build -gcflags "all=-N -l" -o ./.bin/go-code-examples ./cmd/http/main.go
 
 run: go-build
 	docker-compose up -d --build
@@ -23,3 +25,6 @@ exec:
 
 logs:
 	docker logs $(var) -f
+
+migration:
+	./.bin/goose-custom create $(var) go

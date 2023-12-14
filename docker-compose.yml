@@ -12,6 +12,8 @@ services:
     working_dir: /usr/app
     environment:
       DELVE_DEBUG_PORT: ${DELVE_DEBUG_PORT}
+      GOOSE_DRIVER: postgres
+      GOOSE_DBSTRING: "host=${DB_HOST} user=${DB_USERNAME} password=${DB_PASSWORD} dbname=${DB_DATABASE} port=${DB_PORT} sslmode=disable TimeZone=Europe/Moscow"
     ports:
       - ${HOST_HTTP_PORT}:${HTTP_PORT}
       - ${DELVE_DEBUG_PORT}:${DELVE_DEBUG_PORT}

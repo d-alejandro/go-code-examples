@@ -7,15 +7,15 @@ import (
 )
 
 func init() {
-	goose.AddMigrationContext(UpCreateAgenciesTable, DownCreateAgenciesTable)
+	goose.AddMigrationContext(upCreateAgenciesTable, downCreateAgenciesTable)
 }
 
-func UpCreateAgenciesTable(ctx context.Context, tx *sql.Tx) error {
+func upCreateAgenciesTable(ctx context.Context, tx *sql.Tx) error {
 	// This code is executed when the migration is applied.
 	return nil
 }
 
-func DownCreateAgenciesTable(ctx context.Context, tx *sql.Tx) error {
+func downCreateAgenciesTable(ctx context.Context, tx *sql.Tx) error {
 	// This code is executed when the migration is rolled back.
 	return nil
 }
