@@ -3,14 +3,11 @@ package main
 import (
 	"github.com/d-alejandro/go-code-examples/internal/app"
 	"github.com/d-alejandro/go-code-examples/internal/bootstrap"
-	"os"
-	_ "time/tzdata"
 )
 
 func main() {
 	bootstrap.InitConfig()
-	file := bootstrap.InitLogger()
-	defer closeFile(file)
+	bootstrap.InitLogger()
 	bootstrap.InitDBConnection()
 	router := bootstrap.InitRoutes()
 
@@ -21,12 +18,5 @@ func main() {
 	err := router.Run(":" + port)
 	if err != nil {
 		app.Logger.Error(err.Error())
-	}
-}
-
-func closeFile(file *os.File) {
-	err := file.Close()
-	if err != nil {
-		app.Logger.Fatalf("error closing file: %v", err)
 	}
 }

@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"time"
+	_ "time/tzdata"
 )
 
 const (
@@ -14,7 +15,7 @@ const (
 	layoutISO      = "2006-01-02"
 )
 
-func InitLogger() *os.File {
+func InitLogger() {
 	app.Logger = logrus.New()
 
 	fileName := getFileName()
@@ -30,8 +31,6 @@ func InitLogger() *os.File {
 
 	writer := io.MultiWriter(os.Stdout, file)
 	app.Logger.SetOutput(writer)
-
-	return file
 }
 
 func getFileName() string {
