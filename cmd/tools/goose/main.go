@@ -8,6 +8,7 @@ import (
 	_ "github.com/d-alejandro/go-code-examples/internal/database/migrations"
 	"github.com/d-alejandro/go-code-examples/tools/goose/pkg/cfg"
 	_ "github.com/jackc/pgx/v5/stdlib"
+	"github.com/pressly/goose/v3"
 	"io/fs"
 	"log"
 	"os"
@@ -15,8 +16,6 @@ import (
 	"strconv"
 	"strings"
 	"text/template"
-
-	"github.com/pressly/goose/v3"
 )
 
 var (
