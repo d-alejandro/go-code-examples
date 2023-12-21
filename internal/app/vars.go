@@ -9,4 +9,4 @@ var Config Arr
 
 var Logger *logrus.Logger
 
-var DBConnection *gorm.DB
+var DB *gorm.DB
