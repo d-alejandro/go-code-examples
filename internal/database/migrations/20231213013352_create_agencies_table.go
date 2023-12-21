@@ -3,6 +3,8 @@ package migrations
 import (
 	"context"
 	"database/sql"
+	"github.com/d-alejandro/go-code-examples/internal/app/models"
+	"github.com/d-alejandro/go-code-examples/internal/database"
 	"github.com/pressly/goose/v3"
 )
 
@@ -11,11 +13,9 @@ func init() {
 }
 
 func upCreateAgenciesTable(ctx context.Context, tx *sql.Tx) error {
-	// This code is executed when the migration is applied.
-	return nil
+	return database.Get().Migrator().CreateTable(&models.Agency{})
 }
 
 func downCreateAgenciesTable(ctx context.Context, tx *sql.Tx) error {
-	// This code is executed when the migration is rolled back.
-	return nil
+	return database.Get().Migrator().DropTable(&models.Agency{})
 }
