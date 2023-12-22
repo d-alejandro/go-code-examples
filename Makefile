@@ -34,3 +34,8 @@ status:
 
 migrate:
 	docker-compose exec go-app ./goose-custom up
+
+reset:
+	docker-compose exec go-app ./goose-custom reset
+
+refresh: reset migrate
