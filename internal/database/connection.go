@@ -7,8 +7,13 @@ import (
 )
 
 func Get() *gorm.DB {
+	if app.DB != nil {
+		return app.DB
+	}
+
 	bootstrap.InitConfig()
 	bootstrap.InitLogger()
 	bootstrap.InitDBConnection()
+
 	return app.DB
 }
