@@ -1,10 +1,12 @@
 package routes
 
 import (
-	"github.com/d-alejandro/go-code-examples/internal/app/http/controllers/web"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func InitWebRoutes(router *gin.Engine) {
-	router.GET("/test", web.NewTestController().Test)
+	router.GET("/test", func(context *gin.Context) {
+		context.String(http.StatusOK, "The server started successfully!")
+	})
 }
