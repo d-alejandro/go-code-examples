@@ -1,22 +1,21 @@
 package main
 
 import (
-	"github.com/d-alejandro/go-code-examples/internal/app"
+	"github.com/d-alejandro/go-code-examples/internal/app/providers"
 	"github.com/d-alejandro/go-code-examples/internal/bootstrap"
 )
 
 func main() {
-	bootstrap.InitConfig()
-	bootstrap.InitLogger()
-	bootstrap.InitDBConnection()
-	router := bootstrap.InitRoutes()
+	config, logger, _ := bootstrap.Boot()
 
-	port := app.Config["http"].(app.Arr)["port"].(string)
+	router := providers.NewRouteProvider().Register()
 
-	app.Logger.Info("Http server started on : " + port)
+	port := config.Get("http.port").(string)
+
+	logger.Info("Http server started on : " + port)
 
 	err := router.Run(":" + port)
 	if err != nil {
-		app.Logger.Error(err.Error())
+		logger.Error(err.Error())
 	}
 }

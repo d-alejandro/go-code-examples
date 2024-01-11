@@ -1,14 +1,14 @@
-package bootstrap
+package providers
 
 import (
 	"fmt"
-	"github.com/d-alejandro/go-code-examples/internal/app"
+	"github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func InitDBConnection() {
-	databaseConfig := app.Config["database"].(app.Arr)["connections"].(app.Arr)["pgsql"].(app.Arr)
+func GetDatabase(config *Config, logger *logrus.Logger) *gorm.DB {
+	databaseConfig := config.Get("database.connections.pgsql").(map[string]any)
 
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
@@ -18,13 +18,13 @@ func InitDBConnection() {
 		databaseConfig["database"].(string),
 		databaseConfig["port"].(string),
 		databaseConfig["sslmode"].(string),
-		app.Config["app"].(app.Arr)["timezone"].(string),
+		config.Get("app").(map[string]any)["timezone"].(string),
 	)
 
-	var err error
-
-	app.DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		app.Logger.Fatal("Failed to connect to the Database")
+		logger.Fatal("Failed to connect to the Database")
 	}
+
+	return database
 }

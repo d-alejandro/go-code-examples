@@ -1,15 +1,14 @@
 package config
 
 import (
-	"github.com/d-alejandro/go-code-examples/internal/app"
 	"github.com/spf13/viper"
 )
 
-func GetDatabaseConfigList() app.Arr {
-	return app.Arr{
+func GetDatabaseConfigs() map[string]any {
+	return map[string]any{
 		"default": viper.GetString("DB_CONNECTION"),
-		"connections": app.Arr{
-			"pgsql": app.Arr{
+		"connections": map[string]any{
+			"pgsql": map[string]any{
 				"host":     viper.GetString("DB_HOST"),
 				"port":     viper.GetString("DB_PORT"),
 				"database": viper.GetString("DB_DATABASE"),
