@@ -4,7 +4,6 @@ import (
 	"fmt"
 	cfg "github.com/d-alejandro/go-code-examples/internal/config"
 	"github.com/spf13/viper"
-	"reflect"
 	"strings"
 )
 
@@ -22,24 +21,20 @@ func (config *Config) Get(key string) any {
 	keys := strings.Split(key, ".")
 
 	tempArray := config.array
-	arrayTypeName := reflect.TypeOf(config.array).Name()
 
 	for _, value := range keys {
-		tempType := tempArray[value]
-		tempTypeName := reflect.TypeOf(tempType).Name()
+		tempValue := tempArray[value]
 
-		if tempTypeName != arrayTypeName {
-			switch tempTypeName {
-			case "string":
-				return tempType.(string)
-			case "int":
-				return tempType.(int)
-			case "bool":
-				return tempType.(bool)
-			}
+		switch tempValue.(type) {
+		case string:
+			return tempValue.(string)
+		case int:
+			return tempValue.(int)
+		case bool:
+			return tempValue.(bool)
+		default:
+			tempArray = tempValue.(map[string]any)
 		}
-
-		tempArray = tempType.(map[string]any)
 	}
 
 	return tempArray
