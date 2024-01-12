@@ -6,6 +6,8 @@ import (
 
 func GetHTTPConfigs() map[string]any {
 	return map[string]any{
-		"port": viper.GetString("HTTP_PORT"),
+		"http": map[string]any{
+			"port": viper.GetString("HTTP_PORT"),
+		},
 	}
 }

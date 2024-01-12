@@ -4,6 +4,7 @@ import (
 	"fmt"
 	cfg "github.com/d-alejandro/go-code-examples/internal/config"
 	"github.com/spf13/viper"
+	"maps"
 	"strings"
 )
 
@@ -38,11 +39,9 @@ func (config *Config) Get(key string) any {
 
 func (config *Config) register() {
 	initViper()
-	config.array = map[string]any{
-		"app":      cfg.GetApplicationConfigs(),
-		"database": cfg.GetDatabaseConfigs(),
-		"http":     cfg.GetHTTPConfigs(),
-	}
+	config.array = cfg.GetApplicationConfigs()
+	maps.Copy(config.array, cfg.GetDatabaseConfigs())
+	maps.Copy(config.array, cfg.GetHTTPConfigs())
 }
 
 func initViper() {
