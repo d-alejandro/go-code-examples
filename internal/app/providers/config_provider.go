@@ -26,14 +26,10 @@ func (config *Config) Get(key string) any {
 		tempValue := tempArray[value]
 
 		switch tempValue.(type) {
-		case string:
-			return tempValue.(string)
-		case int:
-			return tempValue.(int)
-		case bool:
-			return tempValue.(bool)
-		default:
+		case map[string]any:
 			tempArray = tempValue.(map[string]any)
+		default:
+			return tempValue
 		}
 	}
 
