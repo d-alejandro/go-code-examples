@@ -10,9 +10,10 @@ func Boot() {
 
 	loggerProvider := providers.NewLoggerProvider(configProvider)
 
-	databaseProvider := providers.NewDatabaseProvider(configProvider, loggerProvider.GetLogger())
+	logger := loggerProvider.GetLogger()
+	databaseProvider := providers.NewDatabaseProvider(configProvider, logger)
 
 	controllerProvider := bindings.NewControllerProvider(databaseProvider.GetGorm())
 
-	providers.NewRouteProvider(controllerProvider, configProvider, loggerProvider.GetLogger())
+	providers.NewRouteProvider(controllerProvider, configProvider, logger)
 }
