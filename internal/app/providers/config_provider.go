@@ -2,49 +2,50 @@ package providers
 
 import (
 	"fmt"
-	cfg "github.com/d-alejandro/go-code-examples/internal/config"
+	"github.com/d-alejandro/go-code-examples/internal/config"
 	"github.com/spf13/viper"
 	"maps"
 	"strings"
 )
 
-type Config struct {
-	array map[string]any
+type ConfigProvider struct {
+	configList map[string]any
 }
 
-func NewConfig() *Config {
-	config := new(Config)
-	config.register()
-	return config
+func NewConfigProvider() *ConfigProvider {
+	configProvider := new(ConfigProvider)
+	configProvider.register()
+	return configProvider
 }
 
-func (config *Config) Get(key string) any {
-	keys := strings.Split(key, ".")
+func (configProvider *ConfigProvider) GetValue(key string) any {
+	configKeyList := strings.Split(key, ".")
 
-	tempArray := config.array
+	tempConfigList := configProvider.configList
 
-	for _, value := range keys {
-		tempValue := tempArray[value]
+	for _, configKey := range configKeyList {
+		tempConfigValue := tempConfigList[configKey]
 
-		switch tempValue.(type) {
+		switch tempConfigValue.(type) {
 		case map[string]any:
-			tempArray = tempValue.(map[string]any)
+			tempConfigList = tempConfigValue.(map[string]any)
 		default:
-			return tempValue
+			return tempConfigValue
 		}
 	}
 
-	return tempArray
+	return tempConfigList
 }
 
-func (config *Config) register() {
-	initViper()
-	config.array = cfg.GetApplicationConfigs()
-	maps.Copy(config.array, cfg.GetDatabaseConfigs())
-	maps.Copy(config.array, cfg.GetHTTPConfigs())
+func (configProvider *ConfigProvider) register() {
+	configProvider.initViper()
+
+	configProvider.configList = config.GetApplicationConfigs()
+	maps.Copy(configProvider.configList, config.GetDatabaseConfigs())
+	maps.Copy(configProvider.configList, config.GetHTTPConfigs())
 }
 
-func initViper() {
+func (configProvider *ConfigProvider) initViper() {
 	viper.SetConfigType("env")
 	viper.SetConfigFile("/usr/app/.env")
 
