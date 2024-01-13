@@ -8,6 +8,7 @@ import (
 
 type RouteProvider struct {
 	controllerProvider *bindings.ControllerProvider
+	gin                *gin.Engine
 }
 
 func NewRouteProvider() *RouteProvider {
@@ -16,9 +17,12 @@ func NewRouteProvider() *RouteProvider {
 	}
 }
 
-func (routeProvider *RouteProvider) Register() *gin.Engine {
-	router := gin.Default()
-	routes.InitApiRoutes(router, routeProvider.controllerProvider)
-	routes.InitWebRoutes(router)
-	return router
+func (routeProvider *RouteProvider) GetGin() *gin.Engine {
+	return routeProvider.gin
+}
+
+func (routeProvider *RouteProvider) register() {
+	routeProvider.gin = gin.Default()
+	routes.InitApiRoutes(routeProvider.gin, routeProvider.controllerProvider)
+	routes.InitWebRoutes(routeProvider.gin)
 }
