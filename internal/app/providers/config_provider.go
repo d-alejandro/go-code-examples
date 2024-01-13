@@ -18,7 +18,7 @@ func NewConfigProvider() *ConfigProvider {
 	return configProvider
 }
 
-func (configProvider *ConfigProvider) GetValue(key string) any {
+func (configProvider *ConfigProvider) GetConfig(key string) any {
 	configKeyList := strings.Split(key, ".")
 
 	tempConfigList := configProvider.configList

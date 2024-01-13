@@ -8,47 +8,58 @@ import (
 	_ "time/tzdata"
 )
 
+type LoggerProvider struct {
+	configProvider *ConfigProvider
+	logger         *logrus.Logger
+}
+
 const (
 	fileFlag       = os.O_RDWR | os.O_CREATE | os.O_APPEND
 	filePermission = 0666
 	layoutISO      = "2006-01-02"
 )
 
-var config *Config
-var logger *logrus.Logger
+func NewLoggerProvider(configProvider *ConfigProvider) *LoggerProvider {
+	loggerProvider := &LoggerProvider{
+		configProvider: configProvider,
+	}
+	loggerProvider.register()
+	return loggerProvider
+}
 
-func InitLogger(cfg *Config) *logrus.Logger {
-	config = cfg
-	logger = logrus.New()
+func GetLogger(loggerProvider *LoggerProvider) *logrus.Logger {
+	return loggerProvider.logger
+}
 
-	fileName := getFileName()
+func (loggerProvider *LoggerProvider) register() {
+	loggerProvider.logger = logrus.New()
+
+	fileName := loggerProvider.getFileName()
 	file, err := os.OpenFile(fileName, fileFlag, filePermission)
 	if err != nil {
-		logger.Fatalf("error opening file: %v", err)
+		loggerProvider.logger.Fatalf("error opening file: %v", err)
 	}
 
 	chmodErr := file.Chmod(filePermission)
 	if chmodErr != nil {
-		logger.Fatalf("error chmod file: %v", chmodErr)
+		loggerProvider.logger.Fatalf("error chmod file: %v", chmodErr)
 	}
 
 	writer := io.MultiWriter(os.Stdout, file)
-	logger.SetOutput(writer)
-
-	return logger
+	loggerProvider.logger.SetOutput(writer)
 }
 
-func getFileName() string {
-	date := getCurrentDate()
+func (loggerProvider *LoggerProvider) getFileName() string {
+	date := loggerProvider.getCurrentDate()
 	return "./storage/logs/golang-" + date + ".log"
 }
 
-func getCurrentDate() string {
-	timezone := config.Get("app.timezone").(string)
+func (loggerProvider *LoggerProvider) getCurrentDate() string {
+	timezone := loggerProvider.configProvider.GetConfig("app.timezone").(string)
 
 	location, err := time.LoadLocation(timezone)
 	if err != nil {
-		logger.Fatal(err.Error())
+		loggerProvider.logger.Fatal(err.Error())
 	}
 
 	timeNow := time.Now()
