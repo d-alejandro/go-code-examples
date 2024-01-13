@@ -6,9 +6,9 @@ type OrderIndexUseCase struct {
 	orderIndexRepository interfaces.OrderIndexRepositoryInterface
 }
 
-func NewOrderIndexUseCase(orderIndexRepository interfaces.OrderIndexRepositoryInterface) *OrderIndexUseCase {
+func NewOrderIndexUseCase(repository interfaces.OrderIndexRepositoryInterface) *OrderIndexUseCase {
 	return &OrderIndexUseCase{
-		orderIndexRepository: orderIndexRepository,
+		orderIndexRepository: repository,
 	}
 }
 

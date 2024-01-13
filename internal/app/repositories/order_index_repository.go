@@ -3,15 +3,15 @@ package repositories
 import "gorm.io/gorm"
 
 type OrderIndexRepository struct {
-	database *gorm.DB
+	gorm *gorm.DB
 }
 
-func NewOrderIndexRepository( /*database *gorm.DB*/ ) *OrderIndexRepository {
+func NewOrderIndexRepository(gorm *gorm.DB) *OrderIndexRepository {
 	return &OrderIndexRepository{
-		//database: database,
+		gorm: gorm,
 	}
 }
 
-func (orderIndexRepository *OrderIndexRepository) Make() string {
+func (repository *OrderIndexRepository) Make() string {
 	return "OrderIndexController run."
 }

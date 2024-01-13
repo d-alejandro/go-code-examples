@@ -4,25 +4,41 @@ import (
 	"github.com/d-alejandro/go-code-examples/internal/app/providers/bindings"
 	"github.com/d-alejandro/go-code-examples/internal/routes"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 type RouteProvider struct {
 	controllerProvider *bindings.ControllerProvider
-	gin                *gin.Engine
+	config             *ConfigProvider
+	logger             *logrus.Logger
 }
 
-func NewRouteProvider() *RouteProvider {
-	return &RouteProvider{
-		controllerProvider: bindings.NewControllerProvider(),
+func NewRouteProvider(
+	controllerProvider *bindings.ControllerProvider,
+	config *ConfigProvider,
+	logger *logrus.Logger,
+) *RouteProvider {
+	routeProvider := &RouteProvider{
+		controllerProvider: controllerProvider,
+		config:             config,
+		logger:             logger,
 	}
-}
-
-func (routeProvider *RouteProvider) GetGin() *gin.Engine {
-	return routeProvider.gin
+	routeProvider.register()
+	return routeProvider
 }
 
 func (routeProvider *RouteProvider) register() {
-	routeProvider.gin = gin.Default()
-	routes.InitApiRoutes(routeProvider.gin, routeProvider.controllerProvider)
-	routes.InitWebRoutes(routeProvider.gin)
+	router := gin.Default()
+
+	routes.InitApiRoutes(router, routeProvider.controllerProvider)
+	routes.InitWebRoutes(router)
+
+	port := routeProvider.config.GetConfig("http.port").(string)
+
+	routeProvider.logger.Info("Http server started on : " + port)
+
+	err := router.Run(":" + port)
+	if err != nil {
+		routeProvider.logger.Error(err.Error())
+	}
 }
