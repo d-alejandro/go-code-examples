@@ -27,7 +27,7 @@ func NewLoggerProvider(configProvider *ConfigProvider) *LoggerProvider {
 	return loggerProvider
 }
 
-func GetLogger(loggerProvider *LoggerProvider) *logrus.Logger {
+func (loggerProvider *LoggerProvider) GetLogger() *logrus.Logger {
 	return loggerProvider.logger
 }
 
