@@ -30,16 +30,16 @@ func (gormLogger *GormLogger) LogMode(logger.LogLevel) logger.Interface {
 	return gormLogger
 }
 
-func (gormLogger *GormLogger) Info(ctx context.Context, s string, args ...interface{}) {
-	gormLogger.log.WithContext(ctx).Infof(s, args)
+func (gormLogger *GormLogger) Info(ctx context.Context, msg string, data ...interface{}) {
+	gormLogger.log.WithContext(ctx).Infof(msg, data)
 }
 
-func (gormLogger *GormLogger) Warn(ctx context.Context, s string, args ...interface{}) {
-	gormLogger.log.WithContext(ctx).Warnf(s, args)
+func (gormLogger *GormLogger) Warn(ctx context.Context, msg string, data ...interface{}) {
+	gormLogger.log.WithContext(ctx).Warnf(msg, data)
 }
 
-func (gormLogger *GormLogger) Error(ctx context.Context, s string, args ...interface{}) {
-	gormLogger.log.WithContext(ctx).Errorf(s, args)
+func (gormLogger *GormLogger) Error(ctx context.Context, msg string, data ...interface{}) {
+	gormLogger.log.WithContext(ctx).Errorf(msg, data)
 }
 
 func (gormLogger *GormLogger) Trace(ctx context.Context, begin time.Time, fc func() (string, int64), err error) {
