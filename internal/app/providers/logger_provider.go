@@ -1,6 +1,7 @@
 package providers
 
 import (
+	"github.com/d-alejandro/go-code-examples/internal/app/helpers"
 	"github.com/sirupsen/logrus"
 	"io"
 	"os"
@@ -9,8 +10,8 @@ import (
 )
 
 type LoggerProvider struct {
-	configProvider *ConfigProvider
-	logger         *logrus.Logger
+	config *helpers.Config
+	logger *logrus.Logger
 }
 
 const (
@@ -19,9 +20,10 @@ const (
 	layoutISO      = "2006-01-02"
 )
 
-func NewLoggerProvider(configProvider *ConfigProvider) *LoggerProvider {
+func NewLoggerProvider(container *helpers.DependenciesContainer) *LoggerProvider {
+	config := container.GetDependency("config").(*helpers.Config)
 	loggerProvider := &LoggerProvider{
-		configProvider: configProvider,
+		config: config,
 	}
 	loggerProvider.register()
 	return loggerProvider
@@ -55,7 +57,7 @@ func (loggerProvider *LoggerProvider) getFileName() string {
 }
 
 func (loggerProvider *LoggerProvider) getCurrentDate() string {
-	timezone := loggerProvider.configProvider.GetConfig("app.timezone").(string)
+	timezone := loggerProvider.config.Get("app.timezone").(string)
 
 	location, err := time.LoadLocation(timezone)
 	if err != nil {

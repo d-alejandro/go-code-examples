@@ -13,9 +13,18 @@ var (
 
 func Get() *gorm.DB {
 	connection.Do(func() {
+		containerProvider := providers.NewContainerProvider()
+		container := containerProvider.GetContainer()
+
 		configProvider := providers.NewConfigProvider()
-		loggerProvider := providers.NewLoggerProvider(configProvider)
-		databaseProvider := providers.NewDatabaseProvider(configProvider, loggerProvider.GetLogger())
+		config := configProvider.GetConfig()
+		container.AddDependency("config", config)
+
+		loggerProvider := providers.NewLoggerProvider(container)
+		logger := loggerProvider.GetLogger()
+		container.AddDependency("logger", logger)
+
+		databaseProvider := providers.NewDatabaseProvider(container)
 		database = databaseProvider.GetGorm()
 	})
 	return database
