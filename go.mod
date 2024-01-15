@@ -1,6 +1,6 @@
 module github.com/d-alejandro/go-code-examples
 
-go 1.21.3
+go 1.21.6
 
 require (
 	github.com/bytedance/sonic v1.10.2 // indirect

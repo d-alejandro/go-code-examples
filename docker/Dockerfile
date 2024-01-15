@@ -1,6 +1,6 @@
-FROM golang:1.21.3 AS golang
+FROM golang:1.21.6 AS golang
 
-RUN go install github.com/go-delve/delve/cmd/dlv@v1.21.2
+RUN go install github.com/go-delve/delve/cmd/dlv@v1.22.0
 
 FROM busybox:1.36.1
 
