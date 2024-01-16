@@ -6,6 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	gormBaseLogger "gorm.io/gorm/logger"
 )
 
 type DatabaseProvider struct {
@@ -41,9 +42,13 @@ func (databaseProvider *DatabaseProvider) register(config *helpers.Config, logge
 		timezone,
 	)
 
+	gormLogger := helpers.NewGormLogger(logger)
+
 	var err error
 
-	databaseProvider.gorm, err = gorm.Open(postgres.Open(dataSourceName), &gorm.Config{})
+	databaseProvider.gorm, err = gorm.Open(postgres.Open(dataSourceName), &gorm.Config{
+		Logger: gormLogger.LogMode(gormBaseLogger.Info),
+	})
 	if err != nil {
 		logger.Fatal("Failed to connect to the DatabaseProvider")
 	}
