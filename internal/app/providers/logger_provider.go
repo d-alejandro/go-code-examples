@@ -17,7 +17,6 @@ type LoggerProvider struct {
 const (
 	fileFlag       = os.O_RDWR | os.O_CREATE | os.O_APPEND
 	filePermission = 0666
-	layoutISO      = "2006-01-02"
 )
 
 func NewLoggerProvider(container *helpers.DependenciesContainer) *LoggerProvider {
@@ -49,6 +48,8 @@ func (loggerProvider *LoggerProvider) register() {
 
 	writer := io.MultiWriter(os.Stdout, file)
 	loggerProvider.logger.SetOutput(writer)
+
+	loggerProvider.setFormatter()
 }
 
 func (loggerProvider *LoggerProvider) getFileName() string {
@@ -65,5 +66,11 @@ func (loggerProvider *LoggerProvider) getCurrentDate() string {
 	}
 
 	timeNow := time.Now()
-	return timeNow.In(location).Format(layoutISO)
+	return timeNow.In(location).Format(time.DateOnly)
+}
+
+func (loggerProvider *LoggerProvider) setFormatter() {
+	formatter := new(logrus.TextFormatter)
+	formatter.TimestampFormat = time.DateTime
+	loggerProvider.logger.SetFormatter(formatter)
 }
