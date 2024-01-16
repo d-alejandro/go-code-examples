@@ -30,6 +30,7 @@ func NewRouteProvider(container *helpers.DependenciesContainer) *RouteProvider {
 
 func (routeProvider *RouteProvider) register() {
 	router := gin.Default()
+	router.Use(gin.LoggerWithWriter(routeProvider.logger.Writer()))
 
 	routes.InitApiRoutes(router, routeProvider.controllerProvider)
 	routes.InitWebRoutes(router)
