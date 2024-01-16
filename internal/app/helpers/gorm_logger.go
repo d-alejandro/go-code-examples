@@ -12,6 +12,7 @@ import (
 
 type GormLogger struct {
 	log                   *logrus.Logger
+	logLevel              logger.LogLevel
 	SlowThreshold         time.Duration
 	SourceField           string
 	SkipErrRecordNotFound bool
@@ -22,11 +23,12 @@ func NewGormLogger(log *logrus.Logger) *GormLogger {
 	return &GormLogger{
 		log:                   log,
 		SkipErrRecordNotFound: true,
-		Debug:                 true,
+		Debug:                 false,
 	}
 }
 
-func (gormLogger *GormLogger) LogMode(logger.LogLevel) logger.Interface {
+func (gormLogger *GormLogger) LogMode(logLevel logger.LogLevel) logger.Interface {
+	gormLogger.logLevel = logLevel
 	return gormLogger
 }
 
@@ -43,25 +45,37 @@ func (gormLogger *GormLogger) Error(ctx context.Context, msg string, data ...int
 }
 
 func (gormLogger *GormLogger) Trace(ctx context.Context, begin time.Time, fc func() (string, int64), err error) {
+	if gormLogger.logLevel <= logger.Silent {
+		return
+	}
+
 	elapsed := time.Since(begin)
-	sql, _ := fc()
-	fields := logrus.Fields{}
+	sql, rows := fc()
+	fields := logrus.Fields{
+		"file": utils.FileWithLineNum(),
+	}
 
 	if gormLogger.SourceField != "" {
 		fields[gormLogger.SourceField] = utils.FileWithLineNum()
 	}
+
 	if err != nil && !(errors.Is(err, gorm.ErrRecordNotFound) && gormLogger.SkipErrRecordNotFound) {
 		fields[logrus.ErrorKey] = err
-		gormLogger.log.WithContext(ctx).WithFields(fields).Errorf("%s [%s]", sql, elapsed)
+		gormLogger.log.WithContext(ctx).WithFields(fields).Errorf("%s [%s] [rows:%v]", sql, elapsed, rows)
 		return
 	}
 
 	if gormLogger.SlowThreshold != 0 && elapsed > gormLogger.SlowThreshold {
-		gormLogger.log.WithContext(ctx).WithFields(fields).Warnf("%s [%s]", sql, elapsed)
+		gormLogger.log.WithContext(ctx).WithFields(fields).Warnf("%s [%s] [rows:%v]", sql, elapsed, rows)
 		return
 	}
 
 	if gormLogger.Debug {
-		gormLogger.log.WithContext(ctx).WithFields(fields).Debugf("%s [%s]", sql, elapsed)
+		gormLogger.log.WithContext(ctx).WithFields(fields).Debugf("%s [%s] [rows:%v]", sql, elapsed, rows)
+		return
+	}
+
+	if gormLogger.logLevel <= logger.Info {
+		gormLogger.log.WithContext(ctx).WithFields(fields).Infof("%s [%s] [rows:%v]", sql, elapsed, rows)
 	}
 }
