@@ -27,8 +27,10 @@ func (presenter *ErrorPresenter) present() {
 	switch presenter.messageError.(type) {
 	case string:
 		messageError = presenter.messageError.(string)
-	default:
+	case error:
 		messageError = presenter.messageError.(error).Error()
+	default:
+		messageError = ""
 	}
 
 	errorResource := resources.ErrorResource{
