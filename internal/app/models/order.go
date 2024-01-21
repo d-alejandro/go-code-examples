@@ -13,16 +13,16 @@ type Order struct {
 	Status         types.OrderStatus `gorm:"type:varchar(255);not null;default:'waiting';check:status in ('canceled', 'completed', 'paid', 'prepayment', 'waiting')"`
 	IsChecked      bool              `gorm:"not null;default:false"`
 	IsConfirmed    bool              `gorm:"not null;default:false"`
-	RentalDate     time.Time         `gorm:"type:timestamp(0)"`
+	RentalDate     *time.Time        `gorm:"type:timestamp(0)"`
 	GuestCount     int               `gorm:"type:integer;not null"`
 	TransportCount int               `gorm:"type:integer;not null"`
-	UserName       string            `gorm:"type:varchar(255)"`
+	UserName       *string           `gorm:"type:varchar(255)"`
 	Email          string            `gorm:"type:varchar(255);not null"`
 	Phone          string            `gorm:"type:varchar(255);not null"`
-	Note           string
-	AdminNote      string
-	ConfirmedAt    time.Time      `gorm:"type:timestamp(0)"`
-	CreatedAt      time.Time      `gorm:"type:timestamp(0)"`
-	UpdatedAt      time.Time      `gorm:"type:timestamp(0)"`
-	DeletedAt      gorm.DeletedAt `gorm:"type:timestamp(0)"`
+	Note           *string
+	AdminNote      *string
+	ConfirmedAt    *time.Time      `gorm:"type:timestamp(0)"`
+	CreatedAt      *time.Time      `gorm:"type:timestamp(0)"`
+	UpdatedAt      *time.Time      `gorm:"type:timestamp(0)"`
+	DeletedAt      *gorm.DeletedAt `gorm:"type:timestamp(0)"`
 }
