@@ -2,13 +2,17 @@ package bindings
 
 import (
 	"github.com/d-alejandro/go-code-examples/internal/app/helpers"
+	"github.com/d-alejandro/go-code-examples/internal/app/models"
 	"github.com/d-alejandro/go-code-examples/internal/app/repositories"
-	"github.com/d-alejandro/go-code-examples/internal/app/repositories/interfaces"
 	"gorm.io/gorm"
 )
 
+type OrderIndexRepository interface {
+	Make(pagination repositories.PaginationDTO) []models.Order
+}
+
 type RepositoryProvider struct {
-	OrderIndexRepository interfaces.OrderIndexRepositoryInterface
+	OrderIndexRepository OrderIndexRepository
 }
 
 func NewRepositoryProvider(container *helpers.DependenciesContainer) *RepositoryProvider {
