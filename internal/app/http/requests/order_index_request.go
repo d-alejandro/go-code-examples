@@ -15,3 +15,19 @@ type OrderIndexRequest struct {
 func (request *OrderIndexRequest) Validate(context *gin.Context) error {
 	return context.ShouldBindWith(request, binding.Query)
 }
+
+func (request *OrderIndexRequest) GetStart() int {
+	return request.Start
+}
+
+func (request *OrderIndexRequest) GetEnd() int {
+	return request.End
+}
+
+func (request *OrderIndexRequest) GetSortColumn() string {
+	return request.SortColumn
+}
+
+func (request *OrderIndexRequest) GetSortType() string {
+	return request.SortType
+}
