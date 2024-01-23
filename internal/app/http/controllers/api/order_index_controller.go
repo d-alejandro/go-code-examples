@@ -5,7 +5,6 @@ import (
 	"github.com/d-alejandro/go-code-examples/internal/app/models"
 	"github.com/d-alejandro/go-code-examples/internal/app/presenters"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"net/http"
 )
 
@@ -24,7 +23,7 @@ func NewOrderIndexController(useCase OrderIndexUseCase) *OrderIndexController {
 func (controller *OrderIndexController) Index(context *gin.Context) {
 	var request requests.OrderIndexRequest
 
-	err := context.ShouldBindWith(&request, binding.Query)
+	err := request.Validate(context)
 	if err != nil {
 		presenters.PresentErrorPresenter(context, http.StatusBadRequest, err)
 		return
