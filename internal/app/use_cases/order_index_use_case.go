@@ -8,7 +8,7 @@ import (
 )
 
 type OrderIndexRepository interface {
-	Make(pagination repositories.PaginationDTO) []models.Order
+	Make(repositories.PaginationDTO) []models.Order
 }
 
 type OrderIndexUseCase struct {
@@ -20,13 +20,14 @@ func NewOrderIndexUseCase(repository OrderIndexRepository) *OrderIndexUseCase {
 }
 
 func (useCase *OrderIndexUseCase) Execute(request requests.OrderIndexRequest) []models.Order {
-	limitValue := request.End - request.Start
+	startValue := request.GetStart()
+	limitValue := request.GetEnd() - startValue
 
 	pagination := dto.NewPaginationDTO(
-		request.SortColumn,
-		request.SortType,
+		request.GetSortColumn(),
+		request.GetSortType(),
 		limitValue,
-		request.Start,
+		startValue,
 	)
 
 	return useCase.orderIndexRepository.Make(pagination)
