@@ -9,7 +9,7 @@ import (
 )
 
 type OrderIndexUseCase interface {
-	Execute(request requests.OrderIndexRequest) []models.Order
+	Execute(request *requests.OrderIndexRequest) []models.Order
 }
 
 type OrderIndexController struct {
@@ -29,7 +29,7 @@ func (controller *OrderIndexController) Index(context *gin.Context) {
 		return
 	}
 
-	response := controller.useCase.Execute(request)
+	response := controller.useCase.Execute(&request)
 
 	context.JSON(
 		http.StatusOK,

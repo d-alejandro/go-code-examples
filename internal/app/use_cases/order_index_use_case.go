@@ -19,7 +19,7 @@ func NewOrderIndexUseCase(repository OrderIndexRepository) *OrderIndexUseCase {
 	return &OrderIndexUseCase{repository}
 }
 
-func (useCase *OrderIndexUseCase) Execute(request requests.OrderIndexRequest) []models.Order {
+func (useCase *OrderIndexUseCase) Execute(request *requests.OrderIndexRequest) []models.Order {
 	startValue := request.GetStart()
 	limitValue := request.GetEnd() - startValue
 
