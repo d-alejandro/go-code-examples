@@ -7,12 +7,7 @@ type PaginationDTO struct {
 	offsetValue int
 }
 
-func NewPaginationDTO(
-	sortColumn string,
-	sortType string,
-	limitValue int,
-	offsetValue int,
-) *PaginationDTO {
+func NewPaginationDTO(sortColumn string, sortType string, limitValue int, offsetValue int) *PaginationDTO {
 	return &PaginationDTO{
 		sortColumn:  sortColumn,
 		sortType:    sortType,
