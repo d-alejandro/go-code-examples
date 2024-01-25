@@ -2,7 +2,6 @@ package use_cases
 
 import (
 	"github.com/d-alejandro/go-code-examples/internal/app/dto"
-	"github.com/d-alejandro/go-code-examples/internal/app/http/requests"
 	"github.com/d-alejandro/go-code-examples/internal/app/models"
 )
 
@@ -14,7 +13,7 @@ func NewOrderIndexUseCase(repository OrderIndexRepositoryInterface) *OrderIndexU
 	return &OrderIndexUseCase{repository}
 }
 
-func (useCase *OrderIndexUseCase) Execute(request *requests.OrderIndexRequest) []models.Order {
+func (useCase *OrderIndexUseCase) Execute(request interface{ OrderIndexRequestInterface }) []models.Order {
 	startValue := request.GetStart()
 	limitValue := request.GetEnd() - startValue
 

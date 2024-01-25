@@ -12,3 +12,10 @@ type PaginationDTOInterface interface {
 	GetLimitValue() int
 	GetOffsetValue() int
 }
+
+type OrderIndexRequestInterface interface {
+	GetStart() int
+	GetEnd() int
+	GetSortColumn() string
+	GetSortType() string
+}
