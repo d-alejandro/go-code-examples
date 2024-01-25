@@ -11,7 +11,11 @@ type ControllerProvider struct {
 
 func NewControllerProvider(container *helpers.DependenciesContainer) *ControllerProvider {
 	useCaseProvider := NewUseCaseProvider(container)
+	presenterProvider := NewPresenterProvider(container)
 	return &ControllerProvider{
-		OrderIndexController: api.NewOrderIndexController(useCaseProvider.OrderIndexUseCase),
+		OrderIndexController: api.NewOrderIndexController(
+			useCaseProvider.OrderIndexUseCase,
+			presenterProvider.OrderIndexPresenter,
+		),
 	}
 }

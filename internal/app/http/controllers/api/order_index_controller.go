@@ -8,11 +8,18 @@ import (
 )
 
 type OrderIndexController struct {
-	useCase OrderIndexUseCaseInterface
+	useCase   OrderIndexUseCaseInterface
+	presenter OrderIndexPresenterInterface
 }
 
-func NewOrderIndexController(useCase OrderIndexUseCaseInterface) *OrderIndexController {
-	return &OrderIndexController{useCase}
+func NewOrderIndexController(
+	useCase OrderIndexUseCaseInterface,
+	presenter OrderIndexPresenterInterface,
+) *OrderIndexController {
+	return &OrderIndexController{
+		useCase:   useCase,
+		presenter: presenter,
+	}
 }
 
 func (controller *OrderIndexController) Index(context *gin.Context) {
@@ -26,8 +33,5 @@ func (controller *OrderIndexController) Index(context *gin.Context) {
 
 	response := controller.useCase.Execute(&request)
 
-	context.JSON(
-		http.StatusOK,
-		gin.H{"data": response},
-	)
+	controller.presenter.Present(context, response)
 }
