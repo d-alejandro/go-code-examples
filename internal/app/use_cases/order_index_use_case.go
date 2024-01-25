@@ -4,18 +4,13 @@ import (
 	"github.com/d-alejandro/go-code-examples/internal/app/dto"
 	"github.com/d-alejandro/go-code-examples/internal/app/http/requests"
 	"github.com/d-alejandro/go-code-examples/internal/app/models"
-	"github.com/d-alejandro/go-code-examples/internal/app/repositories"
 )
 
-type OrderIndexRepository interface {
-	Make(repositories.PaginationDTO) []models.Order
-}
-
 type OrderIndexUseCase struct {
-	orderIndexRepository OrderIndexRepository
+	orderIndexRepository OrderIndexRepositoryInterface
 }
 
-func NewOrderIndexUseCase(repository OrderIndexRepository) *OrderIndexUseCase {
+func NewOrderIndexUseCase(repository OrderIndexRepositoryInterface) *OrderIndexUseCase {
 	return &OrderIndexUseCase{repository}
 }
 
