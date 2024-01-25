@@ -5,13 +5,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type PaginationDTO interface {
-	GetSortColumn() string
-	GetSortType() string
-	GetLimitValue() int
-	GetOffsetValue() int
-}
-
 type OrderIndexRepository struct {
 	gorm *gorm.DB
 }
@@ -24,7 +17,7 @@ func NewOrderIndexRepository(gorm *gorm.DB) *OrderIndexRepository {
 	return &OrderIndexRepository{gorm}
 }
 
-func (repository *OrderIndexRepository) Make(pagination PaginationDTO) []models.Order {
+func (repository *OrderIndexRepository) Make(pagination interface{ PaginationDTOInterface }) []models.Order {
 	var orders []models.Order
 
 	orderQueryRaw := pagination.GetSortColumn() + " " + pagination.GetSortType()
