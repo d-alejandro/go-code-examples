@@ -2,21 +2,16 @@ package api
 
 import (
 	"github.com/d-alejandro/go-code-examples/internal/app/http/requests"
-	"github.com/d-alejandro/go-code-examples/internal/app/models"
 	"github.com/d-alejandro/go-code-examples/internal/app/presenters"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-type OrderIndexUseCase interface {
-	Execute(request *requests.OrderIndexRequest) []models.Order
-}
-
 type OrderIndexController struct {
-	useCase OrderIndexUseCase
+	useCase OrderIndexUseCaseInterface
 }
 
-func NewOrderIndexController(useCase OrderIndexUseCase) *OrderIndexController {
+func NewOrderIndexController(useCase OrderIndexUseCaseInterface) *OrderIndexController {
 	return &OrderIndexController{useCase}
 }
 
