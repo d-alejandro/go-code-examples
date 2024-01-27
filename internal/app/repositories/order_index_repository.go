@@ -14,8 +14,8 @@ func NewOrderIndexRepository(gorm *gorm.DB) *OrderIndexRepository {
 	return &OrderIndexRepository{gorm}
 }
 
-func (repository *OrderIndexRepository) Make(pagination interface{ PaginationDTOInterface }) []models.Order {
-	var orders []models.Order
+func (repository *OrderIndexRepository) Make(pagination interface{ PaginationDTOInterface }) []*models.Order {
+	var orders []*models.Order
 
 	column := clause.Column{
 		Name: models.TableOrders + "." + pagination.GetSortColumn(),

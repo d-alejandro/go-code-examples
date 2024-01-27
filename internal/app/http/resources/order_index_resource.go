@@ -17,7 +17,7 @@ type OrderIndexResource struct {
 	AdminNote      *string `json:"admin_note"`
 }
 
-func NewOrderIndexResource(order models.Order) *OrderIndexResource {
+func NewOrderIndexResource(order *models.Order) *OrderIndexResource {
 	var rentalDate *string
 
 	const dateLayout = "02-01-2006"

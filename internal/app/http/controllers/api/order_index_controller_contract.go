@@ -6,7 +6,7 @@ import (
 )
 
 type OrderIndexUseCaseInterface interface {
-	Execute(interface{ OrderIndexRequestInterface }) []models.Order
+	Execute(interface{ OrderIndexRequestInterface }) []*models.Order
 }
 
 type OrderIndexRequestInterface interface {
@@ -17,5 +17,5 @@ type OrderIndexRequestInterface interface {
 }
 
 type OrderIndexPresenterInterface interface {
-	Present(*gin.Context, []models.Order)
+	Present(*gin.Context, []*models.Order)
 }
