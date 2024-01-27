@@ -15,7 +15,7 @@ func NewOrderListPresenter() *OrderIndexPresenter {
 }
 
 func (presenter *OrderIndexPresenter) Present(context *gin.Context, orders []models.Order) {
-	var response []resources.OrderIndexResource
+	var response []*resources.OrderIndexResource
 
 	for _, order := range orders {
 		resource := resources.NewOrderIndexResource(order)
