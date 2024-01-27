@@ -15,14 +15,13 @@ func NewOrderIndexRepository(gorm *gorm.DB) *OrderIndexRepository {
 }
 
 func (repository *OrderIndexRepository) Make(pagination interface{ PaginationDTOInterface }) []models.Order {
-	const sortTypeDesc = "desc"
-
 	var orders []models.Order
 
 	column := clause.Column{
 		Name: models.TableOrders + "." + pagination.GetSortColumn(),
 	}
 
+	const sortTypeDesc = "desc"
 	orderByColumn := clause.OrderByColumn{
 		Column: column,
 		Desc:   pagination.GetSortType() == sortTypeDesc,

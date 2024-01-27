@@ -14,11 +14,6 @@ type LoggerProvider struct {
 	logger *logrus.Logger
 }
 
-const (
-	fileFlag       = os.O_RDWR | os.O_CREATE | os.O_APPEND
-	filePermission = 0666
-)
-
 func NewLoggerProvider(container *helpers.DependenciesContainer) *LoggerProvider {
 	config := container.GetDependency("config").(*helpers.Config)
 	loggerProvider := &LoggerProvider{
@@ -34,6 +29,11 @@ func (loggerProvider *LoggerProvider) GetLogger() *logrus.Logger {
 
 func (loggerProvider *LoggerProvider) register() {
 	loggerProvider.logger = logrus.New()
+
+	const (
+		fileFlag       = os.O_RDWR | os.O_CREATE | os.O_APPEND
+		filePermission = 0666
+	)
 
 	fileName := loggerProvider.getFileName()
 	file, err := os.OpenFile(fileName, fileFlag, filePermission)

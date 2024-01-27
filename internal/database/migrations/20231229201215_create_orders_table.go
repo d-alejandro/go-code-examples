@@ -9,8 +9,6 @@ import (
 	"strconv"
 )
 
-const autoIncrementIdStart = 10000001
-
 func init() {
 	goose.AddMigrationContext(upCreateOrdersTable, downCreateOrdersTable)
 }
@@ -23,6 +21,7 @@ func upCreateOrdersTable(ctx context.Context, tx *sql.Tx) error {
 		return err
 	}
 
+	const autoIncrementIdStart = 10000001
 	query := `ALTER SEQUENCE orders_id_seq RESTART WITH ` + strconv.Itoa(autoIncrementIdStart)
 	result := db.Exec(query)
 

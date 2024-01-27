@@ -2,7 +2,6 @@ package resources
 
 import (
 	"github.com/d-alejandro/go-code-examples/internal/app/models"
-	"time"
 )
 
 type OrderIndexResource struct {
@@ -21,8 +20,10 @@ type OrderIndexResource struct {
 func NewOrderIndexResource(order models.Order) OrderIndexResource {
 	var rentalDate *string
 
+	const dateLayout = "02-01-2006"
+
 	if order.RentalDate != nil {
-		date := order.RentalDate.Format(time.DateOnly)
+		date := order.RentalDate.Format(dateLayout)
 		rentalDate = &date
 	}
 
