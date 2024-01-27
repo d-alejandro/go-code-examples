@@ -24,13 +24,13 @@ type OrderResource struct {
 	UpdatedAt      *string `json:"updated_at"`
 }
 
-func NewOrderResource(order models.Order) OrderResource {
+func NewOrderResource(order models.Order) *OrderResource {
 	const (
 		dateTimeLayout = "02-01-2006 15:04:05"
 		dateLayout     = "02-01-2006"
 	)
 
-	return OrderResource{
+	return &OrderResource{
 		ID:             order.ID,
 		AgencyName:     order.Agency.Name,
 		Status:         string(order.Status),

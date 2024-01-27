@@ -15,8 +15,9 @@ func NewOrderPresenter() *OrderPresenter {
 }
 
 func (presenter *OrderPresenter) Present(context *gin.Context, order models.Order) {
+	orderResource := resources.NewOrderResource(order)
 	response := gin.H{
-		"data": resources.NewOrderResource(order),
+		"data": orderResource,
 	}
 	context.JSON(http.StatusOK, response)
 }
