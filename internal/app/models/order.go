@@ -26,3 +26,9 @@ type Order struct {
 	UpdatedAt      *time.Time        `gorm:"type:timestamp(0)"`
 	DeletedAt      *gorm.DeletedAt   `gorm:"type:timestamp(0)"`
 }
+
+const (
+	TableOrders         = "orders"
+	ColumnIDTableOrders = "id"
+	RelationAgency      = "Agency"
+)

@@ -16,11 +16,10 @@ func NewOrderShowRepository(gorm *gorm.DB) *OrderShowRepository {
 func (repository *OrderShowRepository) Make(id int) (models.Order, error) {
 	var order models.Order
 
-	result := repository.gorm.Take(
-		&order,
-		`"orders"."id" = ?`,
-		id,
-	)
+	conditions := `"` + models.TableOrders + `"."` + models.ColumnIDTableOrders + `" = ?`
+	result := repository.gorm.
+		Preload(models.RelationAgency).
+		Take(&order, conditions, id)
 
 	return order, result.Error
 }
