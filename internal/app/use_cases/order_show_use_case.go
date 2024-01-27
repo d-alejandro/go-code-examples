@@ -10,6 +10,6 @@ func NewOrderShowUseCase(orderShowRepository OrderShowRepositoryInterface) *Orde
 	return &OrderShowUseCase{orderShowRepository}
 }
 
-func (useCase *OrderShowUseCase) Execute(id int) (models.Order, error) {
+func (useCase *OrderShowUseCase) Execute(id int) (*models.Order, error) {
 	return useCase.orderShowRepository.Make(id)
 }

@@ -6,9 +6,9 @@ import (
 )
 
 type OrderShowUseCaseInterface interface {
-	Execute(id int) (models.Order, error)
+	Execute(id int) (*models.Order, error)
 }
 
 type OrderPresenterInterface interface {
-	Present(*gin.Context, models.Order)
+	Present(*gin.Context, *models.Order)
 }

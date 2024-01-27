@@ -14,7 +14,7 @@ func NewOrderPresenter() *OrderPresenter {
 	return &OrderPresenter{}
 }
 
-func (presenter *OrderPresenter) Present(context *gin.Context, order models.Order) {
+func (presenter *OrderPresenter) Present(context *gin.Context, order *models.Order) {
 	orderResource := resources.NewOrderResource(order)
 	response := gin.H{
 		"data": orderResource,
