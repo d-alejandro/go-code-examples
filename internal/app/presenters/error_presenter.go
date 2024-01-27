@@ -33,10 +33,8 @@ func (presenter *ErrorPresenter) present() {
 		messageError = ""
 	}
 
-	errorResource := resources.ErrorResource{
-		Message: http.StatusText(presenter.statusCode),
-		Errors:  messageError,
-	}
+	message := http.StatusText(presenter.statusCode)
+	errorResource := resources.NewErrorResource(message, messageError)
 
 	presenter.context.JSON(presenter.statusCode, errorResource)
 }
