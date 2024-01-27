@@ -10,21 +10,17 @@ type OrderIndexRepository struct {
 	gorm *gorm.DB
 }
 
-const (
-	agencyRelation  = "Agency"
-	tableNameOrders = "orders"
-	sortTypeDesc    = "desc"
-)
-
 func NewOrderIndexRepository(gorm *gorm.DB) *OrderIndexRepository {
 	return &OrderIndexRepository{gorm}
 }
 
 func (repository *OrderIndexRepository) Make(pagination interface{ PaginationDTOInterface }) []models.Order {
+	const sortTypeDesc = "desc"
+
 	var orders []models.Order
 
 	column := clause.Column{
-		Name: tableNameOrders + "." + pagination.GetSortColumn(),
+		Name: models.TableOrders + "." + pagination.GetSortColumn(),
 	}
 
 	orderByColumn := clause.OrderByColumn{
@@ -33,7 +29,7 @@ func (repository *OrderIndexRepository) Make(pagination interface{ PaginationDTO
 	}
 
 	repository.gorm.
-		Preload(agencyRelation).
+		Preload(models.RelationAgencyTableOrders).
 		Order(orderByColumn).
 		Limit(pagination.GetLimitValue()).
 		Offset(pagination.GetOffsetValue()).

@@ -28,7 +28,7 @@ type Order struct {
 }
 
 const (
-	TableOrders         = "orders"
-	ColumnIDTableOrders = "id"
-	RelationAgency      = "Agency"
+	TableOrders               = "orders"
+	ColumnIDTableOrders       = "id"
+	RelationAgencyTableOrders = "Agency"
 )

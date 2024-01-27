@@ -18,7 +18,7 @@ func (repository *OrderShowRepository) Make(id int) (models.Order, error) {
 
 	conditions := `"` + models.TableOrders + `"."` + models.ColumnIDTableOrders + `" = ?`
 	result := repository.gorm.
-		Preload(models.RelationAgency).
+		Preload(models.RelationAgencyTableOrders).
 		Take(&order, conditions, id)
 
 	return order, result.Error
