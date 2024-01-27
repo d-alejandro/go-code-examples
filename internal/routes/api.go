@@ -11,6 +11,7 @@ func InitApiRoutes(router *gin.Engine, provider *bindings.ControllerProvider) {
 		orders := apiGroup.Group("/orders")
 		{
 			orders.GET("", provider.OrderIndexController.Index)
+			orders.GET("/:id", provider.OrderShowController.Show)
 		}
 	}
 }

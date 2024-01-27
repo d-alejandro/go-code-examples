@@ -7,6 +7,7 @@ import (
 
 type ControllerProvider struct {
 	OrderIndexController *api.OrderIndexController
+	OrderShowController  *api.OrderShowController
 }
 
 func NewControllerProvider(container *helpers.DependenciesContainer) *ControllerProvider {
@@ -16,6 +17,10 @@ func NewControllerProvider(container *helpers.DependenciesContainer) *Controller
 		OrderIndexController: api.NewOrderIndexController(
 			useCaseProvider.OrderIndexUseCase,
 			presenterProvider.OrderIndexPresenter,
+		),
+		OrderShowController: api.NewOrderShowController(
+			useCaseProvider.OrderShowUseCase,
+			presenterProvider.OrderPresenter,
 		),
 	}
 }

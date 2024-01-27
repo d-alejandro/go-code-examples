@@ -7,11 +7,13 @@ import (
 
 type UseCaseProvider struct {
 	OrderIndexUseCase *use_cases.OrderIndexUseCase
+	OrderShowUseCase  *use_cases.OrderShowUseCase
 }
 
 func NewUseCaseProvider(container *helpers.DependenciesContainer) *UseCaseProvider {
 	repositoryProvider := NewRepositoryProvider(container)
 	return &UseCaseProvider{
 		OrderIndexUseCase: use_cases.NewOrderIndexUseCase(repositoryProvider.OrderIndexRepository),
+		OrderShowUseCase:  use_cases.NewOrderShowUseCase(repositoryProvider.OrderShowRepository),
 	}
 }

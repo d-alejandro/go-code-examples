@@ -8,11 +8,13 @@ import (
 
 type RepositoryProvider struct {
 	OrderIndexRepository *repositories.OrderIndexRepository
+	OrderShowRepository  *repositories.OrderShowRepository
 }
 
 func NewRepositoryProvider(container *helpers.DependenciesContainer) *RepositoryProvider {
 	gormDB := container.GetDependency("gorm").(*gorm.DB)
 	return &RepositoryProvider{
 		OrderIndexRepository: repositories.NewOrderIndexRepository(gormDB),
+		OrderShowRepository:  repositories.NewOrderShowRepository(gormDB),
 	}
 }
