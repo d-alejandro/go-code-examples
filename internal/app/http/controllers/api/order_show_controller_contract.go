@@ -9,6 +9,6 @@ type OrderShowUseCaseInterface interface {
 	Execute(id int) (*models.Order, error)
 }
 
-type OrderPresenterInterface interface {
+type OrderShowPresenterInterface interface {
 	Present(*gin.Context, *models.Order)
 }

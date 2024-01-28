@@ -9,12 +9,12 @@ import (
 
 type OrderShowController struct {
 	useCase   OrderShowUseCaseInterface
-	presenter OrderPresenterInterface
+	presenter OrderShowPresenterInterface
 }
 
 func NewOrderShowController(
 	useCase OrderShowUseCaseInterface,
-	presenter OrderPresenterInterface,
+	presenter OrderShowPresenterInterface,
 ) *OrderShowController {
 	return &OrderShowController{
 		useCase:   useCase,
