@@ -34,7 +34,13 @@ func (repository *OrderStoreRepository) Make(request interface{ OrderStoreReques
 		AdminNote:      &adminNote,
 	}
 
-	result := repository.gorm.Create(order)
+	err := repository.gorm.Transaction(func(tx *gorm.DB) error {
+		result := tx.Create(order)
+		if result != nil {
+			return result.Error
+		}
+		return nil
+	})
 
-	return order, result.Error
+	return order, err
 }
