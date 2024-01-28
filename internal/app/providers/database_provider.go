@@ -48,7 +48,8 @@ func (databaseProvider *DatabaseProvider) register(config *helpers.Config, logge
 	var err error
 
 	databaseProvider.gorm, err = gorm.Open(postgres.Open(dataSourceName), &gorm.Config{
-		Logger: gormLogger.LogMode(gormBaseLogger.Info),
+		SkipDefaultTransaction: true,
+		Logger:                 gormLogger.LogMode(gormBaseLogger.Info),
 		NowFunc: func() time.Time {
 			location, _ := time.LoadLocation(timezone)
 			return time.Now().In(location)
