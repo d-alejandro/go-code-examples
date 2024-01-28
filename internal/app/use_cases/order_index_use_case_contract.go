@@ -1,6 +1,9 @@
 package use_cases
 
-import "github.com/d-alejandro/go-code-examples/internal/app/models"
+import (
+	"github.com/d-alejandro/go-code-examples/internal/app/models"
+	"github.com/gin-gonic/gin"
+)
 
 type OrderIndexRepositoryInterface interface {
 	Make(interface{ PaginationDTOInterface }) []*models.Order
@@ -14,6 +17,7 @@ type PaginationDTOInterface interface {
 }
 
 type OrderIndexRequestInterface interface {
+	Validate(*gin.Context) error
 	GetStart() int
 	GetEnd() int
 	GetSortColumn() string
