@@ -9,6 +9,7 @@ import (
 type RepositoryProvider struct {
 	OrderIndexRepository *repositories.OrderIndexRepository
 	OrderShowRepository  *repositories.OrderShowRepository
+	OrderStoreRepository *repositories.OrderStoreRepository
 }
 
 func NewRepositoryProvider(container *helpers.DependenciesContainer) *RepositoryProvider {
@@ -16,5 +17,6 @@ func NewRepositoryProvider(container *helpers.DependenciesContainer) *Repository
 	return &RepositoryProvider{
 		OrderIndexRepository: repositories.NewOrderIndexRepository(gormDB),
 		OrderShowRepository:  repositories.NewOrderShowRepository(gormDB),
+		OrderStoreRepository: repositories.NewOrderStoreRepository(gormDB),
 	}
 }
