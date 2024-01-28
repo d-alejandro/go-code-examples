@@ -10,10 +10,7 @@ type OrderIndexUseCaseInterface interface {
 }
 
 type OrderIndexRequestInterface interface {
-	GetStart() int
-	GetEnd() int
-	GetSortColumn() string
-	GetSortType() string
+	Validate(*gin.Context) error
 }
 
 type OrderIndexPresenterInterface interface {
