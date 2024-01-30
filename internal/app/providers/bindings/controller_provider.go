@@ -6,9 +6,10 @@ import (
 )
 
 type ControllerProvider struct {
-	OrderIndexController *api.OrderIndexController
-	OrderShowController  *api.OrderShowController
-	OrderStoreController *api.OrderStoreController
+	OrderIndexController  *api.OrderIndexController
+	OrderShowController   *api.OrderShowController
+	OrderStoreController  *api.OrderStoreController
+	OrderUpdateController *api.OrderUpdateController
 }
 
 func NewControllerProvider(container *helpers.DependenciesContainer) *ControllerProvider {
@@ -25,6 +26,10 @@ func NewControllerProvider(container *helpers.DependenciesContainer) *Controller
 		),
 		OrderStoreController: api.NewOrderStoreController(
 			useCaseProvider.OrderStoreUseCase,
+			presenterProvider.OrderPresenter,
+		),
+		OrderUpdateController: api.NewOrderUpdateController(
+			useCaseProvider.OrderUpdateUseCase,
 			presenterProvider.OrderPresenter,
 		),
 	}
