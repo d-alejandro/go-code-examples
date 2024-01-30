@@ -29,6 +29,8 @@ func (repository *OrderUpdateRepository) Make(
 	order.Note = &note
 	order.AdminNote = &adminNote
 
-	result := repository.gorm.Save(order)
+	result := repository.gorm.
+		Omit("Agency").
+		Save(order)
 	return result.Error
 }
