@@ -7,18 +7,20 @@ import (
 )
 
 type RepositoryProvider struct {
-	OrderIndexRepository  *repositories.OrderIndexRepository
-	OrderShowRepository   *repositories.OrderShowRepository
-	OrderStoreRepository  *repositories.OrderStoreRepository
-	OrderUpdateRepository *repositories.OrderUpdateRepository
+	OrderIndexRepository   *repositories.OrderIndexRepository
+	OrderShowRepository    *repositories.OrderShowRepository
+	OrderStoreRepository   *repositories.OrderStoreRepository
+	OrderUpdateRepository  *repositories.OrderUpdateRepository
+	OrderDestroyRepository *repositories.OrderDestroyRepository
 }
 
 func NewRepositoryProvider(container *helpers.DependenciesContainer) *RepositoryProvider {
 	gormDB := container.GetDependency("gorm").(*gorm.DB)
 	return &RepositoryProvider{
-		OrderIndexRepository:  repositories.NewOrderIndexRepository(gormDB),
-		OrderShowRepository:   repositories.NewOrderShowRepository(gormDB),
-		OrderStoreRepository:  repositories.NewOrderStoreRepository(gormDB),
-		OrderUpdateRepository: repositories.NewOrderUpdateRepository(gormDB),
+		OrderIndexRepository:   repositories.NewOrderIndexRepository(gormDB),
+		OrderShowRepository:    repositories.NewOrderShowRepository(gormDB),
+		OrderStoreRepository:   repositories.NewOrderStoreRepository(gormDB),
+		OrderUpdateRepository:  repositories.NewOrderUpdateRepository(gormDB),
+		OrderDestroyRepository: repositories.NewOrderDestroyRepository(gormDB),
 	}
 }
