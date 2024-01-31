@@ -20,7 +20,6 @@
 - [Logrus](https://github.com/sirupsen/logrus)
 - Makefile
 - MVC
-- Nginx
 - PostgreSQL 16
 - RESTful API
 - SOLID
