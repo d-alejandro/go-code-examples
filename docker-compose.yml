@@ -24,7 +24,7 @@ services:
     image: postgres:16.1
     restart: always
     volumes:
-      - ./storage/docker/postgres/data:/var/lib/postgresql/data
+      - ./storage/docker/.postgres/data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
