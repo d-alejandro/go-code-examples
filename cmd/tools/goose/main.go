@@ -5,10 +5,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	_ "github.com/d-alejandro/go-code-examples/internal/database/migrations"
-	"github.com/d-alejandro/go-code-examples/tools/goose/pkg/cfg"
-	_ "github.com/jackc/pgx/v5/stdlib"
-	"github.com/pressly/goose/v3"
 	"io/fs"
 	"log"
 	"os"
@@ -16,6 +12,11 @@ import (
 	"strconv"
 	"strings"
 	"text/template"
+
+	_ "github.com/d-alejandro/go-code-examples/internal/database/migrations"
+	"github.com/d-alejandro/go-code-examples/tools/goose/pkg/cfg"
+	_ "github.com/jackc/pgx/v5/stdlib"
+	"github.com/pressly/goose/v3"
 )
 
 var (
@@ -25,11 +26,8 @@ var (
 	verbose      = flags.Bool("v", false, "enable verbose mode")
 	help         = flags.Bool("h", false, "print help")
 	versionFlag  = flags.Bool("version", false, "print version")
-	certfile     = flags.String("certfile", "", "file path to root CA's certificates in pem format (only support on mysql)")
 	sequential   = flags.Bool("s", false, "use sequential numbering for new migrations")
 	allowMissing = flags.Bool("allow-missing", false, "applies missing (out-of-order) migrations")
-	sslcert      = flags.String("ssl-cert", "", "file path to SSL certificates in pem format (only support on mysql)")
-	sslkey       = flags.String("ssl-key", "", "file path to SSL key in pem format (only support on mysql)")
 	noVersioning = flags.Bool("no-versioning", false, "apply migration commands with no versioning, in file order, from directory pointed to")
 	noColor      = flags.Bool("no-color", false, "disable color output (NO_COLOR env variable supported)")
 )
@@ -121,7 +119,7 @@ func main() {
 	case "postgres":
 		driver = "pgx"
 	}
-	db, err := goose.OpenDBWithDriver(driver, normalizeDBString(driver, dbstring, *certfile, *sslcert, *sslkey))
+	db, err := goose.OpenDBWithDriver(driver, dbstring)
 	if err != nil {
 		log.Fatalf("-dbstring=%q: %v\n", dbstring, err)
 	}
@@ -245,23 +243,23 @@ Commands:
 )
 
 var sqlMigrationTemplate = template.Must(template.New("goose.sql-migration").Parse(`-- Thank you for giving goose a try!
--- 
+--
 -- This file was automatically created running goose init. If you're familiar with goose
 -- feel free to remove/rename this file, write some SQL and goose up. Briefly,
--- 
+--
 -- Documentation can be found here: https://pressly.github.io/goose
 --
 -- A single goose .sql file holds both Up and Down migrations.
--- 
+--
 -- All goose .sql files are expected to have a -- +goose Up annotation.
 -- The -- +goose Down annotation is optional, but recommended, and must come after the Up annotation.
--- 
--- The -- +goose NO TRANSACTION annotation may be added to the top of the file to run statements 
+--
+-- The -- +goose NO TRANSACTION annotation may be added to the top of the file to run statements
 -- outside a transaction. Both Up and Down migrations within this file will be run without a transaction.
--- 
--- More complex statements that have semicolons within them must be annotated with 
+--
+-- More complex statements that have semicolons within them must be annotated with
 -- the -- +goose StatementBegin and -- +goose StatementEnd annotations to be properly recognized.
--- 
+--
 -- Use GitHub issues for reporting bugs and requesting features, enjoy!
 
 -- +goose Up
@@ -288,8 +286,4 @@ func gooseInit(dir string) error {
 		return err
 	}
 	return goose.CreateWithTemplate(nil, dir, sqlMigrationTemplate, "initial", "sql")
-}
-
-func normalizeDBString(driver string, str string, certfile string, sslcert string, sslkey string) string {
-	return str
 }

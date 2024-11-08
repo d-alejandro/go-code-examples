@@ -13,10 +13,18 @@ func init() {
 	goose.AddMigrationContext(upCreateAgenciesTable, downCreateAgenciesTable)
 }
 
-func upCreateAgenciesTable(ctx context.Context, tx *sql.Tx) error {
-	return database.Get().Migrator().CreateTable(&models.Agency{})
+func upCreateAgenciesTable(context.Context, *sql.Tx) error {
+	return database.Get().
+		Migrator().
+		CreateTable(
+			&models.Agency{},
+		)
 }
 
-func downCreateAgenciesTable(ctx context.Context, tx *sql.Tx) error {
-	return database.Get().Migrator().DropTable(&models.Agency{})
+func downCreateAgenciesTable(context.Context, *sql.Tx) error {
+	return database.Get().
+		Migrator().
+		DropTable(
+			&models.Agency{},
+		)
 }
