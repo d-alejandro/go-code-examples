@@ -1,9 +1,10 @@
 package api
 
 import (
+	"time"
+
 	"github.com/d-alejandro/go-code-examples/internal/app/models"
 	"github.com/gin-gonic/gin"
-	"time"
 )
 
 type OrderStoreUseCaseInterface interface {

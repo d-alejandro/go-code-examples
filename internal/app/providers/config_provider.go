@@ -2,6 +2,7 @@ package providers
 
 import (
 	"fmt"
+
 	"github.com/d-alejandro/go-code-examples/internal/app/helpers"
 	"github.com/d-alejandro/go-code-examples/internal/config"
 	"github.com/spf13/viper"

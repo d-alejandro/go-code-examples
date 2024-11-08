@@ -3,6 +3,7 @@ package migrations
 import (
 	"context"
 	"database/sql"
+
 	"github.com/d-alejandro/go-code-examples/internal/app/models"
 	"github.com/d-alejandro/go-code-examples/internal/database"
 	"github.com/pressly/goose/v3"

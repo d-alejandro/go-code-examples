@@ -1,9 +1,10 @@
 package database
 
 import (
+	"sync"
+
 	"github.com/d-alejandro/go-code-examples/internal/app/providers"
 	"gorm.io/gorm"
-	"sync"
 )
 
 var (

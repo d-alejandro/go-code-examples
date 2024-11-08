@@ -1,9 +1,10 @@
 package presenters
 
 import (
+	"net/http"
+
 	"github.com/d-alejandro/go-code-examples/internal/app/http/resources"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type ErrorPresenter struct {

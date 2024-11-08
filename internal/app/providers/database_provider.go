@@ -2,12 +2,13 @@ package providers
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/d-alejandro/go-code-examples/internal/app/helpers"
 	"github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	gormBaseLogger "gorm.io/gorm/logger"
-	"time"
 )
 
 type DatabaseProvider struct {

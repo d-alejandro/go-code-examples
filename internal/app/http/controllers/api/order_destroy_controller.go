@@ -1,10 +1,11 @@
 package api
 
 import (
-	"github.com/d-alejandro/go-code-examples/internal/app/presenters"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+
+	"github.com/d-alejandro/go-code-examples/internal/app/presenters"
+	"github.com/gin-gonic/gin"
 )
 
 type OrderDestroyController struct {

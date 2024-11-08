@@ -3,11 +3,12 @@ package helpers
 import (
 	"context"
 	"errors"
+	"time"
+
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/utils"
-	"time"
 )
 
 type GormLogger struct {

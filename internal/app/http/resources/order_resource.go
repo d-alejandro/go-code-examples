@@ -1,8 +1,9 @@
 package resources
 
 import (
-	"github.com/d-alejandro/go-code-examples/internal/app/models"
 	"time"
+
+	"github.com/d-alejandro/go-code-examples/internal/app/models"
 )
 
 type OrderResource struct {

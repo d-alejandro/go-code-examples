@@ -1,9 +1,10 @@
 package use_cases
 
 import (
+	"time"
+
 	"github.com/d-alejandro/go-code-examples/internal/app/models"
 	"github.com/gin-gonic/gin"
-	"time"
 )
 
 type OrderStoreRepositoryInterface interface {

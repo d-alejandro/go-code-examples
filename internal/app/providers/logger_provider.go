@@ -1,12 +1,13 @@
 package providers
 
 import (
-	"github.com/d-alejandro/go-code-examples/internal/app/helpers"
-	"github.com/sirupsen/logrus"
 	"io"
 	"os"
 	"time"
 	_ "time/tzdata"
+
+	"github.com/d-alejandro/go-code-examples/internal/app/helpers"
+	"github.com/sirupsen/logrus"
 )
 
 type LoggerProvider struct {
