@@ -34,15 +34,21 @@ func (gormLogger *GormLogger) LogMode(logLevel logger.LogLevel) logger.Interface
 }
 
 func (gormLogger *GormLogger) Info(ctx context.Context, msg string, data ...interface{}) {
-	gormLogger.log.WithContext(ctx).Infof(msg, data)
+	for _, value := range data {
+		gormLogger.log.WithContext(ctx).Infof(msg, value)
+	}
 }
 
 func (gormLogger *GormLogger) Warn(ctx context.Context, msg string, data ...interface{}) {
-	gormLogger.log.WithContext(ctx).Warnf(msg, data)
+	for _, value := range data {
+		gormLogger.log.WithContext(ctx).Warnf(msg, value)
+	}
 }
 
 func (gormLogger *GormLogger) Error(ctx context.Context, msg string, data ...interface{}) {
-	gormLogger.log.WithContext(ctx).Errorf(msg, data)
+	for _, value := range data {
+		gormLogger.log.WithContext(ctx).Errorf(msg, value)
+	}
 }
 
 func (gormLogger *GormLogger) Trace(ctx context.Context, begin time.Time, fc func() (string, int64), err error) {
