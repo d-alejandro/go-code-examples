@@ -1,0 +1,25 @@
+linters:
+  disable-all: true
+
+  enable:
+    - gofmt
+    - govet
+    - staticcheck
+    - errcheck
+
+linters-settings:
+  gofmt:
+    simplify: false
+    rewrite-rules:
+      - pattern: 'a[b:len(a)]'
+        replacement: 'a[b:]'
+
+  staticcheck:
+    checks: ["all"]
+
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+
+run:
+  timeout: 5m
