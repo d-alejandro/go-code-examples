@@ -1,3 +1,5 @@
+include makefile.install.mk
+
 .DEFAULT_GOAL := run
 
 go-build:
@@ -6,19 +8,19 @@ go-build:
     go build -gcflags "all=-N -l" -o ./.bin/go-code-examples ./cmd/http/main.go
 
 run: go-build
-	docker-compose up -d --build
+	docker compose up -d --build
 
 build:
-	docker-compose build
+	docker compose build
 
 up:
-	docker-compose up -d
+	docker compose up -d
 
 down:
-	docker-compose down
+	docker compose down
 
 ps:
-	docker-compose ps
+	docker compose ps
 
 exec:
 	docker container exec -it $(var) /bin/sh
@@ -30,12 +32,18 @@ migration:
 	./.bin/goose-custom -dir ./internal/database/migrations create $(var) go
 
 status:
-	docker-compose exec go-app ./goose-custom status
+	docker compose exec go-app ./goose-custom status
 
 migrate:
-	docker-compose exec go-app ./goose-custom up
+	docker compose exec go-app ./goose-custom up
 
 reset:
-	docker-compose exec go-app ./goose-custom reset
+	docker compose exec go-app ./goose-custom reset
 
 refresh: reset migrate
+
+go-imports:
+	goimports -l -w .
+
+pre-commit: go-imports
+	pre-commit run -a
