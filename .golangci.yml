@@ -1,18 +1,20 @@
 linters:
   disable-all: true
-
   enable:
     - gofmt
+    - gosimple
     - govet
     - staticcheck
     - errcheck
+    - ineffassign
+    - unused
 
 linters-settings:
   gofmt:
-    simplify: false
-    rewrite-rules:
-      - pattern: 'a[b:len(a)]'
-        replacement: 'a[b:]'
+    simplify: true
+
+  gosimple:
+    checks: ["all"]
 
   staticcheck:
     checks: ["all"]
