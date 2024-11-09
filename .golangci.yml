@@ -2,16 +2,28 @@ linters:
   disable-all: true
   enable:
     - gofmt
+    - misspell
+    - goconst
     - gosimple
     - govet
     - staticcheck
     - errcheck
     - ineffassign
     - unused
+    - gocyclo
+    - unconvert
+    - gosec
 
 linters-settings:
   gofmt:
     simplify: true
+
+  misspell:
+    locale: US
+
+  goconst:
+    min-len: 2
+    min-occurrences: 2
 
   gosimple:
     checks: ["all"]
@@ -22,6 +34,9 @@ linters-settings:
   errcheck:
     check-type-assertions: true
     check-blank: true
+
+  gocyclo:
+    min-complexity: 15
 
 run:
   timeout: 5m
