@@ -13,6 +13,10 @@ linters:
     - gocyclo
     - unconvert
     - gosec
+    - revive
+    - gocritic
+    - prealloc
+    - testifylint
 
 linters-settings:
   gofmt:
@@ -37,6 +41,12 @@ linters-settings:
 
   gocyclo:
     min-complexity: 15
+
+  revive:
+    enable-all-rules: true
+
+  testifylint:
+    enable-all: true
 
 run:
   timeout: 5m
