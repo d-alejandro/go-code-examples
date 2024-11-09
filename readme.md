@@ -13,14 +13,17 @@
 - Dockerfile with multi-stage builds
 - DTO
 - [Gin Web Framework](https://github.com/gin-gonic/gin)
-- Golang 1.21
+- Golang 1.23
+- Golangci-lint
 - [Goose](https://github.com/pressly/goose)
 - [GORM](https://github.com/go-gorm/gorm)
+- Linters
 - Linux
 - [Logrus](https://github.com/sirupsen/logrus)
 - Makefile
 - MVC
 - PostgreSQL 16
+- Pre-commit hooks
 - RESTful API
 - SOLID
 - SQL
