@@ -5,17 +5,15 @@ services:
     container_name: go-app-container
     build:
       args:
-        http_port: ${HTTP_PORT}
+        http_port: ${APP_HTTP_PORT}
       context: .
       dockerfile: ./docker/dockerfile
     volumes:
       - ./storage/logs:/usr/app/storage/logs
     working_dir: /usr/app
-    environment:
-      GOOSE_DRIVER: postgres
-      GOOSE_DBSTRING: ${DB_STRING}
+    env_file: .env
     ports:
-      - ${HTTP_PORT_PUBLIC}:${HTTP_PORT}
+      - ${APP_HTTP_PORT_PUBLIC}:${APP_HTTP_PORT}
     depends_on:
       - db
 
