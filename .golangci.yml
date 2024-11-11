@@ -48,5 +48,10 @@ linters-settings:
   testifylint:
     enable-all: true
 
+issues:
+  exclude-dirs:
+    - docker
+    - storage
+
 run:
   timeout: 5m
