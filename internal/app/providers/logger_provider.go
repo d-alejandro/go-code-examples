@@ -1,22 +1,26 @@
 package providers
 
 import (
+	"github.com/d-alejandro/go-code-examples/internal/config"
 	"io"
 	"os"
 	"time"
 	_ "time/tzdata"
 
-	"github.com/d-alejandro/go-code-examples/internal/app/helpers"
 	"github.com/sirupsen/logrus"
 )
 
+const (
+	fileFlag       = os.O_RDWR | os.O_CREATE | os.O_APPEND
+	filePermission = 0666
+)
+
 type LoggerProvider struct {
-	config *helpers.Config
+	config *config.Config
 	logger *logrus.Logger
 }
 
-func NewLoggerProvider(container *helpers.DependenciesContainer) *LoggerProvider {
-	config := container.GetDependency("config").(*helpers.Config)
+func NewLoggerProvider(config *config.Config) *LoggerProvider {
 	loggerProvider := &LoggerProvider{
 		config: config,
 	}
@@ -24,54 +28,49 @@ func NewLoggerProvider(container *helpers.DependenciesContainer) *LoggerProvider
 	return loggerProvider
 }
 
-func (loggerProvider *LoggerProvider) GetLogger() *logrus.Logger {
-	return loggerProvider.logger
+func (receiver *LoggerProvider) GetLogger() *logrus.Logger {
+	return receiver.logger
 }
 
-func (loggerProvider *LoggerProvider) register() {
-	loggerProvider.logger = logrus.New()
+func (receiver *LoggerProvider) register() {
+	receiver.logger = logrus.New()
 
-	const (
-		fileFlag       = os.O_RDWR | os.O_CREATE | os.O_APPEND
-		filePermission = 0666
-	)
-
-	fileName := loggerProvider.getFileName()
+	fileName := receiver.getFileName()
 	file, err := os.OpenFile(fileName, fileFlag, filePermission)
 	if err != nil {
-		loggerProvider.logger.Fatalf("error opening file: %v", err)
+		receiver.logger.Fatalf("error opening file: %v", err)
 	}
 
 	chmodErr := file.Chmod(filePermission)
 	if chmodErr != nil {
-		loggerProvider.logger.Fatalf("error chmod file: %v", chmodErr)
+		receiver.logger.Fatalf("error chmod file: %v", chmodErr)
 	}
 
 	writer := io.MultiWriter(os.Stdout, file)
-	loggerProvider.logger.SetOutput(writer)
+	receiver.logger.SetOutput(writer)
 
-	loggerProvider.setFormatter()
+	receiver.setFormatter()
 }
 
-func (loggerProvider *LoggerProvider) getFileName() string {
-	date := loggerProvider.getCurrentDate()
+func (receiver *LoggerProvider) getFileName() string {
+	date := receiver.getCurrentDate()
 	return "./storage/logs/golang-" + date + ".log"
 }
 
-func (loggerProvider *LoggerProvider) getCurrentDate() string {
-	timezone := loggerProvider.config.Get("app.timezone").(string)
+func (receiver *LoggerProvider) getCurrentDate() string {
+	timezone := receiver.config.App.TimeZone
 
 	location, err := time.LoadLocation(timezone)
 	if err != nil {
-		loggerProvider.logger.Fatal(err.Error())
+		receiver.logger.Fatal(err.Error())
 	}
 
 	timeNow := time.Now()
 	return timeNow.In(location).Format(time.DateOnly)
 }
 
-func (loggerProvider *LoggerProvider) setFormatter() {
+func (receiver *LoggerProvider) setFormatter() {
 	formatter := new(logrus.TextFormatter)
 	formatter.TimestampFormat = time.DateTime
-	loggerProvider.logger.SetFormatter(formatter)
+	receiver.logger.SetFormatter(formatter)
 }

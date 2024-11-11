@@ -17,12 +17,13 @@
 - Golangci-lint
 - [Goose](https://github.com/pressly/goose)
 - [GORM](https://github.com/go-gorm/gorm)
+- HTTP Server
 - Linters
 - Linux
 - [Logrus](https://github.com/sirupsen/logrus)
 - Makefile
 - MVC
-- PostgreSQL 16
+- PostgreSQL 17
 - Pre-commit hooks
 - RESTful API
 - SOLID

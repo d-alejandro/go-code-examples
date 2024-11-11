@@ -1,7 +1,7 @@
 package providers
 
 import (
-	"fmt"
+	"github.com/d-alejandro/go-code-examples/internal/config"
 	"time"
 
 	"github.com/d-alejandro/go-code-examples/internal/app/helpers"
@@ -12,51 +12,48 @@ import (
 )
 
 type DatabaseProvider struct {
-	gorm *gorm.DB
+	config *config.Config
+	logger *logrus.Logger
+	gorm   *gorm.DB
 }
 
-func NewDatabaseProvider(container *helpers.DependenciesContainer) *DatabaseProvider {
-	databaseProvider := new(DatabaseProvider)
+func NewDatabaseProvider(config *config.Config, logger *logrus.Logger) *DatabaseProvider {
+	databaseProvider := &DatabaseProvider{
+		config: config,
+		logger: logger,
+	}
 
-	config := container.GetDependency("config").(*helpers.Config)
-	logger := container.GetDependency("logger").(*logrus.Logger)
-	databaseProvider.register(config, logger)
+	databaseProvider.register()
 
 	return databaseProvider
 }
 
-func (databaseProvider *DatabaseProvider) GetGorm() *gorm.DB {
-	return databaseProvider.gorm
+func (receiver *DatabaseProvider) GetGorm() *gorm.DB {
+	return receiver.gorm
 }
 
-func (databaseProvider *DatabaseProvider) register(config *helpers.Config, logger *logrus.Logger) {
-	databaseConfig := config.Get("database.connections.pgsql").(map[string]any)
-	timezone := config.Get("app.timezone").(string)
-
-	dataSourceName := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
-		databaseConfig["host"].(string),
-		databaseConfig["username"].(string),
-		databaseConfig["password"].(string),
-		databaseConfig["database"].(string),
-		databaseConfig["port"].(string),
-		databaseConfig["sslmode"].(string),
-		timezone,
-	)
-
-	gormLogger := helpers.NewGormLogger(logger)
-
+func (receiver *DatabaseProvider) register() {
 	var err error
 
-	databaseProvider.gorm, err = gorm.Open(postgres.Open(dataSourceName), &gorm.Config{
+	gormLogger := helpers.NewGormLogger(receiver.logger)
+	logger := gormLogger.LogMode(gormBaseLogger.Info)
+
+	nowFunction := func() time.Time {
+		location, _ := time.LoadLocation(receiver.config.App.TimeZone)
+		return time.Now().In(location)
+	}
+
+	gormConfig := &gorm.Config{
 		SkipDefaultTransaction: true,
-		Logger:                 gormLogger.LogMode(gormBaseLogger.Info),
-		NowFunc: func() time.Time {
-			location, _ := time.LoadLocation(timezone)
-			return time.Now().In(location)
-		},
-	})
+		Logger:                 logger,
+		NowFunc:                nowFunction,
+	}
+
+	dialector := postgres.Open(receiver.config.Database.DataSourceName)
+
+	receiver.gorm, err = gorm.Open(dialector, gormConfig)
+
 	if err != nil {
-		logger.Fatal("Failed to connect to the DatabaseProvider")
+		receiver.logger.Fatal("Failed to connect to the DatabaseProvider")
 	}
 }

@@ -1,8 +1,10 @@
 package providers
 
 import (
+	"fmt"
 	"github.com/d-alejandro/go-code-examples/internal/app/helpers"
 	"github.com/d-alejandro/go-code-examples/internal/app/providers/bindings"
+	"github.com/d-alejandro/go-code-examples/internal/config"
 	"github.com/d-alejandro/go-code-examples/internal/routes"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -10,14 +12,16 @@ import (
 
 type RouteProvider struct {
 	controllerProvider *bindings.ControllerProvider
-	config             *helpers.Config
+	config             *config.Config
 	logger             *logrus.Logger
 }
 
-func NewRouteProvider(container *helpers.DependenciesContainer) *RouteProvider {
+func NewRouteProvider(
+	config *config.Config,
+	logger *logrus.Logger,
+	container *helpers.DependenciesContainer,
+) *RouteProvider {
 	controllerProvider := bindings.NewControllerProvider(container)
-	config := container.GetDependency("config").(*helpers.Config)
-	logger := container.GetDependency("logger").(*logrus.Logger)
 
 	routeProvider := &RouteProvider{
 		controllerProvider: controllerProvider,
@@ -28,20 +32,19 @@ func NewRouteProvider(container *helpers.DependenciesContainer) *RouteProvider {
 	return routeProvider
 }
 
-func (routeProvider *RouteProvider) register() {
+func (receiver *RouteProvider) register() {
 	router := gin.Default()
-	router.Use(gin.LoggerWithWriter(routeProvider.logger.Writer()))
+	router.Use(gin.LoggerWithWriter(receiver.logger.Writer()))
 	router.Use(gin.Recovery())
 
-	routes.InitApiRoutes(router, routeProvider.controllerProvider)
+	routes.InitApiRoutes(router, receiver.controllerProvider)
 	routes.InitWebRoutes(router)
 
-	port := routeProvider.config.Get("http.port").(string)
+	output := fmt.Sprintf("Http server started on :%s", receiver.config.App.HTTPPort)
+	receiver.logger.Info(output)
 
-	routeProvider.logger.Info("Http server started on : " + port)
-
-	err := router.Run(":" + port)
+	err := router.Run(receiver.config.App.HTTPServerAddress)
 	if err != nil {
-		routeProvider.logger.Error(err.Error())
+		receiver.logger.Error(err.Error())
 	}
 }

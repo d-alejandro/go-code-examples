@@ -1,6 +1,7 @@
 package database
 
 import (
+	"github.com/d-alejandro/go-code-examples/internal/config"
 	"sync"
 
 	"github.com/d-alejandro/go-code-examples/internal/app/providers"
@@ -17,15 +18,13 @@ func Get() *gorm.DB {
 		containerProvider := providers.NewContainerProvider()
 		container := containerProvider.GetContainer()
 
-		configProvider := providers.NewConfigProvider()
-		config := configProvider.GetConfig()
-		container.AddDependency("config", config)
+		cfg := config.NewConfig()
 
-		loggerProvider := providers.NewLoggerProvider(container)
+		loggerProvider := providers.NewLoggerProvider(cfg)
 		logger := loggerProvider.GetLogger()
 		container.AddDependency("logger", logger)
 
-		databaseProvider := providers.NewDatabaseProvider(container)
+		databaseProvider := providers.NewDatabaseProvider(cfg, logger)
 		database = databaseProvider.GetGorm()
 	})
 	return database

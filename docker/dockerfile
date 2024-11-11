@@ -1,0 +1,24 @@
+FROM golang:1.23.3 AS golang
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN go mod download && \
+    go mod tidy && \
+    go build -o ./.bin/goose-custom ./cmd/tools/goose/main.go && \
+    go build -o ./.bin/go-code-examples ./cmd/http/main.go
+
+FROM busybox:1.37.0
+
+ARG http_port
+
+EXPOSE $http_port
+
+COPY --from=golang /usr/src/app/.bin/goose-custom /usr/app/
+COPY --from=golang /usr/src/app/.bin/go-code-examples /usr/app/
+
+COPY ./.env /usr/app/
+COPY ./internal/database/migrations /usr/app/database/migrations
+
+CMD ["/usr/app/go-code-examples"]

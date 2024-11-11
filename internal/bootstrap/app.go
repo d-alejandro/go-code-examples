@@ -2,23 +2,22 @@ package bootstrap
 
 import (
 	"github.com/d-alejandro/go-code-examples/internal/app/providers"
+	"github.com/d-alejandro/go-code-examples/internal/config"
 )
 
 func Boot() {
 	containerProvider := providers.NewContainerProvider()
 	container := containerProvider.GetContainer()
 
-	configProvider := providers.NewConfigProvider()
-	config := configProvider.GetConfig()
-	container.AddDependency("config", config)
+	cfg := config.NewConfig()
 
-	loggerProvider := providers.NewLoggerProvider(container)
+	loggerProvider := providers.NewLoggerProvider(cfg)
 	logger := loggerProvider.GetLogger()
 	container.AddDependency("logger", logger)
 
-	databaseProvider := providers.NewDatabaseProvider(container)
+	databaseProvider := providers.NewDatabaseProvider(cfg, logger)
 	gorm := databaseProvider.GetGorm()
 	container.AddDependency("gorm", gorm)
 
-	providers.NewRouteProvider(container)
+	providers.NewRouteProvider(cfg, logger, container)
 }

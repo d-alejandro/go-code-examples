@@ -1,4 +1,4 @@
-include makefile.install.mk
+include install.mk
 
 .DEFAULT_GOAL := run
 
@@ -23,7 +23,7 @@ ps:
 	docker compose ps
 
 exec:
-	docker container exec -it $(var) /bin/sh
+	docker container exec -it go-app-container /bin/sh
 
 logs:
 	docker logs $(var) -f
@@ -42,8 +42,5 @@ reset:
 
 refresh: reset migrate
 
-go-imports:
-	goimports -l -w .
-
-pre-commit: go-imports
+pre-commit:
 	pre-commit run -a
