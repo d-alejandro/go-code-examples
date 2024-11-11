@@ -6,6 +6,12 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
 
+  - repo: https://github.com/dnephin/pre-commit-golang
+    rev: v0.5.1
+    hooks:
+      - id: go-imports
+        exclude: '^(docker/|storage/)'
+
   - repo: https://github.com/golangci/golangci-lint
     rev: v1.61.0
     hooks:
