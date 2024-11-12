@@ -24,12 +24,7 @@ repos:
     rev: v0.5.1
     hooks:
       - id: go-imports
-        exclude: |
-          (?x)^(
-              cmd/tools/goose-custom|
-              docker|
-              storage
-          )
+        exclude: '^cmd/tools/goose-custom'
 
   - repo: https://github.com/golangci/golangci-lint
     rev: v1.61.0

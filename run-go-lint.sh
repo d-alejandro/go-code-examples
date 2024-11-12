@@ -12,7 +12,7 @@ failed=false
 
 for file in "$@"; do
     # redirect stderr so that violations and summaries are properly interleaved.
-    if ! golint "$file" | grep -v unexported 2>&1
+    if ! golint "$file" | grep -v 'or be unexported' 2>&1
     then
         failed=true
     fi
