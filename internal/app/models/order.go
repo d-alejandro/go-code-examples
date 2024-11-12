@@ -7,6 +7,12 @@ import (
 	"gorm.io/gorm"
 )
 
+const (
+	TableOrders               = "orders"
+	ColumnIDTableOrders       = "id"
+	RelationAgencyTableOrders = "Agency"
+)
+
 type Order struct {
 	ID             uint              `gorm:"primaryKey"`
 	AgencyId       uint              `gorm:"type:bigint;not null;index:idx_orders_agency_id"`
@@ -27,9 +33,3 @@ type Order struct {
 	UpdatedAt      *time.Time        `gorm:"type:timestamp(0)"`
 	DeletedAt      *gorm.DeletedAt   `gorm:"type:timestamp(0)"`
 }
-
-const (
-	TableOrders               = "orders"
-	ColumnIDTableOrders       = "id"
-	RelationAgencyTableOrders = "Agency"
-)
