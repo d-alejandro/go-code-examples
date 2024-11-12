@@ -10,7 +10,7 @@ import (
 	"github.com/pressly/goose/v3"
 )
 
-const autoIncrementIdStart = 10000001
+const autoIncrementIDStart = 10000001
 
 func init() {
 	goose.AddMigrationContext(upCreateOrdersTable, downCreateOrdersTable)
@@ -28,7 +28,7 @@ func upCreateOrdersTable(context.Context, *sql.Tx) error {
 		return err
 	}
 
-	query := fmt.Sprintf(`ALTER SEQUENCE orders_id_seq RESTART WITH %d`, autoIncrementIdStart)
+	query := fmt.Sprintf(`ALTER SEQUENCE orders_id_seq RESTART WITH %d`, autoIncrementIDStart)
 	result := db.Exec(query)
 
 	return result.Error
