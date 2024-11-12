@@ -50,6 +50,7 @@ linters-settings:
 
 issues:
   exclude-dirs:
+    - cmd/tools/goose-custom
     - docker
     - storage
 

@@ -6,7 +6,7 @@ COPY . .
 
 RUN go mod download && \
     go mod tidy && \
-    go build -o ./.bin/goose-custom ./cmd/tools/goose/main.go && \
+    go build -o ./.bin/goose-custom ./cmd/tools/goose-custom/main.go && \
     go build -o ./.bin/go-code-examples ./cmd/http/main.go
 
 FROM busybox:1.37.0

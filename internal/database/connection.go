@@ -1,8 +1,9 @@
 package database
 
 import (
-	"github.com/d-alejandro/go-code-examples/internal/config"
 	"sync"
+
+	"github.com/d-alejandro/go-code-examples/internal/config"
 
 	"github.com/d-alejandro/go-code-examples/internal/app/providers"
 	"gorm.io/gorm"

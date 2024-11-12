@@ -1,10 +1,10 @@
 package providers
 
 import (
-	"github.com/d-alejandro/go-code-examples/internal/config"
 	"time"
 
 	"github.com/d-alejandro/go-code-examples/internal/app/helpers"
+	"github.com/d-alejandro/go-code-examples/internal/config"
 	"github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

@@ -1,4 +1,4 @@
-package cfg
+package main
 
 import "os"
 
@@ -11,7 +11,7 @@ var (
 )
 
 var (
-	DefaultMigrationDir = "./database/migrations"
+	DefaultMigrationDir = "."
 )
 
 // An EnvVar is an environment variable Name=Value.

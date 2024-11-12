@@ -1,27 +1,31 @@
 package main
 
 import (
-	_ "embed"
+	"context"
+	"database/sql"
 	"errors"
 	"flag"
 	"fmt"
 	"io/fs"
 	"log"
 	"os"
+	"path/filepath"
 	"runtime/debug"
+	"sort"
 	"strconv"
 	"strings"
+	"text/tabwriter"
 	"text/template"
 
 	_ "github.com/d-alejandro/go-code-examples/internal/database/migrations"
-	"github.com/d-alejandro/go-code-examples/tools/goose/pkg/cfg"
 	_ "github.com/jackc/pgx/v5/stdlib"
+	"github.com/mfridman/xflag"
 	"github.com/pressly/goose/v3"
 )
 
 var (
 	flags        = flag.NewFlagSet("goose", flag.ExitOnError)
-	dir          = flags.String("dir", cfg.DefaultMigrationDir, "directory with migration files")
+	dir          = flags.String("dir", DefaultMigrationDir, "directory with migration files, (GOOSE_MIGRATION_DIR env variable supported)")
 	table        = flags.String("table", "goose_db_version", "migrations table name")
 	verbose      = flags.Bool("v", false, "enable verbose mode")
 	help         = flags.Bool("h", false, "print help")
@@ -30,13 +34,17 @@ var (
 	allowMissing = flags.Bool("allow-missing", false, "applies missing (out-of-order) migrations")
 	noVersioning = flags.Bool("no-versioning", false, "apply migration commands with no versioning, in file order, from directory pointed to")
 	noColor      = flags.Bool("no-color", false, "disable color output (NO_COLOR env variable supported)")
+	timeout      = flags.Duration("timeout", 0, "maximum allowed duration for queries to run; e.g., 1h13m")
 )
 
 var version string
 
 func main() {
+	ctx := context.Background()
+
 	flags.Usage = usage
-	if err := flags.Parse(os.Args[1:]); err != nil {
+
+	if err := xflag.ParseToEnd(flags, os.Args[1:]); err != nil {
 		log.Fatalf("failed to parse args: %v", err)
 		return
 	}
@@ -71,8 +79,8 @@ func main() {
 
 	// The -dir option has not been set, check whether the env variable is set
 	// before defaulting to ".".
-	if *dir == cfg.DefaultMigrationDir && cfg.GOOSEMIGRATIONDIR != "" {
-		*dir = cfg.GOOSEMIGRATIONDIR
+	if *dir == DefaultMigrationDir && GOOSEMIGRATIONDIR != "" {
+		*dir = GOOSEMIGRATIONDIR
 	}
 
 	switch args[0] {
@@ -82,24 +90,35 @@ func main() {
 		}
 		return
 	case "create":
-		if err := goose.Run("create", nil, *dir, args[1:]...); err != nil {
+		if err := goose.RunContext(ctx, "create", nil, *dir, args[1:]...); err != nil {
 			log.Fatalf("goose run: %v", err)
 		}
 		return
 	case "fix":
-		if err := goose.Run("fix", nil, *dir); err != nil {
+		if err := goose.RunContext(ctx, "fix", nil, *dir); err != nil {
 			log.Fatalf("goose run: %v", err)
 		}
 		return
 	case "env":
-		for _, env := range cfg.List() {
+		for _, env := range List() {
 			fmt.Printf("%s=%q\n", env.Name, env.Value)
 		}
 		return
 	case "validate":
-		//if err := printValidate(*dir, *verbose); err != nil {
-		//	log.Fatalf("goose validate: %v", err)
-		//}
+		if err := printValidate(*dir, *verbose); err != nil {
+			log.Fatalf("goose validate: %v", err)
+		}
+		return
+	case "beta":
+		remain := args[1:]
+		if len(remain) == 0 {
+			log.Println("goose beta: missing subcommand")
+			os.Exit(1)
+		}
+		switch remain[0] {
+		case "drivers":
+			printDrivers()
+		}
 		return
 	}
 
@@ -110,15 +129,6 @@ func main() {
 	}
 
 	driver, dbstring, command := args[0], args[1], args[2]
-	// To avoid breaking existing consumers. An implementation detail
-	// that consumers should not care which underlying driver is used.
-	switch driver {
-	case "sqlite3":
-		//  Internally uses the CGo-free port of SQLite: modernc.org/sqlite
-		driver = "sqlite"
-	case "postgres":
-		driver = "pgx"
-	}
 	db, err := goose.OpenDBWithDriver(driver, dbstring)
 	if err != nil {
 		log.Fatalf("-dbstring=%q: %v\n", dbstring, err)
@@ -143,7 +153,13 @@ func main() {
 	if *noVersioning {
 		options = append(options, goose.WithNoVersioning())
 	}
-	if err := goose.RunWithOptions(
+	if timeout != nil && *timeout != 0 {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+	if err := goose.RunWithOptionsContext(
+		ctx,
 		command,
 		db,
 		*dir,
@@ -154,8 +170,44 @@ func main() {
 	}
 }
 
+func printDrivers() {
+	drivers := mergeDrivers(sql.Drivers())
+	if len(drivers) == 0 {
+		fmt.Println("No drivers found")
+		return
+	}
+	fmt.Println("Available drivers:")
+	for _, driver := range drivers {
+		fmt.Printf("  %s\n", driver)
+	}
+}
+
+// mergeDrivers merges drivers with a common prefix into a single line.
+func mergeDrivers(drivers []string) []string {
+	driverMap := make(map[string][]string)
+
+	for _, driver := range drivers {
+		parts := strings.Split(driver, "/")
+		if len(parts) > 1 {
+			// Merge drivers with a common prefix "/"
+			prefix := parts[0]
+			driverMap[prefix] = append(driverMap[prefix], driver)
+		} else {
+			// Add drivers without a prefix directly
+			driverMap[driver] = append(driverMap[driver], driver)
+		}
+	}
+	var merged []string
+	for _, versions := range driverMap {
+		sort.Strings(versions)
+		merged = append(merged, strings.Join(versions, ", "))
+	}
+	sort.Strings(merged)
+	return merged
+}
+
 func checkNoColorFromEnv() bool {
-	ok, _ := strconv.ParseBool(cfg.GOOSENOCOLOR)
+	ok, _ := strconv.ParseBool(GOOSENOCOLOR)
 	return ok
 }
 
@@ -163,10 +215,10 @@ func mergeArgs(args []string) []string {
 	if len(args) < 1 {
 		return args
 	}
-	if s := cfg.GOOSEDRIVER; s != "" {
+	if s := GOOSEDRIVER; s != "" {
 		args = append([]string{s}, args...)
 	}
-	if s := cfg.GOOSEDBSTRING; s != "" {
+	if s := GOOSEDBSTRING; s != "" {
 		args = append([]string{args[0], s}, args[1:]...)
 	}
 	return args
@@ -199,6 +251,7 @@ Drivers:
     clickhouse
     vertica
     ydb
+    turso
 
 Examples:
     goose sqlite3 ./foo.db status
@@ -215,12 +268,15 @@ Examples:
     goose clickhouse "tcp://127.0.0.1:9000" status
     goose vertica "vertica://user:password@localhost:5433/dbname?connection_load_balance=1" status
     goose ydb "grpcs://localhost:2135/local?go_query_mode=scripting&go_fake_tx=scripting&go_query_bind=declare,numeric" status
+	goose turso "libsql://dbname.turso.io?authToken=token" status
 
     GOOSE_DRIVER=sqlite3 GOOSE_DBSTRING=./foo.db goose status
     GOOSE_DRIVER=sqlite3 GOOSE_DBSTRING=./foo.db goose create init sql
     GOOSE_DRIVER=postgres GOOSE_DBSTRING="user=postgres dbname=postgres sslmode=disable" goose status
     GOOSE_DRIVER=mysql GOOSE_DBSTRING="user:password@/dbname" goose status
     GOOSE_DRIVER=redshift GOOSE_DBSTRING="postgres://user:password@qwerty.us-east-1.redshift.amazonaws.com:5439/db" goose status
+    GOOSE_DRIVER=turso GOOSE_DBSTRING="libsql://dbname.turso.io?authToken=token" goose status
+	GOOSE_DRIVER=clickhouse GOOSE_DBSTRING="clickhouse://user:password@qwerty.clickhouse.cloud:9440/dbname?secure=true&skip_verify=false" goose status
 
 Options:
 `
@@ -271,7 +327,7 @@ SELECT 'down SQL query';
 
 // initDir will create a directory with an empty SQL migration file.
 func gooseInit(dir string) error {
-	if dir == "" || dir == cfg.DefaultMigrationDir {
+	if dir == "" || dir == DefaultMigrationDir {
 		dir = "migrations"
 	}
 	_, err := os.Stat(dir)
@@ -286,4 +342,62 @@ func gooseInit(dir string) error {
 		return err
 	}
 	return goose.CreateWithTemplate(nil, dir, sqlMigrationTemplate, "initial", "sql")
+}
+
+func gatherFilenames(filename string) ([]string, error) {
+	stat, err := os.Stat(filename)
+	if err != nil {
+		return nil, err
+	}
+	var filenames []string
+	if stat.IsDir() {
+		for _, pattern := range []string{"*.sql", "*.go"} {
+			file, err := filepath.Glob(filepath.Join(filename, pattern))
+			if err != nil {
+				return nil, err
+			}
+			filenames = append(filenames, file...)
+		}
+	} else {
+		filenames = append(filenames, filename)
+	}
+	sort.Strings(filenames)
+	return filenames, nil
+}
+
+func printValidate(filename string, verbose bool) error {
+	filenames, err := gatherFilenames(filename)
+	if err != nil {
+		return err
+	}
+	stats, err := GatherStats(
+		NewFileWalker(filenames...),
+		false,
+	)
+	if err != nil {
+		return err
+	}
+	// TODO(mf): we should introduce a --debug flag, which allows printing
+	// more internal debug information and leave verbose for additional information.
+	if !verbose {
+		return nil
+	}
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', tabwriter.TabIndent)
+	fmtPattern := "%v\t%v\t%v\t%v\t%v\t\n"
+	fmt.Fprintf(w, fmtPattern, "Type", "Txn", "Up", "Down", "Name")
+	fmt.Fprintf(w, fmtPattern, "────", "───", "──", "────", "────")
+	for _, m := range stats {
+		txnStr := "✔"
+		if !m.Tx {
+			txnStr = "✘"
+		}
+		fmt.Fprintf(w, fmtPattern,
+			strings.TrimPrefix(filepath.Ext(m.FileName), "."),
+			txnStr,
+			m.UpCount,
+			m.DownCount,
+			filepath.Base(m.FileName),
+		)
+	}
+	return w.Flush()
 }
