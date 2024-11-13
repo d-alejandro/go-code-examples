@@ -1,6 +1,7 @@
 /.git
 /.idea
 /docker
+/e2e
 /storage
 .dockerignore
 .env.example
@@ -11,3 +12,4 @@ compose.yaml
 install.mk
 makefile
 readme.md
+run-golint.sh

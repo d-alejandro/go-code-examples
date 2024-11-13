@@ -17,7 +17,7 @@ repos:
           )
         name: go-lint
         language: script
-        entry: run-go-lint.sh
+        entry: run-golint.sh
         files: \.go$
 
   - repo: https://github.com/dnephin/pre-commit-golang
