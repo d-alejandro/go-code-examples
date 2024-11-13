@@ -4,7 +4,6 @@ import (
 	"io"
 	"os"
 	"time"
-	_ "time/tzdata"
 
 	"github.com/d-alejandro/go-code-examples/internal/config"
 	"github.com/sirupsen/logrus"

@@ -24,9 +24,9 @@ func NewOrderShowController(
 }
 
 func (controller *OrderShowController) Show(context *gin.Context) {
-	paramId := context.Param("id")
+	paramID := context.Param("id")
 
-	id, err := strconv.Atoi(paramId)
+	id, err := strconv.Atoi(paramID)
 	if err != nil {
 		message := "The ID parameter is invalid."
 		presenters.PresentErrorPresenter(context, http.StatusBadRequest, message)

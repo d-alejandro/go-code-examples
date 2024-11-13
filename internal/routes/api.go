@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitApiRoutes(router *gin.Engine, provider *bindings.ControllerProvider) {
+func InitAPIRoutes(router *gin.Engine, provider *bindings.ControllerProvider) {
 	apiGroup := router.Group("/api")
 	{
 		orders := apiGroup.Group("/orders")

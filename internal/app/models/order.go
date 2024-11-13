@@ -15,7 +15,7 @@ const (
 
 type Order struct {
 	ID             uint              `gorm:"primaryKey"`
-	AgencyId       uint              `gorm:"type:bigint;not null;index:idx_orders_agency_id"`
+	AgencyID       uint              `gorm:"type:bigint;not null;index:idx_orders_agency_id"`
 	Agency         Agency            `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Status         types.OrderStatus `gorm:"type:varchar(255);not null;default:'waiting';check:status in ('canceled', 'completed', 'paid', 'prepayment', 'waiting')"`
 	IsChecked      bool              `gorm:"type:boolean;not null;default:false"`

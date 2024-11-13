@@ -38,7 +38,7 @@ func (receiver *RouteProvider) register() {
 	router.Use(gin.LoggerWithWriter(receiver.logger.Writer()))
 	router.Use(gin.Recovery())
 
-	routes.InitApiRoutes(router, receiver.controllerProvider)
+	routes.InitAPIRoutes(router, receiver.controllerProvider)
 	routes.InitWebRoutes(router)
 
 	output := fmt.Sprintf("Http server started on :%s", receiver.config.App.HTTPPort)

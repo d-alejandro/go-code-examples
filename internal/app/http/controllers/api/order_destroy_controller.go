@@ -24,9 +24,9 @@ func NewOrderDestroyController(
 }
 
 func (controller *OrderDestroyController) Destroy(context *gin.Context) {
-	paramId := context.Param("id")
+	paramID := context.Param("id")
 
-	id, errParam := strconv.Atoi(paramId)
+	id, errParam := strconv.Atoi(paramID)
 	if errParam != nil {
 		message := "The ID parameter is invalid."
 		presenters.PresentErrorPresenter(context, http.StatusBadRequest, message)
