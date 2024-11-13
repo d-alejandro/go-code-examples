@@ -18,5 +18,8 @@ func (orderStatus *OrderStatus) Scan(value interface{}) error {
 }
 
 func (orderStatus OrderStatus) Value() (driver.Value, error) {
+	t := 1
+	_ = t
+
 	return string(orderStatus), nil
 }
