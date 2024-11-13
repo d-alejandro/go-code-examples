@@ -8,14 +8,13 @@ repos:
 
   - repo: local
     hooks:
-      - id: go-lint
+      - id: golint
         exclude: |
           (?x)^(
-              cmd/tools/goose-custom|
-              docker|
-              storage
+              cmd/tools/goose-custom/|
+              docker/
           )
-        name: go-lint
+        name: golint
         language: script
         entry: run-golint.sh
         files: \.go$
@@ -24,9 +23,11 @@ repos:
     rev: v0.5.1
     hooks:
       - id: go-imports
-        exclude: '^(docker|storage)'
+        exclude: ^docker/
 
   - repo: https://github.com/golangci/golangci-lint
     rev: v1.61.0
     hooks:
       - id: golangci-lint
+
+exclude: ^storage/
