@@ -2,6 +2,8 @@ package types
 
 import "database/sql/driver"
 
+const Url = "111"
+
 type OrderStatus string
 
 const (
