@@ -2,8 +2,6 @@ package types
 
 import "database/sql/driver"
 
-const Url = "1112"
-
 type OrderStatus string
 
 const (
@@ -14,14 +12,11 @@ const (
 	Waiting    OrderStatus = "waiting"
 )
 
-func (orderStatus *OrderStatus) Scan(value interface{}) error {
+func (orderStatus *OrderStatus) Scan(value any) error {
 	*orderStatus = OrderStatus(value.(string))
 	return nil
 }
 
 func (orderStatus OrderStatus) Value() (driver.Value, error) {
-	t := 1
-	_ = t
-
 	return string(orderStatus), nil
 }
