@@ -21,5 +21,6 @@ func (*OrderPresenter) Present(context *gin.Context, order *models.Order) {
 	response := gin.H{
 		"data": orderResource,
 	}
+
 	context.JSON(http.StatusOK, response)
 }
