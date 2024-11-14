@@ -2,9 +2,10 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
+      - id: check-merge-conflict
       - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
 
   - repo: local
     hooks:
@@ -29,5 +30,7 @@ repos:
     rev: v1.61.0
     hooks:
       - id: golangci-lint
+        args:
+          - --new-from-rev=HEAD~
 
 exclude: ^storage/
