@@ -1,22 +1,22 @@
 linters:
   disable-all: true
   enable:
-    - gofmt
-    - misspell
+    - errcheck
     - goconst
+    - gocritic
+    - gocyclo
+    - gofmt
+    - gosec
     - gosimple
     - govet
-    - staticcheck
-    - errcheck
     - ineffassign
-    - unused
-    - gocyclo
-    - unconvert
-    - gosec
-    - revive
-    - gocritic
+    - misspell
     - prealloc
+    - revive
+    - staticcheck
     - testifylint
+    - unconvert
+    - unused
 
 linters-settings:
   gofmt:
@@ -44,12 +44,16 @@ linters-settings:
 
   revive:
     enable-all-rules: true
+    rules:
+      - name: line-length-limit
+        arguments: [120]
 
   testifylint:
     enable-all: true
 
 issues:
   exclude-dirs:
+    - cmd/tools/goose-custom
     - docker
     - storage
 
