@@ -1,11 +1,11 @@
-name: go-code-examples
+name: order-creation-management-server
 
 services:
   go-app:
     container_name: go-app-container
     build:
       args:
-        http_port: ${APP_HTTP_PORT}
+        HTTP_PORT: ${APP_HTTP_PORT}
       context: .
       dockerfile: ./docker/dockerfile
     volumes:
