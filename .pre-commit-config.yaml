@@ -26,6 +26,11 @@ repos:
       - id: go-imports
         exclude: ^docker/
 
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+
   - repo: https://github.com/golangci/golangci-lint
     rev: v1.61.0
     hooks:
