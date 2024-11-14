@@ -15,11 +15,11 @@ type OrderStoreHandler struct {
 
 func NewOrderStoreHandler(
 	useCase OrderStoreUseCaseInterface,
-	presenter OrderStorePresenterInterface,
+	presenterStore OrderStorePresenterInterface,
 ) *OrderStoreHandler {
 	return &OrderStoreHandler{
 		useCase:   useCase,
-		presenter: presenter,
+		presenter: presenterStore,
 	}
 }
 

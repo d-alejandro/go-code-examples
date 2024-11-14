@@ -9,8 +9,8 @@ type OrderStoreRepository struct {
 	gorm *gorm.DB
 }
 
-func NewOrderStoreRepository(gorm *gorm.DB) *OrderStoreRepository {
-	return &OrderStoreRepository{gorm}
+func NewOrderStoreRepository(grm *gorm.DB) *OrderStoreRepository {
+	return &OrderStoreRepository{grm}
 }
 
 func (repository *OrderStoreRepository) Make(request interface{ OrderStoreRequestInterface }) (*models.Order, error) {

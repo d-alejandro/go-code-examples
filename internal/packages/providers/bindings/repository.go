@@ -15,13 +15,20 @@ type RepositoryProvider struct {
 }
 
 func NewRepositoryProvider(container *helpers.DependenciesContainer) *RepositoryProvider {
-	gormDB := container.GetDependency("gorm").(*gorm.DB)
+	var (
+		db   *gorm.DB
+		isOk bool
+	)
+
+	if db, isOk = container.GetDependency("gorm").(*gorm.DB); !isOk {
+		panic("failed to connect database")
+	}
 
 	return &RepositoryProvider{
-		OrderIndexRepository:   repository.NewOrderIndexRepository(gormDB),
-		OrderShowRepository:    repository.NewOrderShowRepository(gormDB),
-		OrderStoreRepository:   repository.NewOrderStoreRepository(gormDB),
-		OrderUpdateRepository:  repository.NewOrderUpdateRepository(gormDB),
-		OrderDestroyRepository: repository.NewOrderDestroyRepository(gormDB),
+		OrderIndexRepository:   repository.NewOrderIndexRepository(db),
+		OrderShowRepository:    repository.NewOrderShowRepository(db),
+		OrderStoreRepository:   repository.NewOrderStoreRepository(db),
+		OrderUpdateRepository:  repository.NewOrderUpdateRepository(db),
+		OrderDestroyRepository: repository.NewOrderDestroyRepository(db),
 	}
 }

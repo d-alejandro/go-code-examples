@@ -15,9 +15,9 @@ type DatabaseProvider struct {
 	gorm   *gorm.DB
 }
 
-func NewDatabaseProvider(config *config.Config, logger *logrus.Logger) *DatabaseProvider {
+func NewDatabaseProvider(cfg *config.Config, logger *logrus.Logger) *DatabaseProvider {
 	databaseProvider := &DatabaseProvider{
-		config: config,
+		config: cfg,
 		logger: logger,
 	}
 
@@ -31,10 +31,13 @@ func (receiver *DatabaseProvider) GetGorm() *gorm.DB {
 }
 
 func (receiver *DatabaseProvider) register() {
-	var err error
-
 	nowFunction := func() time.Time {
-		location, _ := time.LoadLocation(receiver.config.App.TimeZone)
+		location, err := time.LoadLocation(receiver.config.App.TimeZone)
+
+		if err != nil {
+			return time.Now()
+		}
+
 		return time.Now().In(location)
 	}
 
@@ -44,6 +47,8 @@ func (receiver *DatabaseProvider) register() {
 	}
 
 	dialector := postgres.Open(receiver.config.Database.DataSourceName)
+
+	var err error
 
 	receiver.gorm, err = gorm.Open(dialector, gormConfig)
 

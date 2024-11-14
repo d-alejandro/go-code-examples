@@ -19,9 +19,9 @@ type LoggerProvider struct {
 	logger *logrus.Logger
 }
 
-func NewLoggerProvider(config *config.Config) *LoggerProvider {
+func NewLoggerProvider(cfg *config.Config) *LoggerProvider {
 	loggerProvider := &LoggerProvider{
-		config: config,
+		config: cfg,
 	}
 	loggerProvider.register()
 	return loggerProvider

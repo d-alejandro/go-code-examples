@@ -9,8 +9,8 @@ type OrderDestroyRepository struct {
 	gorm *gorm.DB
 }
 
-func NewOrderDestroyRepository(gorm *gorm.DB) *OrderDestroyRepository {
-	return &OrderDestroyRepository{gorm}
+func NewOrderDestroyRepository(grm *gorm.DB) *OrderDestroyRepository {
+	return &OrderDestroyRepository{grm}
 }
 
 func (repository *OrderDestroyRepository) Make(order *models.Order) error {

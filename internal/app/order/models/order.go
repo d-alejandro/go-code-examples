@@ -17,7 +17,7 @@ type Order struct {
 	ID             uint              `gorm:"primaryKey"`
 	AgencyID       uint              `gorm:"type:bigint;not null;index:idx_orders_agency_id"`
 	Agency         Agency            `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	Status         types.OrderStatus `gorm:"type:varchar(255);not null;default:'waiting';check:status in ('canceled', 'completed', 'paid', 'prepayment', 'waiting')"`
+	Status         types.OrderStatus `gorm:"type:varchar(255);not null;default:'waiting';check:status in ('canceled', 'completed', 'paid', 'prepayment', 'waiting')"` //nolint:revive
 	IsChecked      bool              `gorm:"type:boolean;not null;default:false"`
 	IsConfirmed    bool              `gorm:"type:boolean;not null;default:false"`
 	RentalDate     *time.Time        `gorm:"type:timestamp(0)"`

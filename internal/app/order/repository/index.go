@@ -10,8 +10,8 @@ type OrderIndexRepository struct {
 	gorm *gorm.DB
 }
 
-func NewOrderIndexRepository(gorm *gorm.DB) *OrderIndexRepository {
-	return &OrderIndexRepository{gorm}
+func NewOrderIndexRepository(grm *gorm.DB) *OrderIndexRepository {
+	return &OrderIndexRepository{grm}
 }
 
 func (repository *OrderIndexRepository) Make(pagination interface{ PaginationDTOInterface }) []*models.Order {

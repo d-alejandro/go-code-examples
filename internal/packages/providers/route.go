@@ -18,7 +18,7 @@ type RouteProvider struct {
 }
 
 func NewRouteProvider(
-	config *config.Config,
+	cfg *config.Config,
 	logger *logrus.Logger,
 	container *helpers.DependenciesContainer,
 ) *RouteProvider {
@@ -26,7 +26,7 @@ func NewRouteProvider(
 
 	routeProvider := &RouteProvider{
 		controllerProvider: controllerProvider,
-		config:             config,
+		config:             cfg,
 		logger:             logger,
 	}
 	routeProvider.register()

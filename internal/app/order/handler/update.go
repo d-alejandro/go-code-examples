@@ -6,6 +6,7 @@ import (
 
 	"github.com/d-alejandro/go-code-examples/internal/app/order/presenter"
 	"github.com/d-alejandro/go-code-examples/internal/app/order/request"
+	"github.com/d-alejandro/go-code-examples/internal/config"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,11 +17,11 @@ type OrderUpdateHandler struct {
 
 func NewOrderUpdateHandler(
 	useCase OrderUpdateUseCaseInterface,
-	presenter OrderUpdatePresenterInterface,
+	presenterUpdate OrderUpdatePresenterInterface,
 ) *OrderUpdateHandler {
 	return &OrderUpdateHandler{
 		useCase:   useCase,
-		presenter: presenter,
+		presenter: presenterUpdate,
 	}
 }
 
@@ -29,8 +30,7 @@ func (handler *OrderUpdateHandler) Update(context *gin.Context) {
 
 	id, errParam := strconv.Atoi(paramID)
 	if errParam != nil {
-		message := "The ID parameter is invalid."
-		presenter.PresentErrorPresenter(context, http.StatusBadRequest, message)
+		presenter.PresentErrorPresenter(context, http.StatusBadRequest, config.MessageInvalidID)
 		return
 	}
 

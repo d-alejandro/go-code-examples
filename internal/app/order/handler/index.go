@@ -15,11 +15,11 @@ type OrderIndexHandler struct {
 
 func NewOrderIndexHandler(
 	useCase OrderIndexUseCaseInterface,
-	presenter OrderIndexPresenterInterface,
+	indexPresenter OrderIndexPresenterInterface,
 ) *OrderIndexHandler {
 	return &OrderIndexHandler{
 		useCase:   useCase,
-		presenter: presenter,
+		presenter: indexPresenter,
 	}
 }
 

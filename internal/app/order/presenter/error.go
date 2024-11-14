@@ -23,19 +23,19 @@ func PresentErrorPresenter(context *gin.Context, statusCode int, messageError an
 }
 
 func (presenter *ErrorPresenter) present() {
-	var messageError string
+	var errorsString string
 
-	switch presenter.messageError.(type) {
+	switch messageError := presenter.messageError.(type) {
 	case string:
-		messageError = presenter.messageError.(string)
+		errorsString = messageError
 	case error:
-		messageError = presenter.messageError.(error).Error()
+		errorsString = messageError.Error()
 	default:
-		messageError = ""
+		errorsString = ""
 	}
 
 	message := http.StatusText(presenter.statusCode)
-	errorResource := resource.NewErrorResource(message, messageError)
+	errorResource := resource.NewErrorResource(message, errorsString)
 
 	presenter.context.JSON(presenter.statusCode, errorResource)
 }

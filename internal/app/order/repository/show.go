@@ -9,8 +9,8 @@ type OrderShowRepository struct {
 	gorm *gorm.DB
 }
 
-func NewOrderShowRepository(gorm *gorm.DB) *OrderShowRepository {
-	return &OrderShowRepository{gorm}
+func NewOrderShowRepository(grm *gorm.DB) *OrderShowRepository {
+	return &OrderShowRepository{grm}
 }
 
 func (repository *OrderShowRepository) Make(id int) (*models.Order, error) {

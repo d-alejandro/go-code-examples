@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/d-alejandro/go-code-examples/internal/app/order/presenter"
+	"github.com/d-alejandro/go-code-examples/internal/config"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,11 +16,11 @@ type OrderShowHandler struct {
 
 func NewOrderShowHandler(
 	useCase OrderShowUseCaseInterface,
-	presenter OrderShowPresenterInterface,
+	presenterShow OrderShowPresenterInterface,
 ) *OrderShowHandler {
 	return &OrderShowHandler{
 		useCase:   useCase,
-		presenter: presenter,
+		presenter: presenterShow,
 	}
 }
 
@@ -28,8 +29,7 @@ func (handler *OrderShowHandler) Show(context *gin.Context) {
 
 	id, err := strconv.Atoi(paramID)
 	if err != nil {
-		message := "The ID parameter is invalid."
-		presenter.PresentErrorPresenter(context, http.StatusBadRequest, message)
+		presenter.PresentErrorPresenter(context, http.StatusBadRequest, config.MessageInvalidID)
 		return
 	}
 

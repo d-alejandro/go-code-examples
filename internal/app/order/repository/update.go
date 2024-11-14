@@ -9,8 +9,8 @@ type OrderUpdateRepository struct {
 	gorm *gorm.DB
 }
 
-func NewOrderUpdateRepository(gorm *gorm.DB) *OrderUpdateRepository {
-	return &OrderUpdateRepository{gorm}
+func NewOrderUpdateRepository(grm *gorm.DB) *OrderUpdateRepository {
+	return &OrderUpdateRepository{grm}
 }
 
 func (repository *OrderUpdateRepository) Make(

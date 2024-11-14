@@ -15,12 +15,12 @@ func NewOrderListPresenter() *OrderIndexPresenter {
 	return &OrderIndexPresenter{}
 }
 
-func (presenter *OrderIndexPresenter) Present(context *gin.Context, orders []*models.Order) {
-	var response []*resource.OrderIndexResource
+func (*OrderIndexPresenter) Present(context *gin.Context, orders []*models.Order) {
+	response := make([]*resource.OrderIndexResource, len(orders))
 
-	for _, order := range orders {
+	for key, order := range orders {
 		rsc := resource.NewOrderIndexResource(order)
-		response = append(response, rsc)
+		response[key] = rsc
 	}
 
 	context.JSON(
