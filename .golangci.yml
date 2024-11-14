@@ -19,34 +19,34 @@ linters:
     - unused
 
 linters-settings:
-  gofmt:
-    simplify: true
-
-  misspell:
-    locale: US
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
 
   goconst:
     min-len: 2
     min-occurrences: 2
 
+  gocyclo:
+    min-complexity: 15
+
+  gofmt:
+    simplify: true
+
   gosimple:
     checks: ["all"]
 
-  staticcheck:
-    checks: ["all"]
-
-  errcheck:
-    check-type-assertions: true
-    check-blank: true
-
-  gocyclo:
-    min-complexity: 15
+  misspell:
+    locale: US
 
   revive:
     enable-all-rules: true
     rules:
       - name: line-length-limit
         arguments: [120]
+
+  staticcheck:
+    checks: ["all"]
 
   testifylint:
     enable-all: true
