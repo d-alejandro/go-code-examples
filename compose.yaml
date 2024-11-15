@@ -6,6 +6,7 @@ services:
     build:
       args:
         HTTP_PORT: ${APP_HTTP_PORT}
+        TZ: ${APP_TIME_ZONE}
       context: .
       dockerfile: ./docker/dockerfile
     volumes:

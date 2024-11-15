@@ -14,7 +14,10 @@ FROM busybox:1.37.0
 WORKDIR /usr/app
 
 ARG HTTP_PORT
+ARG TZ
 ARG SRC_PATH="/usr/src/app/.bin"
+
+ENV TZ=$TZ
 
 COPY --from=golang $SRC_PATH/go-app $SRC_PATH/goose-custom .
 COPY ./docker/entrypoint.sh .

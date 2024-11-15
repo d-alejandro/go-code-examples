@@ -1,5 +1,6 @@
 /.git
 /.idea
+/docker/dockerfile
 /e2e
 /storage
 .dockerignore
