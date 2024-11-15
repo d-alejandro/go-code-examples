@@ -1,5 +1,5 @@
-.PHONY: run
-run:
+.PHONY: build-run
+build-run:
 	docker compose up -d --build
 
 .PHONY: run-db
