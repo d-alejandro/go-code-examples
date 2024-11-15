@@ -8,8 +8,9 @@
 .gitignore
 .golangci.yml
 .pre-commit-config.yaml
+build.mk
 compose.yaml
-install.mk
+install-local.mk
 makefile
 readme.md
 run-golint.sh
