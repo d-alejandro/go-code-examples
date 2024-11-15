@@ -6,21 +6,20 @@ COPY . .
 
 RUN go mod download && \
     go mod tidy && \
-    go build -o ./.bin/go-app ./cmd/order/main.go
-
-RUN go build -o ./.bin/goose-custom ./cmd/tools/goose-custom
+    go build -o ./.bin/go-app ./cmd/order/main.go && \
+    go build -o ./.bin/goose-custom ./cmd/tools/goose-custom
 
 FROM busybox:1.37.0
 
-ARG BIN_PATH="/usr/src/app/.bin"
-ARG APP_PATH="/usr/app"
+WORKDIR /usr/app
+
 ARG HTTP_PORT
+ARG SRC_PATH="/usr/src/app/.bin"
 
-COPY --from=golang $BIN_PATH/go-app $APP_PATH/
-COPY --from=golang $BIN_PATH/goose-custom $APP_PATH/
-
-COPY ./internal/database/migrations $APP_PATH/database/migrations
+COPY --from=golang $SRC_PATH/go-app $SRC_PATH/goose-custom .
+COPY ./docker/entrypoint.sh .
+COPY ./internal/database/migrations ./database/migrations
 
 EXPOSE $HTTP_PORT
 
-CMD ["./go-app"]
+CMD ["./entrypoint.sh"]

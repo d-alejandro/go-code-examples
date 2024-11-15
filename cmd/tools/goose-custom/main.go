@@ -16,6 +16,7 @@ import (
 	"strings"
 	"text/tabwriter"
 	"text/template"
+	_ "time/tzdata"
 
 	_ "github.com/d-alejandro/go-code-examples/internal/database/migrations"
 	_ "github.com/jackc/pgx/v5/stdlib"
