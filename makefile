@@ -1,49 +1,24 @@
-include install.mk
+include build.mk
+include install-local.mk
 
-.DEFAULT_GOAL := run
+.DEFAULT_GOAL:=build-run
 
-go-build:
-	go mod download && \
-    go build -o ./.bin/goose-custom ./cmd/tools/goose/main.go && \
-    go build -gcflags "all=-N -l" -o ./.bin/go-code-examples ./cmd/http/main.go
+.PHONY: lint
+lint:
+	pre-commit run -a
 
-run: go-build
-	docker compose up -d --build
-
-build:
-	docker compose build
-
-build-nc:
-	docker compose build --no-cache
-
-up:
-	docker compose up -d
-
-down:
-	docker compose down
-
-ps:
-	docker compose ps
-
-exec:
-	docker container exec -it go-app-container /bin/sh
-
-logs:
-	docker logs $(var) -f
-
+.PHONY: migration
+migration: name=create_flights_table
 migration:
-	./.bin/goose-custom -dir ./internal/database/migrations create $(var) go
+	goose -dir ./internal/database/migrations postgres create $(name) go
 
-status:
-	docker compose exec go-app ./goose-custom status
-
+.PHONY: migrate
 migrate:
 	docker compose exec go-app ./goose-custom up
 
+.PHONY: reset
 reset:
 	docker compose exec go-app ./goose-custom reset
 
+.PHONY: refresh
 refresh: reset migrate
-
-pre-commit:
-	pre-commit run -a

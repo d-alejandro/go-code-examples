@@ -50,7 +50,7 @@ cp .env.example .env
 4. Build and run the application:
 
 ```
-make run
+make build-run
 ```
 
 ## API Endpoints
