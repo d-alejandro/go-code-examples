@@ -24,7 +24,7 @@ services:
     image: postgres:17.0
     restart: always
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}"]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -36,5 +36,7 @@ services:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+      TZ: ${APP_TIME_ZONE}
+      PGTZ: ${APP_TIME_ZONE}
     ports:
       - ${DB_PORT_PUBLIC}:5432
