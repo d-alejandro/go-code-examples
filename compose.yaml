@@ -16,12 +16,20 @@ services:
     ports:
       - ${APP_HTTP_PORT_PUBLIC}:${APP_HTTP_PORT}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   db:
     container_name: db-container
     image: postgres:17.0
     restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+      start_interval: 5s
     volumes:
       - ./storage/docker/.postgres/data:/var/lib/postgresql/data
     environment:
