@@ -4,6 +4,7 @@
 /e2e
 /storage
 .dockerignore
+.env
 .env.example
 .gitignore
 .golangci.yml
@@ -11,6 +12,6 @@
 build.mk
 compose.yaml
 install-local.mk
-makefile
+Makefile
 readme.md
 run-golint.sh
