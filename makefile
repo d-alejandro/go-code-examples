@@ -8,9 +8,9 @@ lint:
 	pre-commit run -a
 
 .PHONY: migration
-migration: name=create_flights_table
+migration: NAME = create_flights_table
 migration:
-	goose -dir ./internal/database/migrations postgres create $(name) go
+	goose -dir ./internal/database/migrations postgres create $(NAME) go
 
 .PHONY: migrate
 migrate:

@@ -19,16 +19,16 @@ ps:
 	docker compose ps
 
 .PHONY: logs
-logs: name=go-app-container
+logs: NAME = go-app-container
 logs:
-	docker logs $(name) -f
+	docker logs $(NAME) -f
 
 .PHONY: exec
-exec: name=go-app-container
+exec: NAME = go-app-container
 exec:
-	docker container exec -it $(name) /bin/sh
+	docker container exec -it $(NAME) /bin/sh
 
 .PHONY: statusm
-statusm: service=go-app
+statusm: SERVICE = go-app
 statusm:
-	docker compose exec $(service) ./goose-custom status
+	docker compose exec $(SERVICE) ./goose-custom status

@@ -23,11 +23,11 @@ allure:
 	allure --version
 
 .PHONY: list
-list: name=pre-commit
+list: NAME = pre-commit
 list:
-	sudo dpkg --list | grep --color=never -E '(\|\|\/|$(name))'
+	sudo dpkg --list | grep --color=never -E '(\|\|\/|$(NAME))'
 
 .PHONY: remove
-remove: name=pre-commit
+remove: NAME = pre-commit
 remove:
-	sudo apt remove -y $(name)
+	sudo apt remove -y $(NAME)
