@@ -1,6 +1,6 @@
 package providers
 
-import "github.com/d-alejandro/go-code-examples/internal/packages/helpers"
+import "github.com/d-alejandro/go-code-examples/internal/pkg/helpers"
 
 type ContainerProvider struct {
 	dependenciesContainer *helpers.DependenciesContainer

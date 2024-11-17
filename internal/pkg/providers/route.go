@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/d-alejandro/go-code-examples/internal/config"
-	"github.com/d-alejandro/go-code-examples/internal/packages/helpers"
-	"github.com/d-alejandro/go-code-examples/internal/packages/providers/bindings"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/helpers"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/providers/bindings"
 	"github.com/d-alejandro/go-code-examples/internal/routes"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

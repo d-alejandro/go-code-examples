@@ -2,7 +2,7 @@ package server
 
 import (
 	"github.com/d-alejandro/go-code-examples/internal/config"
-	"github.com/d-alejandro/go-code-examples/internal/packages/providers"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/providers"
 )
 
 func Run() {

@@ -2,7 +2,7 @@ package bindings
 
 import (
 	"github.com/d-alejandro/go-code-examples/internal/app/order/handler"
-	"github.com/d-alejandro/go-code-examples/internal/packages/helpers"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/helpers"
 )
 
 type ControllerProvider struct {

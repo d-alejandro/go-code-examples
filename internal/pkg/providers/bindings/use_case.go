@@ -2,7 +2,7 @@ package bindings
 
 import (
 	"github.com/d-alejandro/go-code-examples/internal/app/order/usecase"
-	"github.com/d-alejandro/go-code-examples/internal/packages/helpers"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/helpers"
 )
 
 type UseCaseProvider struct {

@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"github.com/d-alejandro/go-code-examples/internal/config"
-	"github.com/d-alejandro/go-code-examples/internal/packages/providers"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/providers"
 	"gorm.io/gorm"
 )
 

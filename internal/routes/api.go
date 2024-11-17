@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/d-alejandro/go-code-examples/internal/packages/providers/bindings"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/providers/bindings"
 	"github.com/gin-gonic/gin"
 )
 

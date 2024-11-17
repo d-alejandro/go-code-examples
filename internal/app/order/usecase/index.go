@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"github.com/d-alejandro/go-code-examples/internal/app/order/models"
-	"github.com/d-alejandro/go-code-examples/internal/packages/dto"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/dto"
 )
 
 type OrderIndexUseCase struct {
