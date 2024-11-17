@@ -1,6 +1,6 @@
 package usecase
 
-import "github.com/d-alejandro/go-code-examples/internal/app/order/models"
+import "github.com/d-alejandro/go-code-examples/internal/pkg/models"
 
 type OrderShowUseCase struct {
 	orderShowRepository OrderShowRepositoryInterface

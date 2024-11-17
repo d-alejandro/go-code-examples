@@ -1,6 +1,6 @@
 package resource
 
-import "github.com/d-alejandro/go-code-examples/internal/app/order/models"
+import "github.com/d-alejandro/go-code-examples/internal/pkg/models"
 
 type OrderIndexResource struct {
 	ID             uint    `json:"id"`

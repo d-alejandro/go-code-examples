@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/d-alejandro/go-code-examples/internal/app/order/models"
 	"github.com/d-alejandro/go-code-examples/internal/database"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 	"github.com/pressly/goose/v3"
 )
 

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/d-alejandro/go-code-examples/internal/app/order/models"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

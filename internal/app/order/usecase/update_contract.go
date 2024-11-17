@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"github.com/d-alejandro/go-code-examples/internal/app/order/models"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 	"github.com/gin-gonic/gin"
 )
 

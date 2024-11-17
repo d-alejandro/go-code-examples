@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/d-alejandro/go-code-examples/internal/app/order/models/types"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/models/types"
 	"gorm.io/gorm"
 )
 
