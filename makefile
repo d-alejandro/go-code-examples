@@ -1,7 +1,7 @@
 include build.mk
 include install-local.mk
 
-.DEFAULT_GOAL:=build-run
+.DEFAULT_GOAL := build-run
 
 .PHONY: lint
 lint:
