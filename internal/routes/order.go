@@ -7,7 +7,7 @@ const (
 	idParamPath = "/:id"
 )
 
-type OrderHandler interface {
+type orderHandler interface {
 	Index(*gin.Context)
 	Show(*gin.Context)
 	Store(*gin.Context)
@@ -15,7 +15,7 @@ type OrderHandler interface {
 	Destroy(*gin.Context)
 }
 
-func RegisterOrderHandles(engine *gin.Engine, handler OrderHandler) {
+func RegisterOrderHandles(engine *gin.Engine, handler orderHandler) {
 	api := engine.Group("/api")
 	{
 		orders := api.Group("/orders")

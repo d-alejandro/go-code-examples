@@ -1,6 +1,7 @@
 package providers
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"time"
@@ -15,61 +16,51 @@ const (
 )
 
 type LoggerProvider struct {
-	config *config.Config
-	logger *logrus.Logger
+	cfg *config.Config
 }
 
 func NewLoggerProvider(cfg *config.Config) *LoggerProvider {
-	loggerProvider := &LoggerProvider{
-		config: cfg,
+	return &LoggerProvider{
+		cfg: cfg,
 	}
-	loggerProvider.register()
-	return loggerProvider
 }
 
 func (receiver *LoggerProvider) GetLogger() *logrus.Logger {
-	return receiver.logger
-}
+	logger := logrus.New()
 
-func (receiver *LoggerProvider) register() {
-	receiver.logger = logrus.New()
+	fileName := fmt.Sprintf("./storage/logs/golang-%s.log", receiver.getCurrentDate(logger))
 
-	fileName := receiver.getFileName()
 	file, err := os.OpenFile(fileName, fileFlag, filePermission)
 	if err != nil {
-		receiver.logger.Fatalf("error opening file: %v", err)
+		logger.Fatalf("error opening file: %v", err)
 	}
 
-	chmodErr := file.Chmod(filePermission)
-	if chmodErr != nil {
-		receiver.logger.Fatalf("error chmod file: %v", chmodErr)
+	if chmodErr := file.Chmod(filePermission); chmodErr != nil {
+		logger.Fatalf("error chmod file: %v", chmodErr)
 	}
 
 	writer := io.MultiWriter(os.Stdout, file)
-	receiver.logger.SetOutput(writer)
+	logger.SetOutput(writer)
 
-	receiver.setFormatter()
+	receiver.setFormatter(logger)
+
+	return logger
 }
 
-func (receiver *LoggerProvider) getFileName() string {
-	date := receiver.getCurrentDate()
-	return "./storage/logs/golang-" + date + ".log"
-}
-
-func (receiver *LoggerProvider) getCurrentDate() string {
-	timezone := receiver.config.App.TimeZone
+func (receiver *LoggerProvider) getCurrentDate(logger *logrus.Logger) string {
+	timezone := receiver.cfg.App.TimeZone
 
 	location, err := time.LoadLocation(timezone)
 	if err != nil {
-		receiver.logger.Fatal(err.Error())
+		logger.Fatal(err.Error())
 	}
 
-	timeNow := time.Now()
-	return timeNow.In(location).Format(time.DateOnly)
+	return time.Now().In(location).Format(time.DateOnly)
 }
 
-func (receiver *LoggerProvider) setFormatter() {
+func (receiver *LoggerProvider) setFormatter(logger *logrus.Logger) {
 	formatter := new(logrus.TextFormatter)
 	formatter.TimestampFormat = time.DateTime
-	receiver.logger.SetFormatter(formatter)
+
+	logger.SetFormatter(formatter)
 }
