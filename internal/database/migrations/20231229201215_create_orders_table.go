@@ -17,7 +17,7 @@ func init() {
 }
 
 func upCreateOrdersTable(context.Context, *sql.Tx) error {
-	db := database.Get()
+	db := database.GetGORM()
 
 	err := db.Migrator().
 		CreateTable(
@@ -35,7 +35,7 @@ func upCreateOrdersTable(context.Context, *sql.Tx) error {
 }
 
 func downCreateOrdersTable(context.Context, *sql.Tx) error {
-	return database.Get().
+	return database.GetGORM().
 		Migrator().
 		DropTable(
 			&models.Order{},

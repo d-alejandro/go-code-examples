@@ -14,7 +14,7 @@ func init() {
 }
 
 func upCreateAgenciesTable(context.Context, *sql.Tx) error {
-	return database.Get().
+	return database.GetGORM().
 		Migrator().
 		CreateTable(
 			&models.Agency{},
@@ -22,7 +22,7 @@ func upCreateAgenciesTable(context.Context, *sql.Tx) error {
 }
 
 func downCreateAgenciesTable(context.Context, *sql.Tx) error {
-	return database.Get().
+	return database.GetGORM().
 		Migrator().
 		DropTable(
 			&models.Agency{},
