@@ -12,12 +12,10 @@ type DatabaseProvider struct {
 }
 
 func NewDatabaseProvider(cfg *config.Config, logger *logrus.Logger) *DatabaseProvider {
-	databaseProvider := &DatabaseProvider{
+	return &DatabaseProvider{
 		cfg:    cfg,
 		logger: logger,
 	}
-
-	return databaseProvider
 }
 
 func (receiver *DatabaseProvider) GetDB() *gorm.DB {
