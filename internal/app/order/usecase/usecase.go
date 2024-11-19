@@ -14,7 +14,7 @@ type OrderUseCase interface {
 	Delete(id int) (*models.Order, error)
 }
 
-type OrderRepository interface {
+type orderRepository interface {
 	GetOrderList(*dto.PaginationDTO) []*models.Order
 	GetOrder(id int) (*models.Order, error)
 	Create(*request.OrderStoreRequest) (*models.Order, error)
@@ -23,10 +23,10 @@ type OrderRepository interface {
 }
 
 type orderUseCase struct {
-	repository OrderRepository
+	repository orderRepository
 }
 
-func NewOrderUseCase(repository OrderRepository) OrderUseCase {
+func NewOrderUseCase(repository orderRepository) OrderUseCase {
 	return &orderUseCase{
 		repository: repository,
 	}

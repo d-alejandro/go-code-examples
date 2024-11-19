@@ -14,7 +14,7 @@ type OrderHandler interface {
 	Destroy(*gin.Context)
 }
 
-type OrderUseCase interface {
+type orderUseCase interface {
 	GetOrderList(*request.OrderIndexRequest) []*models.Order
 	GetOrder(id int) (*models.Order, error)
 	Create(*request.OrderStoreRequest) (*models.Order, error)
@@ -22,18 +22,18 @@ type OrderUseCase interface {
 	Delete(id int) (*models.Order, error)
 }
 
-type OrderPresenter interface {
+type orderPresenter interface {
 	PresentOrder(context *gin.Context, order *models.Order)
 	PresentOrderList(context *gin.Context, orders []*models.Order)
 	PresentError(ctx *gin.Context, statusCode int, errors any)
 }
 
 type orderHandler struct {
-	useCase   OrderUseCase
-	presenter OrderPresenter
+	useCase   orderUseCase
+	presenter orderPresenter
 }
 
-func NewOrderHandler(useCase OrderUseCase, presenter OrderPresenter) OrderHandler {
+func NewOrderHandler(useCase orderUseCase, presenter orderPresenter) OrderHandler {
 	return &orderHandler{
 		useCase:   useCase,
 		presenter: presenter,
