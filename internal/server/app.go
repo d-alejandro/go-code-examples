@@ -12,14 +12,18 @@ func Run() {
 	loggerProvider := providers.NewLoggerProvider(cfg)
 	logger := loggerProvider.GetLogger()
 
-	databaseProvider := providers.NewDatabaseProvider(cfg, logger)
-	db := databaseProvider.GetDB()
+	databaseProvider := providers.NewDatabaseProvider(cfg)
+	db, err := databaseProvider.GetDB()
+
+	if err != nil {
+		logger.Fatalf("failed to connect SQLX: %s", err.Error())
+	}
 
 	repositoryProvider := bindings.NewRepositoryProvider(db)
 	useCaseProvider := bindings.NewUseCaseProvider(repositoryProvider)
 	presenterProvider := bindings.NewPresenterProvider()
 	handlerProvider := bindings.NewHandlerProvider(useCaseProvider, presenterProvider)
 
-	routeProvider := providers.NewRouteProvider(cfg, logger, handlerProvider)
+	routeProvider := providers.NewRouteProvider(cfg, logger, db, handlerProvider)
 	routeProvider.Register()
 }

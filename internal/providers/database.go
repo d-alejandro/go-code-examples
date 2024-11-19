@@ -2,23 +2,29 @@ package providers
 
 import (
 	"github.com/d-alejandro/go-code-examples/internal/config"
-	"github.com/sirupsen/logrus"
-	"gorm.io/gorm"
+	"github.com/jmoiron/sqlx"
 )
 
 type DatabaseProvider struct {
-	cfg    *config.Config
-	logger *logrus.Logger
+	cfg *config.Config
 }
 
-func NewDatabaseProvider(cfg *config.Config, logger *logrus.Logger) *DatabaseProvider {
+func NewDatabaseProvider(cfg *config.Config) *DatabaseProvider {
 	return &DatabaseProvider{
-		cfg:    cfg,
-		logger: logger,
+		cfg: cfg,
 	}
 }
 
-func (receiver *DatabaseProvider) GetDB() *gorm.DB {
-	gormProvider := NewGORMProvider(receiver.cfg, receiver.logger)
-	return gormProvider.GetGORM()
+func (receiver *DatabaseProvider) GetDB() (*sqlx.DB, error) {
+	db, err := sqlx.Connect(config.SQLXDriverName, receiver.cfg.Database.DataSourceName)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err = db.Ping(); err != nil {
+		return nil, err
+	}
+
+	return db, nil
 }

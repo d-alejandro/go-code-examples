@@ -4,7 +4,7 @@ import (
 	"github.com/d-alejandro/go-code-examples/internal/pkg/dto"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
-	"gorm.io/gorm"
+	"github.com/jmoiron/sqlx"
 )
 
 type OrderRepository interface {
@@ -16,10 +16,10 @@ type OrderRepository interface {
 }
 
 type orderRepository struct {
-	db *gorm.DB
+	db *sqlx.DB
 }
 
-func NewOrderRepository(db *gorm.DB) OrderRepository {
+func NewOrderRepository(db *sqlx.DB) OrderRepository {
 	return &orderRepository{
 		db: db,
 	}

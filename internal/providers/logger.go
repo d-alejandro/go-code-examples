@@ -52,7 +52,7 @@ func (receiver *LoggerProvider) getCurrentDate(logger *logrus.Logger) string {
 
 	location, err := time.LoadLocation(timezone)
 	if err != nil {
-		logger.Fatal(err.Error())
+		logger.Fatalf("error loading location: %s", err.Error())
 	}
 
 	return time.Now().In(location).Format(time.DateOnly)
