@@ -17,7 +17,7 @@ type OrderHandler interface {
 type OrderUseCase interface {
 	GetOrderList(*request.OrderIndexRequest) []*models.Order
 	GetOrder(id int) (*models.Order, error)
-	Store(*request.OrderStoreRequest) (*models.Order, error)
+	Create(*request.OrderStoreRequest) (*models.Order, error)
 	Update(req *request.OrderUpdateRequest, id int) (*models.Order, error)
 	Delete(id int) (*models.Order, error)
 }
