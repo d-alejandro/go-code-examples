@@ -1,27 +1,20 @@
 package repository
 
 import (
+	"github.com/d-alejandro/go-code-examples/internal/pkg/dto"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
-	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
-type OrderIndexRepository struct {
-	gorm *gorm.DB
-}
+const sortTypeDesc = "desc"
 
-func NewOrderIndexRepository(grm *gorm.DB) *OrderIndexRepository {
-	return &OrderIndexRepository{grm}
-}
-
-func (repository *OrderIndexRepository) Make(pagination interface{ PaginationDTOInterface }) []*models.Order {
+func (repository *orderRepository) GetOrderList(pagination dto.PaginationDTO) []*models.Order {
 	var orders []*models.Order
 
 	column := clause.Column{
 		Name: models.TableOrders + "." + pagination.GetSortColumn(),
 	}
 
-	const sortTypeDesc = "desc"
 	orderByColumn := clause.OrderByColumn{
 		Column: column,
 		Desc:   pagination.GetSortType() == sortTypeDesc,

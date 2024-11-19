@@ -2,21 +2,10 @@ package repository
 
 import (
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
-	"gorm.io/gorm"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
 )
 
-type OrderUpdateRepository struct {
-	gorm *gorm.DB
-}
-
-func NewOrderUpdateRepository(grm *gorm.DB) *OrderUpdateRepository {
-	return &OrderUpdateRepository{grm}
-}
-
-func (repository *OrderUpdateRepository) Make(
-	request interface{ OrderUpdateRequestInterface },
-	order *models.Order,
-) error {
+func (repository *orderRepository) Update(request *request.OrderUpdateRequest, order *models.Order) error {
 	userName := request.GetUserName()
 	note := request.GetNote()
 	adminNote := request.GetAdminNote()
@@ -32,5 +21,6 @@ func (repository *OrderUpdateRepository) Make(
 	result := repository.gorm.
 		Omit("Agency").
 		Save(order)
+
 	return result.Error
 }

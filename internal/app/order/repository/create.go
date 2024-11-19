@@ -2,18 +2,11 @@ package repository
 
 import (
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
 	"gorm.io/gorm"
 )
 
-type OrderStoreRepository struct {
-	gorm *gorm.DB
-}
-
-func NewOrderStoreRepository(grm *gorm.DB) *OrderStoreRepository {
-	return &OrderStoreRepository{grm}
-}
-
-func (repository *OrderStoreRepository) Make(request interface{ OrderStoreRequestInterface }) (*models.Order, error) {
+func (repository *orderRepository) Create(request *request.OrderStoreRequest) (*models.Order, error) {
 	agency := models.Agency{
 		Name: request.GetAgencyName(),
 	}
