@@ -5,14 +5,12 @@
 - Back-end
 - Clean Architecture
 - CRUD
-- Dependency Injection
-- Design Patterns
 - Docker Compose (Docker 27.3.1, Docker Compose v2.29.7)
 - Dockerfile with multi-stage builds
 - DTO
 - [Gin Web Framework](https://github.com/gin-gonic/gin)
 - Golang 1.23
-- Golangci-lint
+- [Golangci-lint](https://github.com/golangci/golangci-lint)
 - [Goose](https://github.com/pressly/goose)
 - [GORM](https://github.com/go-gorm/gorm)
 - HTTP Server
@@ -20,9 +18,11 @@
 - Linux
 - [Logrus](https://github.com/sirupsen/logrus)
 - Makefile
+- Manual Dependency Injection
 - MVC
 - PostgreSQL 17
-- Pre-commit hooks
+- [Pre-commit](https://github.com/pre-commit/pre-commit)
+- [Pre-commit hooks](https://github.com/pre-commit/pre-commit-hooks)
 - RESTful API
 - SOLID
 - SQL
