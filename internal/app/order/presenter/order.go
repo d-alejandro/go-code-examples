@@ -3,24 +3,17 @@ package presenter
 import (
 	"net/http"
 
-	"github.com/d-alejandro/go-code-examples/internal/app/order/resource"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/resource"
 	"github.com/gin-gonic/gin"
 )
 
-type OrderPresenter struct {
-}
-
-func NewOrderPresenter() *OrderPresenter {
-	return &OrderPresenter{}
-}
-
-func (*OrderPresenter) Present(context *gin.Context, order *models.Order) {
+func (*orderPresenter) PresentOrder(ctx *gin.Context, order *models.Order) {
 	orderResource := resource.NewOrderResource(order)
 
 	response := gin.H{
 		"data": orderResource,
 	}
 
-	context.JSON(http.StatusOK, response)
+	ctx.JSON(http.StatusOK, response)
 }
