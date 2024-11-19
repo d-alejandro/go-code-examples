@@ -6,11 +6,11 @@ import (
 )
 
 type RepositoryProvider struct {
-	OrderRepository repository.OrderRepository
+	orderRepository repository.OrderRepository
 }
 
 func NewRepositoryProvider(db *gorm.DB) *RepositoryProvider {
 	return &RepositoryProvider{
-		OrderRepository: repository.NewOrderRepository(db),
+		orderRepository: repository.NewOrderRepository(db),
 	}
 }

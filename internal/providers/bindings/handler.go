@@ -8,6 +8,6 @@ type HandlerProvider struct {
 
 func NewHandlerProvider(useCase *UseCaseProvider, presenter *PresenterProvider) *HandlerProvider {
 	return &HandlerProvider{
-		OrderHandler: handler.NewOrderHandler(useCase.OrderUseCase, presenter.OrderPresenter),
+		OrderHandler: handler.NewOrderHandler(useCase.orderUseCase, presenter.orderPresenter),
 	}
 }
