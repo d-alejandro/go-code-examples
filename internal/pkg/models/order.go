@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models/types"
-	"gorm.io/gorm"
 )
 
 const (
@@ -31,5 +30,5 @@ type Order struct {
 	ConfirmedAt    *time.Time        `gorm:"type:timestamp(0)"`
 	CreatedAt      *time.Time        `gorm:"type:timestamp(0)"`
 	UpdatedAt      *time.Time        `gorm:"type:timestamp(0)"`
-	DeletedAt      *gorm.DeletedAt   `gorm:"type:timestamp(0)"`
+	DeletedAt      *time.Time        `gorm:"type:timestamp(0)"`
 }
