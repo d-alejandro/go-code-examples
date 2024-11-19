@@ -8,7 +8,7 @@ import (
 
 const sortTypeDesc = "desc"
 
-func (repository *orderRepository) GetOrderList(pagination dto.PaginationDTO) []*models.Order {
+func (repository *orderRepository) GetOrderList(pagination *dto.PaginationDTO) []*models.Order {
 	var orders []*models.Order
 
 	column := clause.Column{

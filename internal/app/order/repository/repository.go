@@ -8,7 +8,7 @@ import (
 )
 
 type OrderRepository interface {
-	GetOrderList(dto.PaginationDTO) []*models.Order
+	GetOrderList(*dto.PaginationDTO) []*models.Order
 	GetOrder(id int) (*models.Order, error)
 	Create(*request.OrderStoreRequest) (*models.Order, error)
 	Update(*request.OrderUpdateRequest, *models.Order) error
