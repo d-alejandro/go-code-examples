@@ -1,32 +1,17 @@
 package usecase
 
-import "github.com/d-alejandro/go-code-examples/internal/pkg/models"
+import (
+	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
+)
 
-type OrderUpdateUseCase struct {
-	showUseCase           OrderShowUseCaseInterface
-	orderUpdateRepository OrderUpdateRepositoryInterface
-}
-
-func NewOrderUpdateUseCase(
-	showUseCase OrderShowUseCaseInterface,
-	orderUpdateRepository OrderUpdateRepositoryInterface,
-) *OrderUpdateUseCase {
-	return &OrderUpdateUseCase{
-		showUseCase:           showUseCase,
-		orderUpdateRepository: orderUpdateRepository,
-	}
-}
-
-func (useCase *OrderUpdateUseCase) Execute(
-	request interface{ OrderUpdateRequestInterface },
-	id int,
-) (*models.Order, error) {
-	response, err := useCase.showUseCase.Execute(id)
+func (useCase *orderUseCase) Update(req *request.OrderUpdateRequest, id int) (*models.Order, error) {
+	response, err := useCase.GetOrder(id)
 	if err != nil {
 		return response, err
 	}
 
-	repositoryError := useCase.orderUpdateRepository.Make(request, response)
+	err = useCase.repository.Update(req, response)
 
-	return response, repositoryError
+	return response, err
 }
