@@ -3,36 +3,19 @@ package handler
 import (
 	"net/http"
 
-	"github.com/d-alejandro/go-code-examples/internal/app/order/presenter"
-	"github.com/d-alejandro/go-code-examples/internal/app/order/request"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
 	"github.com/gin-gonic/gin"
 )
 
-type OrderIndexHandler struct {
-	useCase   OrderIndexUseCaseInterface
-	presenter OrderIndexPresenterInterface
-}
-
-func NewOrderIndexHandler(
-	useCase OrderIndexUseCaseInterface,
-	indexPresenter OrderIndexPresenterInterface,
-) *OrderIndexHandler {
-	return &OrderIndexHandler{
-		useCase:   useCase,
-		presenter: indexPresenter,
-	}
-}
-
-func (handler *OrderIndexHandler) Index(context *gin.Context) {
+func (handler *orderHandler) Index(ctx *gin.Context) {
 	var req request.OrderIndexRequest
 
-	err := req.Validate(context)
-	if err != nil {
-		presenter.PresentErrorPresenter(context, http.StatusBadRequest, err)
+	if err := req.Validate(ctx); err != nil {
+		handler.presenter.PresentError(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	response := handler.useCase.Execute(&req)
+	response := handler.useCase.GetOrderList(&req)
 
-	handler.presenter.Present(context, response)
+	handler.presenter.PresentOrderList(ctx, response)
 }

@@ -3,40 +3,23 @@ package handler
 import (
 	"net/http"
 
-	"github.com/d-alejandro/go-code-examples/internal/app/order/presenter"
-	"github.com/d-alejandro/go-code-examples/internal/app/order/request"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
 	"github.com/gin-gonic/gin"
 )
 
-type OrderStoreHandler struct {
-	useCase   OrderStoreUseCaseInterface
-	presenter OrderStorePresenterInterface
-}
-
-func NewOrderStoreHandler(
-	useCase OrderStoreUseCaseInterface,
-	presenterStore OrderStorePresenterInterface,
-) *OrderStoreHandler {
-	return &OrderStoreHandler{
-		useCase:   useCase,
-		presenter: presenterStore,
-	}
-}
-
-func (handler *OrderStoreHandler) Store(context *gin.Context) {
+func (handler *orderHandler) Store(ctx *gin.Context) {
 	var req request.OrderStoreRequest
 
-	err := req.Validate(context)
-	if err != nil {
-		presenter.PresentErrorPresenter(context, http.StatusBadRequest, err)
+	if err := req.Validate(ctx); err != nil {
+		handler.presenter.PresentError(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	response, useCaseError := handler.useCase.Execute(&req)
+	response, useCaseError := handler.useCase.Store(&req)
 	if useCaseError != nil {
-		presenter.PresentErrorPresenter(context, http.StatusBadRequest, useCaseError)
+		handler.presenter.PresentError(ctx, http.StatusBadRequest, useCaseError)
 		return
 	}
 
-	handler.presenter.Present(context, response)
+	handler.presenter.PresentOrder(ctx, response)
 }
