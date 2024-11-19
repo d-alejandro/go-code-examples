@@ -1,2 +1,6 @@
 #!/usr/bin/env sh
-/usr/app/dlv --listen=:${DELVE_DEBUG_PORT} --headless=true --api-version=2 --accept-multiclient exec /usr/app/go-code-examples
+
+echo "------- goose: start migrations ---------------------------------"
+./goose-custom up
+echo "------- goose: finish migrations --------------------------------"
+./go-app

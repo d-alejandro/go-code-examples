@@ -1,0 +1,28 @@
+FROM golang:1.23.3 AS golang
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN go mod download && \
+    go mod tidy && \
+    go build -o ./.bin/go-app ./cmd/order/main.go && \
+    go build -o ./.bin/goose-custom ./cmd/tools/goose-custom
+
+FROM busybox:1.37.0
+
+WORKDIR /usr/app
+
+ARG HTTP_PORT
+ARG TZ
+ARG SRC_PATH="/usr/src/app/.bin"
+
+ENV TZ=$TZ
+
+COPY --from=golang $SRC_PATH/go-app $SRC_PATH/goose-custom .
+COPY ./docker/entrypoint.sh .
+COPY ./internal/database/migrations ./database/migrations
+
+EXPOSE $HTTP_PORT
+
+CMD ["./entrypoint.sh"]

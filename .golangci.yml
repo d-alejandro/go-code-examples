@@ -1,0 +1,65 @@
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - copyloopvar
+    - errcheck
+    - errorlint
+    - goconst
+    - gocritic
+    - gocyclo
+    - gofmt
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - prealloc
+    - revive
+    - staticcheck
+    - testifylint
+    - unconvert
+    - unused
+    - whitespace
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+
+  gocyclo:
+    min-complexity: 15
+
+  gofmt:
+    simplify: true
+
+  gosimple:
+    checks: ["all"]
+
+  misspell:
+    locale: US
+
+  revive:
+    enable-all-rules: true
+    rules:
+      - name: line-length-limit
+        arguments: [120]
+
+  staticcheck:
+    checks: ["all"]
+
+  testifylint:
+    enable-all: true
+
+issues:
+  exclude-dirs:
+    - cmd/tools/goose-custom
+    - docker
+    - storage
+
+run:
+  timeout: 5m

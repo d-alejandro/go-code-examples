@@ -5,26 +5,27 @@
 - Back-end
 - Clean Architecture
 - CRUD
-- Debugging Mode
-- [Delve](https://github.com/go-delve/delve)
-- Dependency Injection
-- Design Patterns
-- Docker Compose
+- Docker Compose (Docker 27.3.1, Docker Compose v2.29.7)
 - Dockerfile with multi-stage builds
 - DTO
 - [Gin Web Framework](https://github.com/gin-gonic/gin)
-- Golang 1.21
+- Golang 1.23
+- [Golangci-lint](https://github.com/golangci/golangci-lint)
 - [Goose](https://github.com/pressly/goose)
 - [GORM](https://github.com/go-gorm/gorm)
+- HTTP Server
+- Linters
 - Linux
 - [Logrus](https://github.com/sirupsen/logrus)
 - Makefile
+- Manual Dependency Injection
 - MVC
-- PostgreSQL 16
+- PostgreSQL 17
+- [Pre-commit](https://github.com/pre-commit/pre-commit)
+- [Pre-commit hooks](https://github.com/pre-commit/pre-commit-hooks)
 - RESTful API
 - SOLID
 - SQL
-- [Viper](https://github.com/spf13/viper)
 
 ## Installation
 
@@ -46,38 +47,17 @@ cd go-code-examples
 cp .env.example .env
 ```
 
-4. Download and install `Go` SDK `1.21.6`.
-
-5. Build and run the application:
+4. Build and run the application:
 
 ```
-make run
-```
-
-or
-
-```
-make
-```
-
-6. Start the debugging process in the IDE with `Go Remote` configuration.
-
-```
-Host: localhost
-Port: 7000
-```
-
-7. Apply migrations:
-
-```
-make migrate
+make build-run
 ```
 
 ## API Endpoints
 
 ### All Orders with pagination
 
-- Request URL: `http://localhost:8080/api/orders?start=0&end=1&sort_column=id&sort_type=asc`
+- Request URL: `http://localhost:8081/api/orders?start=0&end=1&sort_column=id&sort_type=asc`
 - Method: `GET`
 - Path: `/orders`
 - Headers: `Accept:application/json, Content-Type:application/json`
@@ -106,7 +86,7 @@ make migrate
 
 ### Create Order
 
-- Request URL: `http://localhost:8080/api/orders`
+- Request URL: `http://localhost:8081/api/orders`
 - Method: `POST`
 - Path: `/orders`
 - Headers: `Accept:application/json, Content-Type:application/json`
@@ -139,7 +119,7 @@ make migrate
 
 ### Order Details
 
-- Request URL: `http://localhost:8080/api/orders/10000011`
+- Request URL: `http://localhost:8081/api/orders/10000011`
 - Method: `GET`
 - Path: `/orders/{id}`
 - Headers: `Accept:application/json, Content-Type:application/json`
@@ -171,7 +151,7 @@ make migrate
 
 ### Update Order
 
-- Request URL: `http://localhost:8080/api/orders/10000011`
+- Request URL: `http://localhost:8081/api/orders/10000011`
 - Method: `PUT`
 - Path: `/orders/{id}`
 - Headers: `Accept:application/json, Content-Type:application/json`
@@ -204,7 +184,7 @@ make migrate
 
 ### Delete Order
 
-- Request URL: `http://localhost:8080/api/orders/10000011`
+- Request URL: `http://localhost:8081/api/orders/10000011`
 - Method: `DELETE`
 - Path: `/orders/{id}`
 - Headers: `Accept:application/json, Content-Type:application/json`
