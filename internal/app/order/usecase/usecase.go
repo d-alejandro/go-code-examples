@@ -27,5 +27,7 @@ type orderUseCase struct {
 }
 
 func NewOrderUseCase(repository OrderRepository) OrderUseCase {
-	return &orderUseCase{repository: repository}
+	return &orderUseCase{
+		repository: repository,
+	}
 }
