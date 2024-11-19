@@ -7,7 +7,7 @@ func (repository *orderRepository) GetOrder(id int) (*models.Order, error) {
 
 	conditions := `"` + models.TableOrders + `"."` + models.ColumnIDTableOrders + `" = ?`
 
-	result := repository.gorm.
+	result := repository.db.
 		Preload(models.RelationAgencyTableOrders).
 		Take(&order, conditions, id)
 

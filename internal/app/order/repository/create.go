@@ -27,7 +27,7 @@ func (repository *orderRepository) Create(request *request.OrderStoreRequest) (*
 		AdminNote:      &adminNote,
 	}
 
-	err := repository.gorm.Transaction(func(tx *gorm.DB) error {
+	err := repository.db.Transaction(func(tx *gorm.DB) error {
 		result := tx.Create(order)
 		if result != nil {
 			return result.Error

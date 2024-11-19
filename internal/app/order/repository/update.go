@@ -18,7 +18,7 @@ func (repository *orderRepository) Update(request *request.OrderUpdateRequest, o
 	order.Note = &note
 	order.AdminNote = &adminNote
 
-	result := repository.gorm.
+	result := repository.db.
 		Omit("Agency").
 		Save(order)
 

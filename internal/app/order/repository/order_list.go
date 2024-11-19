@@ -20,7 +20,7 @@ func (repository *orderRepository) GetOrderList(pagination *dto.PaginationDTO) [
 		Desc:   pagination.GetSortType() == sortTypeDesc,
 	}
 
-	repository.gorm.
+	repository.db.
 		Preload(models.RelationAgencyTableOrders).
 		Order(orderByColumn).
 		Limit(pagination.GetLimitValue()).
