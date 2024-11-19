@@ -58,7 +58,7 @@ func (receiver *LoggerProvider) getCurrentDate(logger *logrus.Logger) string {
 	return time.Now().In(location).Format(time.DateOnly)
 }
 
-func (receiver *LoggerProvider) setFormatter(logger *logrus.Logger) {
+func (*LoggerProvider) setFormatter(logger *logrus.Logger) {
 	formatter := new(logrus.TextFormatter)
 	formatter.TimestampFormat = time.DateTime
 

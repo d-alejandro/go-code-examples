@@ -5,16 +5,16 @@ import (
 	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
 )
 
-func (repository *orderRepository) Update(request *request.OrderUpdateRequest, order *models.Order) error {
-	userName := request.GetUserName()
-	note := request.GetNote()
-	adminNote := request.GetAdminNote()
+func (repository *orderRepository) Update(req *request.OrderUpdateRequest, order *models.Order) error {
+	userName := req.GetUserName()
+	note := req.GetNote()
+	adminNote := req.GetAdminNote()
 
-	order.GuestCount = request.GetGuestCount()
-	order.TransportCount = request.GetTransportCount()
+	order.GuestCount = req.GetGuestCount()
+	order.TransportCount = req.GetTransportCount()
 	order.UserName = &userName
-	order.Email = request.GetEmail()
-	order.Phone = request.GetPhone()
+	order.Email = req.GetEmail()
+	order.Phone = req.GetPhone()
 	order.Note = &note
 	order.AdminNote = &adminNote
 

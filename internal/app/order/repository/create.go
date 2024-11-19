@@ -6,23 +6,23 @@ import (
 	"gorm.io/gorm"
 )
 
-func (repository *orderRepository) Create(request *request.OrderStoreRequest) (*models.Order, error) {
+func (repository *orderRepository) Create(req *request.OrderStoreRequest) (*models.Order, error) {
 	agency := models.Agency{
-		Name: request.GetAgencyName(),
+		Name: req.GetAgencyName(),
 	}
 
-	userName := request.GetUserName()
-	note := request.GetNote()
-	adminNote := request.GetAdminNote()
+	userName := req.GetUserName()
+	note := req.GetNote()
+	adminNote := req.GetAdminNote()
 
 	order := &models.Order{
 		Agency:         agency,
-		RentalDate:     request.GetRentalDate(),
-		GuestCount:     request.GetGuestCount(),
-		TransportCount: request.GetTransportCount(),
+		RentalDate:     req.GetRentalDate(),
+		GuestCount:     req.GetGuestCount(),
+		TransportCount: req.GetTransportCount(),
 		UserName:       &userName,
-		Email:          request.GetEmail(),
-		Phone:          request.GetPhone(),
+		Email:          req.GetEmail(),
+		Phone:          req.GetPhone(),
 		Note:           &note,
 		AdminNote:      &adminNote,
 	}

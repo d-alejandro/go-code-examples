@@ -6,13 +6,13 @@ import (
 	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
 )
 
-func (useCase *orderUseCase) GetOrderList(request *request.OrderIndexRequest) []*models.Order {
-	startValue := request.GetStart()
-	limitValue := request.GetEnd() - startValue
+func (useCase *orderUseCase) GetOrderList(req *request.OrderIndexRequest) []*models.Order {
+	startValue := req.GetStart()
+	limitValue := req.GetEnd() - startValue
 
 	pagination := dto.NewPaginationDTO(
-		request.GetSortColumn(),
-		request.GetSortType(),
+		req.GetSortColumn(),
+		req.GetSortType(),
 		limitValue,
 		startValue,
 	)

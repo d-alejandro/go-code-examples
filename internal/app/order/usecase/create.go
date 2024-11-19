@@ -5,6 +5,6 @@ import (
 	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
 )
 
-func (useCase *orderUseCase) Create(request *request.OrderStoreRequest) (*models.Order, error) {
-	return useCase.repository.Create(request)
+func (useCase *orderUseCase) Create(req *request.OrderStoreRequest) (*models.Order, error) {
+	return useCase.repository.Create(req)
 }
