@@ -24,6 +24,6 @@ func Run() {
 	presenterProvider := bindings.NewPresenterProvider()
 	handlerProvider := bindings.NewHandlerProvider(useCaseProvider, presenterProvider)
 
-	routeProvider := providers.NewRouteProvider(cfg, logger, db, handlerProvider)
-	routeProvider.Register()
+	httpServerProvider := providers.NewHTTPServerProvider(cfg, logger, db, handlerProvider)
+	httpServerProvider.Start()
 }

@@ -13,6 +13,7 @@
 - [Golangci-lint](https://github.com/golangci/golangci-lint)
 - [Goose](https://github.com/pressly/goose)
 - [GORM](https://github.com/go-gorm/gorm)
+- Graceful Shutdown of HTTP server
 - HTTP Server
 - Linters
 - Linux
