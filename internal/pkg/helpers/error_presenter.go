@@ -3,7 +3,6 @@ package helpers
 import (
 	"net/http"
 
-	"github.com/d-alejandro/go-code-examples/internal/pkg/resource"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,7 +22,14 @@ func (*ErrorPresenter) PresentError(ctx *gin.Context, statusCode int, errors any
 	}
 
 	statusCodeText := http.StatusText(statusCode)
-	errorResource := resource.NewErrorResource(statusCodeText, errorsText)
 
-	ctx.JSON(statusCode, errorResource)
+	responseBody := &struct {
+		Message string `json:"message"`
+		Errors  string `json:"errors"`
+	}{
+		Message: statusCodeText,
+		Errors:  errorsText,
+	}
+
+	ctx.JSON(statusCode, responseBody)
 }
