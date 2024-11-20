@@ -25,7 +25,7 @@ func (handler *orderHandler) Update(ctx *gin.Context) {
 		return
 	}
 
-	response, useCaseError := handler.useCase.Update(&req, id)
+	response, useCaseError := handler.useCase.Update(ctx, &req, id)
 	if useCaseError != nil {
 		handler.presenter.PresentError(ctx, http.StatusBadRequest, useCaseError)
 		return

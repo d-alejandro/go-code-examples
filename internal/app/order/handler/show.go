@@ -17,7 +17,7 @@ func (handler *orderHandler) Show(ctx *gin.Context) {
 		return
 	}
 
-	response, useCaseError := handler.useCase.GetOrder(id)
+	response, useCaseError := handler.useCase.GetOrder(ctx, id)
 	if useCaseError != nil {
 		handler.presenter.PresentError(ctx, http.StatusBadRequest, useCaseError)
 		return

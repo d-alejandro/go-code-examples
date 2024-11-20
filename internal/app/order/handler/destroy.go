@@ -17,7 +17,7 @@ func (handler *orderHandler) Destroy(ctx *gin.Context) {
 		return
 	}
 
-	response, useCaseError := handler.useCase.Delete(id)
+	response, useCaseError := handler.useCase.Delete(ctx, id)
 	if useCaseError != nil {
 		handler.presenter.PresentError(ctx, http.StatusBadRequest, useCaseError)
 		return

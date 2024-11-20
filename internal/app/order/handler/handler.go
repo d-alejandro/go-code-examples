@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"context"
+
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
 	"github.com/gin-gonic/gin"
@@ -15,16 +17,16 @@ type OrderHandler interface {
 }
 
 type orderUseCase interface {
-	GetOrderList(*request.OrderIndexRequest) []*models.Order
-	GetOrder(id int) (*models.Order, error)
-	Create(*request.OrderStoreRequest) (*models.Order, error)
-	Update(req *request.OrderUpdateRequest, id int) (*models.Order, error)
-	Delete(id int) (*models.Order, error)
+	GetOrderList(context.Context, *request.OrderIndexRequest) []*models.Order
+	GetOrder(ctx context.Context, id int) (*models.Order, error)
+	Create(context.Context, *request.OrderStoreRequest) (*models.Order, error)
+	Update(ctx context.Context, req *request.OrderUpdateRequest, id int) (*models.Order, error)
+	Delete(ctx context.Context, id int) (*models.Order, error)
 }
 
 type orderPresenter interface {
-	PresentOrder(context *gin.Context, order *models.Order)
-	PresentOrderList(context *gin.Context, orders []*models.Order)
+	PresentOrder(*gin.Context, *models.Order)
+	PresentOrderList(*gin.Context, []*models.Order)
 	PresentError(ctx *gin.Context, statusCode int, errors any)
 }
 
