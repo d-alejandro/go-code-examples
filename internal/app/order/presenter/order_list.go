@@ -11,8 +11,8 @@ import (
 func (*orderPresenter) PresentOrderList(ctx *gin.Context, orders []*models.Order) {
 	orderResources := make([]*resource.OrderIndexResource, len(orders))
 
-	for key, order := range orders {
-		orderResources[key] = resource.NewOrderIndexResource(order)
+	for index, order := range orders {
+		orderResources[index] = resource.NewOrderIndexResource(order)
 	}
 
 	responseBody := gin.H{
