@@ -27,10 +27,10 @@ func NewApp() *App {
 	return &App{
 		HTTPServerAddress:   fmt.Sprintf(":%s", port),
 		HTTPPort:            port,
-		ReadTimeout:         10 * time.Second,
-		WriteTimeout:        10 * time.Second,
-		MaxHeaderBytes:      1 << 20,
-		ShuttingDownTimeout: 5 * time.Second,
+		ReadTimeout:         10 * time.Second, //nolint:revive
+		WriteTimeout:        10 * time.Second, //nolint:revive
+		MaxHeaderBytes:      1 << 20,          //nolint:revive
+		ShuttingDownTimeout: 5 * time.Second,  //nolint:revive
 		TimeZone:            os.Getenv(timeZone),
 	}
 }

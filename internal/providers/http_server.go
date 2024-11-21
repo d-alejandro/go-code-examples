@@ -17,6 +17,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const quitChannelSizeIsOne = 1
+
 type HTTPServerProvider struct {
 	config  *config.Config
 	logger  *logrus.Logger
@@ -54,7 +56,7 @@ func (receiver *HTTPServerProvider) Start() {
 	outputText := fmt.Sprintf("http server started on :%s", receiver.config.App.HTTPPort)
 	receiver.logger.Info(outputText)
 
-	quitChannel := make(chan os.Signal, 1)
+	quitChannel := make(chan os.Signal, quitChannelSizeIsOne)
 	signal.Notify(quitChannel, syscall.SIGHUP, os.Interrupt, syscall.SIGTERM, syscall.SIGQUIT)
 	<-quitChannel
 
@@ -67,7 +69,7 @@ func (receiver *HTTPServerProvider) Start() {
 		receiver.logger.Fatalf("server forced to shutdown: %s", err.Error())
 	}
 
-	receiver.logger.Info("Server exiting")
+	receiver.logger.Info("server exiting")
 }
 
 func (receiver *HTTPServerProvider) closeLogger() {
