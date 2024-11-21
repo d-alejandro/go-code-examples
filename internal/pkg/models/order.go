@@ -6,12 +6,6 @@ import (
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models/types"
 )
 
-const (
-	TableOrders               = "orders"
-	ColumnIDTableOrders       = "id"
-	RelationAgencyTableOrders = "Agency"
-)
-
 type Order struct {
 	ID             uint              `gorm:"primaryKey"`
 	AgencyID       uint              `gorm:"type:bigint;not null;index:idx_orders_agency_id"`
