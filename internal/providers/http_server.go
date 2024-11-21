@@ -10,6 +10,7 @@ import (
 	"syscall"
 
 	"github.com/d-alejandro/go-code-examples/internal/config"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/dto"
 	"github.com/d-alejandro/go-code-examples/internal/providers/bindings"
 	"github.com/d-alejandro/go-code-examples/internal/routes"
 	"github.com/gin-gonic/gin"
@@ -26,17 +27,12 @@ type HTTPServerProvider struct {
 	handler *bindings.HandlerProvider
 }
 
-func NewHTTPServerProvider(
-	cfg *config.Config,
-	logger *logrus.Logger,
-	db *sqlx.DB,
-	handler *bindings.HandlerProvider,
-) *HTTPServerProvider {
+func NewHTTPServerProvider(dto *dto.HTTPServerDTO) *HTTPServerProvider {
 	return &HTTPServerProvider{
-		config:  cfg,
-		logger:  logger,
-		db:      db,
-		handler: handler,
+		config:  dto.GetConfig(),
+		logger:  dto.GetLogger(),
+		db:      dto.GetDB(),
+		handler: dto.GetHandler(),
 	}
 }
 
@@ -44,8 +40,7 @@ func (receiver *HTTPServerProvider) Start() {
 	defer receiver.closeLogger()
 	defer receiver.closeDB()
 
-	router := gin.Default()
-	server := receiver.setupGinEngine(router)
+	server := receiver.setupGinEngine(gin.Default())
 
 	go func() {
 		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
@@ -91,13 +86,11 @@ func (receiver *HTTPServerProvider) setupGinEngine(router *gin.Engine) *http.Ser
 	routes.RegisterOrderHandles(router, receiver.handler.OrderHandler)
 	routes.RegisterHealthCheckHandles(router)
 
-	server := &http.Server{
+	return &http.Server{
 		Addr:           receiver.config.App.HTTPServerAddress,
 		Handler:        router.Handler(),
 		ReadTimeout:    receiver.config.App.ReadTimeout,
 		WriteTimeout:   receiver.config.App.WriteTimeout,
 		MaxHeaderBytes: receiver.config.App.MaxHeaderBytes,
 	}
-
-	return server
 }

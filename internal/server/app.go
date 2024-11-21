@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/d-alejandro/go-code-examples/internal/config"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/dto"
 	"github.com/d-alejandro/go-code-examples/internal/providers"
 	"github.com/d-alejandro/go-code-examples/internal/providers/bindings"
 )
@@ -24,6 +25,7 @@ func Run() {
 	presenterProvider := bindings.NewPresenterProvider()
 	handlerProvider := bindings.NewHandlerProvider(useCaseProvider, presenterProvider)
 
-	httpServerProvider := providers.NewHTTPServerProvider(cfg, logger, db, handlerProvider)
+	httpServerDTO := dto.NewHTTPServerDTO(cfg, logger, db, handlerProvider)
+	httpServerProvider := providers.NewHTTPServerProvider(httpServerDTO)
 	httpServerProvider.Start()
 }
