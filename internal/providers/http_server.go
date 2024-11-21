@@ -10,8 +10,8 @@ import (
 	"syscall"
 
 	"github.com/d-alejandro/go-code-examples/internal/config"
-	"github.com/d-alejandro/go-code-examples/internal/pkg/dto"
 	"github.com/d-alejandro/go-code-examples/internal/providers/bindings"
+	"github.com/d-alejandro/go-code-examples/internal/providers/dto"
 	"github.com/d-alejandro/go-code-examples/internal/routes"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
