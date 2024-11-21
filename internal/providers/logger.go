@@ -16,51 +16,49 @@ const (
 )
 
 type LoggerProvider struct {
-	cfg *config.Config
+	cfg    *config.Config
+	logger *logrus.Logger
 }
 
 func NewLoggerProvider(cfg *config.Config) *LoggerProvider {
 	return &LoggerProvider{
-		cfg: cfg,
+		cfg:    cfg,
+		logger: logrus.New(),
 	}
 }
 
 func (receiver *LoggerProvider) GetLogger() *logrus.Logger {
-	logger := logrus.New()
-
-	fileName := fmt.Sprintf("./storage/logs/golang-%s.log", receiver.getCurrentDate(logger))
+	fileName := fmt.Sprintf("./storage/logs/golang-%s.log", receiver.getCurrentDate())
 
 	file, err := os.OpenFile(fileName, fileFlag, filePermission)
 	if err != nil {
-		logger.Fatalf("error opening file: %v", err)
+		receiver.logger.Fatalf("error opening file: %v", err)
 	}
 
 	if chmodErr := file.Chmod(filePermission); chmodErr != nil {
-		logger.Fatalf("error chmod file: %v", chmodErr)
+		receiver.logger.Fatalf("error chmod file: %v", chmodErr)
 	}
 
 	writer := io.MultiWriter(os.Stdout, file)
-	logger.SetOutput(writer)
+	receiver.logger.SetOutput(writer)
 
-	receiver.setFormatter(logger)
+	receiver.setFormatter()
 
-	return logger
+	return receiver.logger
 }
 
-func (receiver *LoggerProvider) getCurrentDate(logger *logrus.Logger) string {
-	timezone := receiver.cfg.App.TimeZone
+func (receiver *LoggerProvider) getCurrentDate() string {
+	location, err := time.LoadLocation(receiver.cfg.App.TimeZone)
 
-	location, err := time.LoadLocation(timezone)
 	if err != nil {
-		logger.Fatalf("error loading location: %s", err.Error())
+		receiver.logger.Fatalf("error loading location: %s", err.Error())
 	}
 
 	return time.Now().In(location).Format(time.DateOnly)
 }
 
-func (*LoggerProvider) setFormatter(logger *logrus.Logger) {
+func (receiver *LoggerProvider) setFormatter() {
 	formatter := new(logrus.TextFormatter)
 	formatter.TimestampFormat = time.DateTime
-
-	logger.SetFormatter(formatter)
+	receiver.logger.SetFormatter(formatter)
 }
