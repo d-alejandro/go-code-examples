@@ -2,10 +2,7 @@ package helpers
 
 import "time"
 
-func ConvertDate[Date time.Time | *time.Time, DateFormatted string | *string](
-	date Date,
-	layout string,
-) DateFormatted {
+func ConvertDate[Date time.Time | *time.Time, DateFormatted string | *string](date Date, layout string) DateFormatted {
 	var dateFormatted DateFormatted
 
 	convertFunc := func(text string) DateFormatted {
