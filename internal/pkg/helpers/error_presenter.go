@@ -1,15 +1,19 @@
 package helpers
 
 import (
+	"context"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
 )
 
 type ErrorPresenter struct {
 }
 
-func (*ErrorPresenter) PresentError(ctx *gin.Context, statusCode int, errors any) {
+type contextExtended interface {
+	context.Context
+	JSON(code int, obj any)
+}
+
+func (*ErrorPresenter) PresentError(ctx interface{ contextExtended }, statusCode int, errors any) {
 	var errorsText string
 
 	switch err := errors.(type) {
