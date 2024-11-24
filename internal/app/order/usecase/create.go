@@ -32,13 +32,11 @@ func (useCase *orderUseCase) Create(ctx context.Context, req *request.OrderStore
 		UpdatedAt:      timeNow,
 	}
 
-	orderID, err := useCase.repository.Create(ctx, order)
+	err := useCase.repository.Create(ctx, order)
 
 	if err != nil {
 		return nil, err
 	}
-
-	order.ID = orderID
 
 	return order, nil
 }

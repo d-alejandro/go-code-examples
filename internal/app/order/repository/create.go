@@ -9,52 +9,22 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-func (rep *orderRepository) Create(ctx context.Context, order *models.Order) (int, error) {
-	selectAgencyQuery := `
-select id
-  from agencies
- where name = $1
-   and agencies.deleted_at is null
- limit 1`
+func (rep *orderRepository) Create(ctx context.Context, order *models.Order) error {
+	query := `select id from agencies where name = $1 and deleted_at is null limit 1`
 
-	err := rep.db.GetContext(ctx, &order.Agency.ID, selectAgencyQuery, order.Agency.Name)
+	err := rep.db.GetContext(ctx, &order.Agency.ID, query, order.Agency.Name)
 
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			if err = rep.createAgency(ctx, &order.Agency); err != nil {
-				return 0, err
+				return err
 			}
 		} else {
-			return 0, err
+			return err
 		}
 	}
 
-	order.AgencyID = order.Agency.ID
-
-	insertOrderQuery := `
-insert into orders (agency_id, status, rental_date, guest_count, transport_count, user_name, email, phone, 
-                    note, admin_note, created_at,updated_at)
-values (:agency_id, :status, :rental_date, :guest_count, :transport_count, :user_name, :email, :phone, 
-        :note, :admin_note, :created_at, :updated_at)
-returning id
-`
-	var (
-		namedQuery string
-		args       []any
-		orderID    int
-	)
-
-	namedQuery, args, err = sqlx.Named(insertOrderQuery, order)
-
-	if err != nil {
-		return 0, err
-	}
-
-	namedQuery = rep.db.Rebind(namedQuery)
-
-	err = rep.db.GetContext(ctx, &orderID, namedQuery, args...)
-
-	return orderID, err
+	return rep.createOrder(ctx, order)
 }
 
 func (rep *orderRepository) createAgency(ctx context.Context, agency *models.Agency) error {
@@ -72,4 +42,23 @@ returning id
 	namedQuery = rep.db.Rebind(namedQuery)
 
 	return rep.db.GetContext(ctx, &agency.ID, namedQuery, args...)
+}
+
+func (rep *orderRepository) createOrder(ctx context.Context, order *models.Order) error {
+	query := `
+insert into orders (agency_id, status, rental_date, guest_count, transport_count, user_name, email, phone, 
+                    note, admin_note, created_at,updated_at)
+values (:agency_id, :status, :rental_date, :guest_count, :transport_count, :user_name, :email, :phone, 
+        :note, :admin_note, :created_at, :updated_at)
+returning id
+`
+	namedQuery, args, err := sqlx.Named(query, order)
+
+	if err != nil {
+		return err
+	}
+
+	namedQuery = rep.db.Rebind(namedQuery)
+
+	return rep.db.GetContext(ctx, &order.ID, namedQuery, args...)
 }

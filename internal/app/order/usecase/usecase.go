@@ -19,7 +19,7 @@ type OrderUseCase interface {
 type orderRepository interface {
 	GetOrderList(context.Context, *dto.PaginationDTO) []*models.Order
 	GetOrder(ctx context.Context, id int) (*models.Order, error)
-	Create(context.Context, *models.Order) (int, error)
+	Create(context.Context, *models.Order) error
 	Update(context.Context, *request.OrderUpdateRequest, *models.Order) error
 	Delete(context.Context, *models.Order) error
 }
