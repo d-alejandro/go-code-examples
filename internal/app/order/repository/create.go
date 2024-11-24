@@ -10,7 +10,12 @@ import (
 )
 
 func (rep *orderRepository) Create(ctx context.Context, order *models.Order) error {
-	query := `select id from agencies where name = $1 and deleted_at is null limit 1`
+	query := `
+select id 
+  from agencies 
+ where name = $1 
+   and deleted_at is null 
+ limit 1`
 
 	err := rep.db.GetContext(ctx, &order.Agency.ID, query, order.Agency.Name)
 
@@ -31,7 +36,7 @@ func (rep *orderRepository) Create(ctx context.Context, order *models.Order) err
 
 func (rep *orderRepository) createAgency(ctx context.Context, agency *models.Agency) error {
 	query := `
-insert into agencies (name, created_at, updated_at)
+insert into agencies (name, created_at, updated_at) 
 values (:name, :created_at, :updated_at) 
 returning id
 `
@@ -49,9 +54,9 @@ returning id
 func (rep *orderRepository) createOrder(ctx context.Context, order *models.Order) error {
 	query := `
 insert into orders (agency_id, status, rental_date, guest_count, transport_count, user_name, email, phone, 
-                    note, admin_note, created_at,updated_at)
+                    note, admin_note, created_at,updated_at) 
 values (:agency_id, :status, :rental_date, :guest_count, :transport_count, :user_name, :email, :phone, 
-        :note, :admin_note, :created_at, :updated_at)
+        :note, :admin_note, :created_at, :updated_at) 
 returning id
 `
 	namedQuery, args, err := sqlx.Named(query, order)
