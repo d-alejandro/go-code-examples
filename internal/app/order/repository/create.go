@@ -24,6 +24,8 @@ func (rep *orderRepository) Create(ctx context.Context, order *models.Order) err
 		}
 	}
 
+	order.AgencyID = order.Agency.ID
+
 	return rep.createOrder(ctx, order)
 }
 
