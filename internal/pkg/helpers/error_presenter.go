@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 )
 
@@ -14,17 +15,6 @@ type contextExtended interface {
 }
 
 func (*ErrorPresenter) PresentError(ctx interface{ contextExtended }, statusCode int, errors any) {
-	var errorsText string
-
-	switch err := errors.(type) {
-	case string:
-		errorsText = err
-	case error:
-		errorsText = err.Error()
-	default:
-		errorsText = "unknown error"
-	}
-
 	statusCodeText := http.StatusText(statusCode)
 
 	responseBody := &struct {
@@ -32,7 +22,7 @@ func (*ErrorPresenter) PresentError(ctx interface{ contextExtended }, statusCode
 		Errors  string `json:"errors"`
 	}{
 		Message: statusCodeText,
-		Errors:  errorsText,
+		Errors:  fmt.Sprintf("%v", errors),
 	}
 
 	ctx.JSON(statusCode, responseBody)
