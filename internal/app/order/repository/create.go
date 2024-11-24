@@ -5,11 +5,20 @@ import (
 	"database/sql"
 	"errors"
 
+	"github.com/d-alejandro/go-code-examples/internal/pkg/helpers"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 	"github.com/jmoiron/sqlx"
 )
 
-func (rep *orderRepository) Create(ctx context.Context, order *models.Order) error {
+func (rep *orderRepository) Create(ctx context.Context, order *models.Order) (err error) {
+	var tx *sqlx.Tx
+
+	if tx, err = rep.db.BeginTxx(ctx, nil); err != nil {
+		return
+	}
+
+	defer helpers.CompleteTransaction(tx, err)
+
 	query := `
 select id 
   from agencies 
@@ -17,24 +26,26 @@ select id
    and deleted_at is null 
  limit 1`
 
-	err := rep.db.GetContext(ctx, &order.Agency.ID, query, order.Agency.Name)
+	err = tx.GetContext(ctx, &order.Agency.ID, query, order.Agency.Name)
 
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			if err = rep.createAgency(ctx, &order.Agency); err != nil {
-				return err
+			if err = rep.createAgency(ctx, tx, &order.Agency); err != nil {
+				return
 			}
 		} else {
-			return err
+			return
 		}
 	}
 
 	order.AgencyID = order.Agency.ID
 
-	return rep.createOrder(ctx, order)
+	err = rep.createOrder(ctx, tx, order)
+
+	return
 }
 
-func (rep *orderRepository) createAgency(ctx context.Context, agency *models.Agency) error {
+func (rep *orderRepository) createAgency(ctx context.Context, tx *sqlx.Tx, agency *models.Agency) error {
 	query := `
 insert into agencies (name, created_at, updated_at) 
 values (:name, :created_at, :updated_at) 
@@ -46,12 +57,12 @@ returning id
 		return err
 	}
 
-	namedQuery = rep.db.Rebind(namedQuery)
+	namedQuery = tx.Rebind(namedQuery)
 
-	return rep.db.GetContext(ctx, &agency.ID, namedQuery, args...)
+	return tx.GetContext(ctx, &agency.ID, namedQuery, args...)
 }
 
-func (rep *orderRepository) createOrder(ctx context.Context, order *models.Order) error {
+func (rep *orderRepository) createOrder(ctx context.Context, tx *sqlx.Tx, order *models.Order) error {
 	query := `
 insert into orders (agency_id, status, rental_date, guest_count, transport_count, user_name, email, phone, 
                     note, admin_note, created_at,updated_at) 
@@ -65,7 +76,7 @@ returning id
 		return err
 	}
 
-	namedQuery = rep.db.Rebind(namedQuery)
+	namedQuery = tx.Rebind(namedQuery)
 
-	return rep.db.GetContext(ctx, &order.ID, namedQuery, args...)
+	return tx.GetContext(ctx, &order.ID, namedQuery, args...)
 }
