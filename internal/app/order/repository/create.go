@@ -22,11 +22,11 @@ select id
 		err := tx.GetContext(ctx, &order.Agency.ID, query, order.Agency.Name)
 
 		if err != nil {
-			if errors.Is(err, sql.ErrNoRows) {
-				if err = rep.createAgency(ctx, tx, &order.Agency); err != nil {
-					return err
-				}
-			} else {
+			if !errors.Is(err, sql.ErrNoRows) {
+				return err
+			}
+
+			if err = rep.createAgency(ctx, tx, &order.Agency); err != nil {
 				return err
 			}
 		}
