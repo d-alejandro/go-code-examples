@@ -10,39 +10,31 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-func (rep *orderRepository) Create(ctx context.Context, order *models.Order) (err error) {
-	var tx *sqlx.Tx
-
-	if tx, err = rep.db.BeginTxx(ctx, nil); err != nil {
-		return
-	}
-
-	defer helpers.CompleteTransaction(tx, err)
-
-	query := `
+func (rep *orderRepository) Create(ctx context.Context, order *models.Order) error {
+	return helpers.ExecuteWithinTransaction(ctx, rep.db, func(tx *sqlx.Tx) error {
+		query := `
 select id 
   from agencies 
  where name = $1 
    and deleted_at is null 
  limit 1`
 
-	err = tx.GetContext(ctx, &order.Agency.ID, query, order.Agency.Name)
+		err := tx.GetContext(ctx, &order.Agency.ID, query, order.Agency.Name)
 
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			if err = rep.createAgency(ctx, tx, &order.Agency); err != nil {
-				return
+		if err != nil {
+			if errors.Is(err, sql.ErrNoRows) {
+				if err = rep.createAgency(ctx, tx, &order.Agency); err != nil {
+					return err
+				}
+			} else {
+				return err
 			}
-		} else {
-			return
 		}
-	}
 
-	order.AgencyID = order.Agency.ID
+		order.AgencyID = order.Agency.ID
 
-	err = rep.createOrder(ctx, tx, order)
-
-	return
+		return rep.createOrder(ctx, tx, order)
+	})
 }
 
 func (rep *orderRepository) createAgency(ctx context.Context, tx *sqlx.Tx, agency *models.Agency) error {
