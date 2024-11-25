@@ -18,14 +18,14 @@ func ExecuteWithinTransaction(ctx context.Context, db *sqlx.DB, function func(tx
 	defer func() {
 		if recoveryErr := recover(); recoveryErr != nil {
 			err = fmt.Errorf("recovered from panic: %v", recoveryErr)
-			rollback(tx, err)
+			rollback(tx, &err)
 		}
 	}()
 
 	err = function(tx)
 
 	if err != nil {
-		rollback(tx, err)
+		rollback(tx, &err)
 		return
 	}
 
@@ -33,8 +33,8 @@ func ExecuteWithinTransaction(ctx context.Context, db *sqlx.DB, function func(tx
 	return
 }
 
-func rollback(tx *sqlx.Tx, err error) {
+func rollback(tx *sqlx.Tx, err *error) {
 	if rollbackErr := tx.Rollback(); rollbackErr != nil {
-		err = errors.Join(err, fmt.Errorf("rolling back transaction: %w", rollbackErr))
+		*err = errors.Join(*err, fmt.Errorf("rolling back transaction: %w", rollbackErr))
 	}
 }
