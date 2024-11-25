@@ -12,7 +12,7 @@ func ExecuteWithinTransaction(ctx context.Context, db *sqlx.DB, function func(tx
 	var tx *sqlx.Tx
 
 	if tx, err = db.BeginTxx(ctx, nil); err != nil {
-		return err
+		return
 	}
 
 	defer func() {
@@ -25,10 +25,12 @@ func ExecuteWithinTransaction(ctx context.Context, db *sqlx.DB, function func(tx
 	err = function(tx)
 
 	if err != nil {
-		return rollback(tx, err)
+		err = rollback(tx, err)
+		return
 	}
 
-	return tx.Commit()
+	err = tx.Commit()
+	return
 }
 
 func rollback(tx *sqlx.Tx, err error) error {
