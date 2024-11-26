@@ -10,14 +10,12 @@ import (
 )
 
 func (rep *orderRepository) GetOrderList(ctx context.Context, dto *dto.PaginationDTO) []*models.Order {
-	var orders []*models.Order
-
 	if !rep.isValidSortColumn(dto.GetSortColumn()) {
-		return orders
+		return nil
 	}
 
 	if !rep.isValidSortDirection(dto.GetSortType()) {
-		return orders
+		return nil
 	}
 
 	rawQuery := `
@@ -29,12 +27,14 @@ select ag.id "agency.id", ag.name "agency.name", o.*
  order by o.%s %s
  limit $1 offset $2
 `
+	var orders []*models.Order
+
 	query := fmt.Sprintf(rawQuery, dto.GetSortColumn(), dto.GetSortType())
 
 	err := rep.db.SelectContext(ctx, &orders, query, dto.GetLimitValue(), dto.GetOffsetValue())
 
 	if err != nil {
-		return []*models.Order{}
+		return nil
 	}
 
 	return orders
