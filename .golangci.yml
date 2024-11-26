@@ -52,9 +52,6 @@ linters-settings:
       - name: bare-return
         disabled: true
 
-      - name: cognitive-complexity
-        arguments: [8]
-
   staticcheck:
     checks: ["all"]
 
