@@ -8,20 +8,20 @@ import (
 )
 
 type HTTPServerDTO struct {
-	config  *config.Config
+	cfg     *config.Config
 	logger  *logrus.Logger
 	db      *sqlx.DB
 	handler *bindings.HandlerProvider
 }
 
 func NewHTTPServerDTO(
-	config *config.Config,
+	cfg *config.Config,
 	logger *logrus.Logger,
 	db *sqlx.DB,
 	handler *bindings.HandlerProvider,
 ) *HTTPServerDTO {
 	return &HTTPServerDTO{
-		config:  config,
+		cfg:     cfg,
 		logger:  logger,
 		db:      db,
 		handler: handler,
@@ -29,7 +29,7 @@ func NewHTTPServerDTO(
 }
 
 func (dto *HTTPServerDTO) GetConfig() *config.Config {
-	return dto.config
+	return dto.cfg
 }
 
 func (dto *HTTPServerDTO) GetLogger() *logrus.Logger {

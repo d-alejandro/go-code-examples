@@ -21,18 +21,18 @@ import (
 const quitChannelSizeIsOne = 1
 
 type HTTPServerProvider struct {
-	config  *config.Config
+	cfg     *config.Config
 	logger  *logrus.Logger
 	db      *sqlx.DB
 	handler *bindings.HandlerProvider
 }
 
-func NewHTTPServerProvider(dto *dto.HTTPServerDTO) *HTTPServerProvider {
+func NewHTTPServerProvider(serverDTO *dto.HTTPServerDTO) *HTTPServerProvider {
 	return &HTTPServerProvider{
-		config:  dto.GetConfig(),
-		logger:  dto.GetLogger(),
-		db:      dto.GetDB(),
-		handler: dto.GetHandler(),
+		cfg:     serverDTO.GetConfig(),
+		logger:  serverDTO.GetLogger(),
+		db:      serverDTO.GetDB(),
+		handler: serverDTO.GetHandler(),
 	}
 }
 
@@ -48,7 +48,7 @@ func (receiver *HTTPServerProvider) Start() {
 		}
 	}()
 
-	outputText := fmt.Sprintf("http server started on :%s", receiver.config.App.HTTPPort)
+	outputText := fmt.Sprintf("http server started on :%s", receiver.cfg.App.HTTPPort)
 	receiver.logger.Info(outputText)
 
 	quitChannel := make(chan os.Signal, quitChannelSizeIsOne)
@@ -57,7 +57,7 @@ func (receiver *HTTPServerProvider) Start() {
 
 	receiver.logger.Info("shutting down HTTP server...")
 
-	ctx, cancel := context.WithTimeout(context.Background(), receiver.config.App.ShuttingDownTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), receiver.cfg.App.ShuttingDownTimeout)
 	defer cancel()
 
 	if err := server.Shutdown(ctx); err != nil {
@@ -87,10 +87,10 @@ func (receiver *HTTPServerProvider) setupGinEngine(router *gin.Engine) *http.Ser
 	routes.RegisterHealthCheckHandles(router)
 
 	return &http.Server{
-		Addr:           receiver.config.App.HTTPServerAddress,
+		Addr:           receiver.cfg.App.HTTPServerAddress,
 		Handler:        router.Handler(),
-		ReadTimeout:    receiver.config.App.ReadTimeout,
-		WriteTimeout:   receiver.config.App.WriteTimeout,
-		MaxHeaderBytes: receiver.config.App.MaxHeaderBytes,
+		ReadTimeout:    receiver.cfg.App.ReadTimeout,
+		WriteTimeout:   receiver.cfg.App.WriteTimeout,
+		MaxHeaderBytes: receiver.cfg.App.MaxHeaderBytes,
 	}
 }

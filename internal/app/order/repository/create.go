@@ -37,7 +37,7 @@ select id
 	})
 }
 
-func (rep *orderRepository) createAgency(ctx context.Context, tx *sqlx.Tx, agency *models.Agency) error {
+func (*orderRepository) createAgency(ctx context.Context, tx *sqlx.Tx, agency *models.Agency) error {
 	query := `
 insert into agencies (name, created_at, updated_at)
 values (:name, :created_at, :updated_at)
@@ -54,7 +54,7 @@ returning id
 	return tx.GetContext(ctx, &agency.ID, namedQuery, args...)
 }
 
-func (rep *orderRepository) createOrder(ctx context.Context, tx *sqlx.Tx, order *models.Order) error {
+func (*orderRepository) createOrder(ctx context.Context, tx *sqlx.Tx, order *models.Order) error {
 	query := `
 insert into orders (agency_id, status, rental_date, guest_count, transport_count, user_name, email, phone,
                     note, admin_note, created_at, updated_at)

@@ -8,12 +8,12 @@ import (
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 )
 
-func (rep *orderRepository) GetOrderList(ctx context.Context, dto *dto.PaginationDTO) []*models.Order {
-	if !rep.isValidSortColumn(dto.GetSortColumn()) {
+func (rep *orderRepository) GetOrderList(ctx context.Context, paginationDTO *dto.PaginationDTO) []*models.Order {
+	if !rep.isValidSortColumn(paginationDTO.GetSortColumn()) {
 		return nil
 	}
 
-	if !rep.isValidSortDirection(dto.GetSortType()) {
+	if !rep.isValidSortDirection(paginationDTO.GetSortType()) {
 		return nil
 	}
 
@@ -28,9 +28,9 @@ select ag.id "agency.id", ag.name "agency.name", o.*
  order by o.%s %s
  limit $1 offset $2
 `
-	query := fmt.Sprintf(rawQuery, dto.GetSortColumn(), dto.GetSortType())
+	query := fmt.Sprintf(rawQuery, paginationDTO.GetSortColumn(), paginationDTO.GetSortType())
 
-	err := rep.db.SelectContext(ctx, &orders, query, dto.GetLimitValue(), dto.GetOffsetValue())
+	err := rep.db.SelectContext(ctx, &orders, query, paginationDTO.GetLimitValue(), paginationDTO.GetOffsetValue())
 
 	if err != nil {
 		return nil
