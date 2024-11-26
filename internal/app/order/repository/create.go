@@ -12,29 +12,33 @@ import (
 
 func (rep *orderRepository) Create(ctx context.Context, order *models.Order) error {
 	return helpers.ExecuteWithinTransaction(ctx, rep.db, func(tx *sqlx.Tx) error {
-		query := `
+		return rep.createAgencyAndOrder(ctx, order, tx)
+	})
+}
+
+func (rep *orderRepository) createAgencyAndOrder(ctx context.Context, order *models.Order, tx *sqlx.Tx) error {
+	query := `
 select id
   from agencies
  where name = $1
    and deleted_at is null
  limit 1`
 
-		err := tx.GetContext(ctx, &order.Agency.ID, query, order.Agency.Name)
+	err := tx.GetContext(ctx, &order.Agency.ID, query, order.Agency.Name)
 
-		if err != nil {
-			if !errors.Is(err, sql.ErrNoRows) {
-				return err
-			}
-
-			if err = rep.createAgency(ctx, tx, &order.Agency); err != nil {
-				return err
-			}
+	if err != nil {
+		if !errors.Is(err, sql.ErrNoRows) {
+			return err
 		}
 
-		order.AgencyID = order.Agency.ID
+		if err = rep.createAgency(ctx, tx, &order.Agency); err != nil {
+			return err
+		}
+	}
 
-		return rep.createOrder(ctx, tx, order)
-	})
+	order.AgencyID = order.Agency.ID
+
+	return rep.createOrder(ctx, tx, order)
 }
 
 func (*orderRepository) createAgency(ctx context.Context, tx *sqlx.Tx, agency *models.Agency) error {
