@@ -18,6 +18,8 @@ func (rep *orderRepository) GetOrderList(ctx context.Context, dto *dto.Paginatio
 		return nil
 	}
 
+	var orders []*models.Order
+
 	rawQuery := `
 select ag.id "agency.id", ag.name "agency.name", o.*
   from orders o
@@ -27,8 +29,6 @@ select ag.id "agency.id", ag.name "agency.name", o.*
  order by o.%s %s
  limit $1 offset $2
 `
-	var orders []*models.Order
-
 	query := fmt.Sprintf(rawQuery, dto.GetSortColumn(), dto.GetSortType())
 
 	err := rep.db.SelectContext(ctx, &orders, query, dto.GetLimitValue(), dto.GetOffsetValue())
