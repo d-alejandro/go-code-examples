@@ -22,9 +22,9 @@ func (rep *orderRepository) GetOrderList(ctx context.Context, dto *dto.Paginatio
 	rawQuery := `
 select ag.id "agency.id", ag.name "agency.name", o.*
   from orders o
-  join agencies ag on o.agency_id = ag.id 
+  join agencies ag on o.agency_id = ag.id
                   and ag.deleted_at is null
- where o.deleted_at is null 
+ where o.deleted_at is null
  order by o.%s %s
  limit $1 offset $2
 `
