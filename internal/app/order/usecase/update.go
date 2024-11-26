@@ -12,17 +12,17 @@ func (useCase *orderUseCase) Update(
 	req *request.OrderUpdateRequest,
 	id int,
 ) (*models.Order, error) {
-	response, err := useCase.GetOrder(ctx, id)
+	order, err := useCase.GetOrder(ctx, id)
 
 	if err != nil {
 		return nil, err
 	}
 
-	err = useCase.repository.Update(ctx, req, response)
+	err = useCase.repository.Update(ctx, req, order)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return response, nil
+	return order, nil
 }

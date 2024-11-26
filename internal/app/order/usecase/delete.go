@@ -7,17 +7,17 @@ import (
 )
 
 func (useCase *orderUseCase) Delete(ctx context.Context, id int) (*models.Order, error) {
-	response, err := useCase.GetOrder(ctx, id)
+	order, err := useCase.GetOrder(ctx, id)
 
 	if err != nil {
 		return nil, err
 	}
 
-	err = useCase.repository.Delete(ctx, response)
+	err = useCase.repository.Delete(ctx, order)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return response, nil
+	return order, nil
 }
