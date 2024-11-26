@@ -2,33 +2,32 @@ package helpers
 
 import "time"
 
-func ConvertDate[Date time.Time | *time.Time, DateFormatted string | *string](date Date, layout string) DateFormatted {
-	var dateFormatted DateFormatted
-
-	convertFunc := func(text string) DateFormatted {
-		if value, ok := any(text).(DateFormatted); ok {
-			return value
-		}
-		return dateFormatted
-	}
-
-	if _, isOk := any(dateFormatted).(string); !isOk {
-		convertFunc = func(text string) DateFormatted {
-			if value, ok := any(&text).(DateFormatted); ok {
-				return value
-			}
-			return dateFormatted
-		}
-	}
+func ConvertDate[Date time.Time | *time.Time, FormattedDate string | *string](date Date, layout string) FormattedDate {
+	var (
+		formattedDate       FormattedDate
+		formattedDateString string
+	)
 
 	switch dateTime := any(date).(type) {
 	case time.Time:
-		return convertFunc(dateTime.Format(layout))
+		formattedDateString = dateTime.Format(layout)
 	case *time.Time:
-		if dateTime != nil {
-			return convertFunc(dateTime.Format(layout))
+		if dateTime == nil {
+			return formattedDate
 		}
+		formattedDateString = dateTime.Format(layout)
 	}
 
-	return dateFormatted
+	if _, isString := any(formattedDate).(string); isString {
+		if value, ok := any(formattedDateString).(FormattedDate); ok {
+			return value
+		}
+		return formattedDate
+	}
+
+	if value, ok := any(&formattedDateString).(FormattedDate); ok {
+		return value
+	}
+
+	return formattedDate
 }
