@@ -7,5 +7,11 @@ import (
 )
 
 func (useCase *orderUseCase) GetOrder(ctx context.Context, id int) (*models.Order, error) {
-	return useCase.repository.GetOrder(ctx, id)
+	order, err := useCase.repository.GetOrder(ctx, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return order, nil
 }
