@@ -3,15 +3,24 @@ package helpers
 import "time"
 
 func ConvertDate[Date time.Time | *time.Time, DateFormatted string | *string](date Date, layout string) DateFormatted {
-	var dateFormatted DateFormatted
+	var (
+		dateFormatted DateFormatted
+		convertFunc   func(text string) DateFormatted
+	)
 
-	convertFunc := func(text string) DateFormatted {
-		return any(text).(DateFormatted)
-	}
-
-	if _, ok := any(dateFormatted).(string); !ok {
+	if _, isOk := any(dateFormatted).(string); isOk {
 		convertFunc = func(text string) DateFormatted {
-			return any(&text).(DateFormatted)
+			if value, ok := any(text).(DateFormatted); ok {
+				return value
+			}
+			return dateFormatted
+		}
+	} else {
+		convertFunc = func(text string) DateFormatted {
+			if value, ok := any(&text).(DateFormatted); ok {
+				return value
+			}
+			return dateFormatted
 		}
 	}
 
