@@ -49,6 +49,12 @@ linters-settings:
       - name: line-length-limit
         arguments: [120]
 
+      - name: bare-return
+        disabled: true
+
+      - name: cognitive-complexity
+        arguments: [8]
+
   staticcheck:
     checks: ["all"]
 
