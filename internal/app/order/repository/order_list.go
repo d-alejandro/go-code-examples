@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/d-alejandro/go-code-examples/internal/config"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/dto"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 )
@@ -41,22 +40,11 @@ select ag.id "agency.id", ag.name "agency.name", o.*
 }
 
 func (rep *orderRepository) isValidSortColumn(name string) bool {
-	_, exists := map[string]struct{}{
-		config.SortColumnID:         {},
-		config.SortColumnStatus:     {},
-		config.SortColumnRentalDate: {},
-		config.SortColumnGuestCount: {},
-		config.SortColumnCreatedAt:  {},
-	}[name]
-
+	_, exists := rep.sortColumnMap[name]
 	return exists
 }
 
 func (rep *orderRepository) isValidSortDirection(name string) bool {
-	_, exists := map[string]struct{}{
-		config.SortDirectionASC:  {},
-		config.SortDirectionDESC: {},
-	}[name]
-
+	_, exists := rep.sortDirectionMap[name]
 	return exists
 }
