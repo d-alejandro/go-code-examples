@@ -27,6 +27,7 @@
 - RESTful API
 - SOLID
 - SQL
+- [SQLX](https://github.com/jmoiron/sqlx)
 
 ## Installation
 
