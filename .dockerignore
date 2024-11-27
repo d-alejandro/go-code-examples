@@ -13,5 +13,8 @@ build.mk
 compose.yaml
 install-local.mk
 Makefile
+postman_collection.json
+postman_env_1.json
+postman_env_2.json
 readme.md
 run-golint.sh

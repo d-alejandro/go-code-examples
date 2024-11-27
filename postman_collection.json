@@ -1,0 +1,298 @@
+{
+	"info": {
+		"_postman_id": "054ef1fd-9ab7-4e2b-9af4-d0e3ba20d312",
+		"name": "go-code-examples",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9716359"
+	},
+	"item": [
+		{
+			"name": "Create Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "agency_name",
+							"value": "Test Agency Name",
+							"type": "text"
+						},
+						{
+							"key": "rental_date",
+							"value": "01-02-2025",
+							"type": "text"
+						},
+						{
+							"key": "guest_count",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "transport_count",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "user_name",
+							"value": "Test User",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "71437854547",
+							"type": "text"
+						},
+						{
+							"key": "note",
+							"value": "Test note",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "admin_note",
+							"value": "Admin test note",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/orders",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Order",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "guest_count",
+							"value": "7",
+							"type": "text"
+						},
+						{
+							"key": "transport_count",
+							"value": "7",
+							"type": "text"
+						},
+						{
+							"key": "user_name",
+							"value": "Test User Name 7",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test7@test.com",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "71437854500",
+							"type": "text"
+						},
+						{
+							"key": "note",
+							"value": "123",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "admin_note",
+							"value": "456",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/orders/10000001",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"orders",
+						"10000001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Order",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/orders/10000001",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"orders",
+						"10000001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/test",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Orders",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/orders?start=0&end=10&sort_column=id&sort_type=asc",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "0"
+						},
+						{
+							"key": "end",
+							"value": "10"
+						},
+						{
+							"key": "sort_column",
+							"value": "id"
+						},
+						{
+							"key": "sort_type",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order Details",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/orders/10000001",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"orders",
+						"10000001"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
