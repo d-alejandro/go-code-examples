@@ -13,7 +13,6 @@
 - [Goose](https://github.com/pressly/goose)
 - [GORM Migrator](https://github.com/go-gorm/gorm)
 - Graceful Shutdown of HTTP server
-- HTTP Server
 - Linters
 - Linux
 - [Logrus](https://github.com/sirupsen/logrus)
