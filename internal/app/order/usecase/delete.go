@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"time"
 
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 )
@@ -12,6 +13,9 @@ func (useCase *orderUseCase) Delete(ctx context.Context, id int) (*models.Order,
 	if err != nil {
 		return nil, err
 	}
+
+	timeNow := time.Now()
+	order.DeletedAt = &timeNow
 
 	err = useCase.repository.Delete(ctx, order)
 
