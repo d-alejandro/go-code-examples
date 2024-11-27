@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"time"
 
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
@@ -18,7 +19,16 @@ func (useCase *orderUseCase) Update(
 		return nil, err
 	}
 
-	err = useCase.repository.Update(ctx, req, order)
+	order.GuestCount = req.GetGuestCount()
+	order.TransportCount = req.GetTransportCount()
+	order.UserName = req.GetUserName()
+	order.Email = req.GetEmail()
+	order.Phone = req.GetPhone()
+	order.Note = req.GetNote()
+	order.AdminNote = req.GetAdminNote()
+	order.UpdatedAt = time.Now()
+
+	err = useCase.repository.Update(ctx, order)
 
 	if err != nil {
 		return nil, err
