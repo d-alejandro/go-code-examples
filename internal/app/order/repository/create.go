@@ -1,39 +1,78 @@
 package repository
 
 import (
+	"context"
+	"database/sql"
+	"errors"
+
+	"github.com/d-alejandro/go-code-examples/internal/pkg/helpers"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
-	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
-	"gorm.io/gorm"
+	"github.com/jmoiron/sqlx"
 )
 
-func (repository *orderRepository) Create(req *request.OrderStoreRequest) (*models.Order, error) {
-	agency := models.Agency{
-		Name: req.GetAgencyName(),
-	}
-
-	userName := req.GetUserName()
-	note := req.GetNote()
-	adminNote := req.GetAdminNote()
-
-	order := &models.Order{
-		Agency:         agency,
-		RentalDate:     req.GetRentalDate(),
-		GuestCount:     req.GetGuestCount(),
-		TransportCount: req.GetTransportCount(),
-		UserName:       &userName,
-		Email:          req.GetEmail(),
-		Phone:          req.GetPhone(),
-		Note:           &note,
-		AdminNote:      &adminNote,
-	}
-
-	err := repository.db.Transaction(func(tx *gorm.DB) error {
-		result := tx.Create(order)
-		if result != nil {
-			return result.Error
-		}
-		return nil
+func (rep *orderRepository) Create(ctx context.Context, order *models.Order) error {
+	return helpers.ExecuteWithinTransaction(ctx, rep.db, func(tx *sqlx.Tx) error {
+		return rep.createAgencyAndOrder(ctx, order, tx)
 	})
+}
 
-	return order, err
+func (rep *orderRepository) createAgencyAndOrder(ctx context.Context, order *models.Order, tx *sqlx.Tx) error {
+	query := `
+select id
+  from agencies
+ where name = $1
+   and deleted_at is null
+ limit 1`
+
+	err := tx.GetContext(ctx, &order.Agency.ID, query, order.Agency.Name)
+
+	if err != nil {
+		if !errors.Is(err, sql.ErrNoRows) {
+			return err
+		}
+
+		if err = rep.createAgency(ctx, tx, &order.Agency); err != nil {
+			return err
+		}
+	}
+
+	order.AgencyID = order.Agency.ID
+
+	return rep.createOrder(ctx, tx, order)
+}
+
+func (*orderRepository) createAgency(ctx context.Context, tx *sqlx.Tx, agency *models.Agency) error {
+	query := `
+insert into agencies (name, created_at, updated_at)
+values (:name, :created_at, :updated_at)
+returning id
+`
+	namedQuery, args, err := sqlx.Named(query, agency)
+
+	if err != nil {
+		return err
+	}
+
+	namedQuery = tx.Rebind(namedQuery)
+
+	return tx.GetContext(ctx, &agency.ID, namedQuery, args...)
+}
+
+func (*orderRepository) createOrder(ctx context.Context, tx *sqlx.Tx, order *models.Order) error {
+	query := `
+insert into orders (agency_id, status, rental_date, guest_count, transport_count, user_name, email, phone,
+                    note, admin_note, created_at, updated_at)
+values (:agency_id, :status, :rental_date, :guest_count, :transport_count, :user_name, :email, :phone,
+        :note, :admin_note, :created_at, :updated_at)
+returning id
+`
+	namedQuery, args, err := sqlx.Named(query, order)
+
+	if err != nil {
+		return err
+	}
+
+	namedQuery = tx.Rebind(namedQuery)
+
+	return tx.GetContext(ctx, &order.ID, namedQuery, args...)
 }

@@ -11,17 +11,17 @@ import (
 func (handler *orderHandler) Destroy(ctx *gin.Context) {
 	paramID := ctx.Param("id")
 
-	id, errParam := strconv.Atoi(paramID)
-	if errParam != nil {
+	id, err := strconv.Atoi(paramID)
+	if err != nil {
 		handler.presenter.PresentError(ctx, http.StatusBadRequest, config.MessageInvalidID)
 		return
 	}
 
-	response, useCaseError := handler.useCase.Delete(id)
-	if useCaseError != nil {
-		handler.presenter.PresentError(ctx, http.StatusBadRequest, useCaseError)
+	order, useCaseErr := handler.useCase.Delete(ctx, id)
+	if useCaseErr != nil {
+		handler.presenter.PresentError(ctx, http.StatusBadRequest, useCaseErr)
 		return
 	}
 
-	handler.presenter.PresentOrder(ctx, response)
+	handler.presenter.PresentOrder(ctx, order)
 }

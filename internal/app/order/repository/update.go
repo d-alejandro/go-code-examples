@@ -1,26 +1,34 @@
 package repository
 
 import (
+	"context"
+
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
-	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
+	"github.com/jmoiron/sqlx"
 )
 
-func (repository *orderRepository) Update(req *request.OrderUpdateRequest, order *models.Order) error {
-	userName := req.GetUserName()
-	note := req.GetNote()
-	adminNote := req.GetAdminNote()
+func (rep *orderRepository) Update(ctx context.Context, order *models.Order) error {
+	query := `
+update orders
+   set guest_count = :guest_count,
+       transport_count = :transport_count,
+       user_name = :user_name,
+       email = :email,
+       phone = :phone,
+       note = :note,
+       admin_note = :admin_note,
+       updated_at = :updated_at
+ where id = :id
+`
+	namedQuery, args, err := sqlx.Named(query, order)
 
-	order.GuestCount = req.GetGuestCount()
-	order.TransportCount = req.GetTransportCount()
-	order.UserName = &userName
-	order.Email = req.GetEmail()
-	order.Phone = req.GetPhone()
-	order.Note = &note
-	order.AdminNote = &adminNote
+	if err != nil {
+		return err
+	}
 
-	result := repository.db.
-		Omit("Agency").
-		Save(order)
+	namedQuery = rep.db.Rebind(namedQuery)
 
-	return result.Error
+	_, err = rep.db.ExecContext(ctx, namedQuery, args...)
+
+	return err
 }

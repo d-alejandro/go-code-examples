@@ -15,7 +15,7 @@ func (handler *orderHandler) Index(ctx *gin.Context) {
 		return
 	}
 
-	response := handler.useCase.GetOrderList(&req)
+	orders := handler.useCase.GetOrderList(ctx, &req)
 
-	handler.presenter.PresentOrderList(ctx, response)
+	handler.presenter.PresentOrderList(ctx, orders)
 }

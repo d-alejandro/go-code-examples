@@ -3,21 +3,18 @@ package resource
 import (
 	"time"
 
+	"github.com/d-alejandro/go-code-examples/internal/config"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/helpers"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 )
 
-const (
-	dateTimeLayout = "02-01-2006 15:04:05"
-	dateLayout     = "02-01-2006"
-)
-
 type OrderResource struct {
-	ID             uint    `json:"id"`
+	ID             int     `json:"id"`
 	AgencyName     string  `json:"agency_name"`
 	Status         string  `json:"status"`
 	IsConfirmed    bool    `json:"is_confirmed"`
 	IsChecked      bool    `json:"is_checked"`
-	RentalDate     *string `json:"rental_date"`
+	RentalDate     string  `json:"rental_date"`
 	UserName       *string `json:"user_name"`
 	TransportCount int     `json:"transport_count"`
 	GuestCount     int     `json:"guest_count"`
@@ -26,8 +23,8 @@ type OrderResource struct {
 	Email          string  `json:"email"`
 	Phone          string  `json:"phone"`
 	ConfirmedAt    *string `json:"confirmed_at"`
-	CreatedAt      *string `json:"created_at"`
-	UpdatedAt      *string `json:"updated_at"`
+	CreatedAt      string  `json:"created_at"`
+	UpdatedAt      string  `json:"updated_at"`
 }
 
 func NewOrderResource(order *models.Order) *OrderResource {
@@ -37,7 +34,7 @@ func NewOrderResource(order *models.Order) *OrderResource {
 		Status:         string(order.Status),
 		IsConfirmed:    order.IsConfirmed,
 		IsChecked:      order.IsChecked,
-		RentalDate:     convertDate(order.RentalDate, dateLayout),
+		RentalDate:     helpers.ConvertDate[time.Time, string](order.RentalDate, config.DateLayout),
 		UserName:       order.UserName,
 		TransportCount: order.TransportCount,
 		GuestCount:     order.GuestCount,
@@ -45,16 +42,8 @@ func NewOrderResource(order *models.Order) *OrderResource {
 		Note:           order.Note,
 		Email:          order.Email,
 		Phone:          order.Phone,
-		ConfirmedAt:    convertDate(order.ConfirmedAt, dateTimeLayout),
-		CreatedAt:      convertDate(order.CreatedAt, dateTimeLayout),
-		UpdatedAt:      convertDate(order.UpdatedAt, dateTimeLayout),
+		ConfirmedAt:    helpers.ConvertDate[*time.Time, *string](order.ConfirmedAt, config.DateLayout),
+		CreatedAt:      helpers.ConvertDate[time.Time, string](order.CreatedAt, config.DateTimeLayout),
+		UpdatedAt:      helpers.ConvertDate[time.Time, string](order.UpdatedAt, config.DateTimeLayout),
 	}
-}
-
-func convertDate(date *time.Time, layout string) *string {
-	if date == nil {
-		return nil
-	}
-	dateFormatted := date.Format(layout)
-	return &dateFormatted
 }

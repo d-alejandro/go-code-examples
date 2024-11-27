@@ -1,15 +1,34 @@
 package repository
 
-import "github.com/d-alejandro/go-code-examples/internal/pkg/models"
+import (
+	"context"
+	"database/sql"
+	"errors"
 
-func (repository *orderRepository) GetOrder(id int) (*models.Order, error) {
-	var order *models.Order
+	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
+)
 
-	conditions := `"` + models.TableOrders + `"."` + models.ColumnIDTableOrders + `" = ?`
+func (rep *orderRepository) GetOrder(ctx context.Context, id int) (*models.Order, error) {
+	query := `
+select ag.id "agency.id", ag.name "agency.name", o.*
+  from orders o,
+       agencies ag
+ where o.agency_id = ag.id
+   and o.id = $1
+   and o.deleted_at is null
+   and ag.deleted_at is null
+ limit 1`
 
-	result := repository.db.
-		Preload(models.RelationAgencyTableOrders).
-		Take(&order, conditions, id)
+	var order models.Order
 
-	return order, result.Error
+	err := rep.db.GetContext(ctx, &order, query, id)
+
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, errors.New("order not found")
+		}
+		return nil, err
+	}
+
+	return &order, nil
 }

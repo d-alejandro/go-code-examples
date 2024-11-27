@@ -1,12 +1,14 @@
 package usecase
 
 import (
+	"context"
+
 	"github.com/d-alejandro/go-code-examples/internal/pkg/dto"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
 )
 
-func (useCase *orderUseCase) GetOrderList(req *request.OrderIndexRequest) []*models.Order {
+func (useCase *orderUseCase) GetOrderList(ctx context.Context, req *request.OrderIndexRequest) []*models.Order {
 	startValue := req.GetStart()
 	limitValue := req.GetEnd() - startValue
 
@@ -17,5 +19,5 @@ func (useCase *orderUseCase) GetOrderList(req *request.OrderIndexRequest) []*mod
 		startValue,
 	)
 
-	return useCase.repository.GetOrderList(pagination)
+	return useCase.repository.GetOrderList(ctx, pagination)
 }

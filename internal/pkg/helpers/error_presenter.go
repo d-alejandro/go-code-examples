@@ -1,29 +1,29 @@
 package helpers
 
 import (
+	"context"
+	"fmt"
 	"net/http"
-
-	"github.com/d-alejandro/go-code-examples/internal/pkg/resource"
-	"github.com/gin-gonic/gin"
 )
 
 type ErrorPresenter struct {
 }
 
-func (*ErrorPresenter) PresentError(ctx *gin.Context, statusCode int, errors any) {
-	var errorsText string
+type contextExtended interface {
+	context.Context
+	JSON(code int, obj any)
+}
 
-	switch err := errors.(type) {
-	case string:
-		errorsText = err
-	case error:
-		errorsText = err.Error()
-	default:
-		errorsText = "unknown error"
+func (*ErrorPresenter) PresentError(ctx interface{ contextExtended }, statusCode int, errors any) {
+	statusCodeText := http.StatusText(statusCode)
+
+	responseBody := &struct {
+		Message string `json:"message"`
+		Errors  string `json:"errors"`
+	}{
+		Message: statusCodeText,
+		Errors:  fmt.Sprintf("%v", errors),
 	}
 
-	statusCodeText := http.StatusText(statusCode)
-	errorResource := resource.NewErrorResource(statusCodeText, errorsText)
-
-	ctx.JSON(statusCode, errorResource)
+	ctx.JSON(statusCode, responseBody)
 }

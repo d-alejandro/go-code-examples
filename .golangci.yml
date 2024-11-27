@@ -49,6 +49,9 @@ linters-settings:
       - name: line-length-limit
         arguments: [120]
 
+      - name: bare-return
+        disabled: true
+
   staticcheck:
     checks: ["all"]
 

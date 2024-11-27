@@ -1,7 +1,17 @@
 package usecase
 
-import "github.com/d-alejandro/go-code-examples/internal/pkg/models"
+import (
+	"context"
 
-func (useCase *orderUseCase) GetOrder(id int) (*models.Order, error) {
-	return useCase.repository.GetOrder(id)
+	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
+)
+
+func (useCase *orderUseCase) GetOrder(ctx context.Context, id int) (*models.Order, error) {
+	order, err := useCase.repository.GetOrder(ctx, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return order, nil
 }

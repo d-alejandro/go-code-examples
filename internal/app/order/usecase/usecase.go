@@ -1,25 +1,27 @@
 package usecase
 
 import (
+	"context"
+
 	"github.com/d-alejandro/go-code-examples/internal/pkg/dto"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
 )
 
 type OrderUseCase interface {
-	GetOrderList(*request.OrderIndexRequest) []*models.Order
-	GetOrder(id int) (*models.Order, error)
-	Create(*request.OrderStoreRequest) (*models.Order, error)
-	Update(req *request.OrderUpdateRequest, id int) (*models.Order, error)
-	Delete(id int) (*models.Order, error)
+	GetOrderList(context.Context, *request.OrderIndexRequest) []*models.Order
+	GetOrder(ctx context.Context, id int) (*models.Order, error)
+	Create(context.Context, *request.OrderStoreRequest) (*models.Order, error)
+	Update(ctx context.Context, req *request.OrderUpdateRequest, id int) (*models.Order, error)
+	Delete(ctx context.Context, id int) (*models.Order, error)
 }
 
 type orderRepository interface {
-	GetOrderList(*dto.PaginationDTO) []*models.Order
-	GetOrder(id int) (*models.Order, error)
-	Create(*request.OrderStoreRequest) (*models.Order, error)
-	Update(*request.OrderUpdateRequest, *models.Order) error
-	Delete(*models.Order) error
+	GetOrderList(context.Context, *dto.PaginationDTO) []*models.Order
+	GetOrder(ctx context.Context, id int) (*models.Order, error)
+	Create(context.Context, *models.Order) error
+	Update(context.Context, *models.Order) error
+	Delete(context.Context, *models.Order) error
 }
 
 type orderUseCase struct {

@@ -4,24 +4,21 @@ import (
 	"time"
 
 	"github.com/d-alejandro/go-code-examples/internal/config"
-	"github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 type GORMProvider struct {
-	cfg    *config.Config
-	logger *logrus.Logger
+	cfg *config.Config
 }
 
-func NewGORMProvider(cfg *config.Config, logger *logrus.Logger) *GORMProvider {
+func NewGORMProvider(cfg *config.Config) *GORMProvider {
 	return &GORMProvider{
-		cfg:    cfg,
-		logger: logger,
+		cfg: cfg,
 	}
 }
 
-func (receiver *GORMProvider) GetGORM() *gorm.DB {
+func (receiver *GORMProvider) GetGORM() (*gorm.DB, error) {
 	nowFunction := func() time.Time {
 		location, err := time.LoadLocation(receiver.cfg.App.TimeZone)
 
@@ -42,8 +39,8 @@ func (receiver *GORMProvider) GetGORM() *gorm.DB {
 	gormDB, err := gorm.Open(dialector, gormConfig)
 
 	if err != nil {
-		receiver.logger.Fatal("Failed to connect to the DatabaseProvider")
+		return nil, err
 	}
 
-	return gormDB
+	return gormDB, nil
 }

@@ -15,11 +15,11 @@ func (handler *orderHandler) Store(ctx *gin.Context) {
 		return
 	}
 
-	response, useCaseError := handler.useCase.Create(&req)
-	if useCaseError != nil {
-		handler.presenter.PresentError(ctx, http.StatusBadRequest, useCaseError)
+	order, useCaseErr := handler.useCase.Create(ctx, &req)
+	if useCaseErr != nil {
+		handler.presenter.PresentError(ctx, http.StatusBadRequest, useCaseErr)
 		return
 	}
 
-	handler.presenter.PresentOrder(ctx, response)
+	handler.presenter.PresentOrder(ctx, order)
 }

@@ -1,16 +1,12 @@
 package models
 
-import (
-	"time"
-
-	"gorm.io/gorm"
-)
+import "time"
 
 type Agency struct {
-	ID        uint            `gorm:"primaryKey"`
-	Name      string          `gorm:"type:varchar(255);not null;unique"`
-	Contact   *string         `gorm:"type:text"`
-	CreatedAt *time.Time      `gorm:"type:timestamp(0)"`
-	UpdatedAt *time.Time      `gorm:"type:timestamp(0)"`
-	DeletedAt *gorm.DeletedAt `gorm:"type:timestamp(0)"`
+	ID        int        `db:"id" gorm:"primaryKey"`
+	Name      string     `db:"name" gorm:"type:varchar(255);not null;unique"`
+	Contact   *string    `db:"contact" gorm:"type:text"`
+	CreatedAt time.Time  `db:"created_at" gorm:"type:timestamp(0);not null"`
+	UpdatedAt time.Time  `db:"updated_at" gorm:"type:timestamp(0);not null"`
+	DeletedAt *time.Time `db:"deleted_at" gorm:"type:timestamp(0)"`
 }

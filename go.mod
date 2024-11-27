@@ -5,6 +5,8 @@ go 1.23.3
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/jackc/pgx/v5 v5.7.1
+	github.com/jmoiron/sqlx v1.4.0
+	github.com/lib/pq v1.10.9
 	github.com/mfridman/interpolate v0.0.2
 	github.com/mfridman/xflag v0.0.0-20240825232106-efb77353e578
 	github.com/pressly/goose/v3 v3.22.1

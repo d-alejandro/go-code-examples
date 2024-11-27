@@ -11,9 +11,9 @@ import (
 func (*orderPresenter) PresentOrder(ctx *gin.Context, order *models.Order) {
 	orderResource := resource.NewOrderResource(order)
 
-	response := gin.H{
+	responseBody := gin.H{
 		"data": orderResource,
 	}
 
-	ctx.JSON(http.StatusOK, response)
+	ctx.JSON(http.StatusOK, responseBody)
 }

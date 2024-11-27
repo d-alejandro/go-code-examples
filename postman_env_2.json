@@ -1,0 +1,15 @@
+{
+	"id": "475b52a8-9d20-4c20-92dd-56a1a07cb26d",
+	"name": "Server 8081",
+	"values": [
+		{
+			"key": "url",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2024-11-27T13:55:51.289Z",
+	"_postman_exported_using": "Postman/11.21.0"
+}

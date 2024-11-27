@@ -20,8 +20,13 @@ func GetGORM() *gorm.DB {
 		loggerProvider := providers.NewLoggerProvider(cfg)
 		logger := loggerProvider.GetLogger()
 
-		gormProvider := providers.NewGORMProvider(cfg, logger)
-		gormDB = gormProvider.GetGORM()
+		gormProvider := providers.NewGORMProvider(cfg)
+
+		var err error
+
+		if gormDB, err = gormProvider.GetGORM(); err != nil {
+			logger.Fatalf("failed to connect GORM: %s", err.Error())
+		}
 	})
 	return gormDB
 }

@@ -1,14 +1,27 @@
 package usecase
 
-import "github.com/d-alejandro/go-code-examples/internal/pkg/models"
+import (
+	"context"
+	"time"
 
-func (useCase *orderUseCase) Delete(id int) (*models.Order, error) {
-	response, err := useCase.GetOrder(id)
+	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
+)
+
+func (useCase *orderUseCase) Delete(ctx context.Context, id int) (*models.Order, error) {
+	order, err := useCase.GetOrder(ctx, id)
+
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
-	err = useCase.repository.Delete(response)
+	timeNow := time.Now()
+	order.DeletedAt = &timeNow
 
-	return response, err
+	err = useCase.repository.Delete(ctx, order)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return order, nil
 }

@@ -9,14 +9,15 @@ import (
 )
 
 func (*orderPresenter) PresentOrderList(ctx *gin.Context, orders []*models.Order) {
-	response := make([]*resource.OrderIndexResource, len(orders))
+	orderResources := make([]*resource.OrderIndexResource, len(orders))
 
-	for key, order := range orders {
-		response[key] = resource.NewOrderIndexResource(order)
+	for index, order := range orders {
+		orderResources[index] = resource.NewOrderIndexResource(order)
 	}
 
-	ctx.JSON(
-		http.StatusOK,
-		gin.H{"data": response},
-	)
+	responseBody := gin.H{
+		"data": orderResources,
+	}
+
+	ctx.JSON(http.StatusOK, responseBody)
 }
