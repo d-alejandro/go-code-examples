@@ -7,12 +7,11 @@
 - CRUD
 - Docker Compose (Docker 27.3.1, Docker Compose v2.29.7)
 - Dockerfile with multi-stage builds
-- DTO
 - [Gin Web Framework](https://github.com/gin-gonic/gin)
 - Golang 1.23
 - [Golangci-lint](https://github.com/golangci/golangci-lint)
 - [Goose](https://github.com/pressly/goose)
-- [GORM](https://github.com/go-gorm/gorm)
+- [GORM Migrator](https://github.com/go-gorm/gorm)
 - Graceful Shutdown of HTTP server
 - HTTP Server
 - Linters
@@ -23,7 +22,6 @@
 - MVC
 - PostgreSQL 17
 - [Pre-commit](https://github.com/pre-commit/pre-commit)
-- [Pre-commit hooks](https://github.com/pre-commit/pre-commit-hooks)
 - RESTful API
 - SOLID
 - SQL
