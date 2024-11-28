@@ -26,7 +26,7 @@ reset:
 refresh: reset migrate
 
 .PHONY: mock
-mock: SRC = app/order/handler
+mock: SRC = pkg/helpers
 mock: NAME = ValidationHelper
 mock: DEST = validator
 mock:

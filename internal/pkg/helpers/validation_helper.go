@@ -5,17 +5,22 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
-type ValidationHelper struct {
+type ValidationHelper interface {
+	ValidateForm(ctx *gin.Context, request any) error
+	ValidateQuery(ctx *gin.Context, request any) error
 }
 
-func NewValidationHelper() *ValidationHelper {
-	return &ValidationHelper{}
+type validationHelper struct {
 }
 
-func (validator *ValidationHelper) ValidateForm(ctx *gin.Context, request any) error {
+func NewValidationHelper() ValidationHelper {
+	return &validationHelper{}
+}
+
+func (validator *validationHelper) ValidateForm(ctx *gin.Context, request any) error {
 	return ctx.ShouldBindWith(request, binding.Form)
 }
 
-func (validator *ValidationHelper) ValidateQuery(ctx *gin.Context, request any) error {
+func (validator *validationHelper) ValidateQuery(ctx *gin.Context, request any) error {
 	return ctx.ShouldBindWith(request, binding.Query)
 }
