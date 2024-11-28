@@ -3,6 +3,8 @@ include install-local.mk
 
 .DEFAULT_GOAL := build-run
 
+GO_BIN=$(shell go env GOPATH)/bin
+
 .PHONY: lint
 lint:
 	pre-commit run -a
@@ -22,3 +24,10 @@ reset:
 
 .PHONY: refresh
 refresh: reset migrate
+
+.PHONY: mock
+mock: SRC = app/order/handler
+mock: NAME = ValidationHelper
+mock: DEST = validator
+mock:
+	$(GO_BIN)/mockgen -package mocks github.com/d-alejandro/go-code-examples/internal/$(SRC) $(NAME) > ./internal/pkg/mocks/$(DEST).go
