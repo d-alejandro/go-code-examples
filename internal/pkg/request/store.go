@@ -1,11 +1,6 @@
 package request
 
-import (
-	"time"
-
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
-)
+import "time"
 
 type OrderStoreRequest struct {
 	AgencyName     string    `form:"agency_name" binding:"required,max=200"`
@@ -17,10 +12,6 @@ type OrderStoreRequest struct {
 	Phone          string    `form:"phone" binding:"required,max=50"`
 	Note           *string   `form:"note" binding:"omitempty,max=1000"`
 	AdminNote      *string   `form:"admin_note" binding:"omitempty,max=1000"`
-}
-
-func (request *OrderStoreRequest) Validate(context *gin.Context) error {
-	return context.ShouldBindWith(request, binding.Form)
 }
 
 func (request *OrderStoreRequest) GetAgencyName() string {

@@ -36,14 +36,21 @@ type contextExtended interface {
 	JSON(code int, obj any)
 }
 
+type validationHelper interface {
+	ValidateForm(ctx *gin.Context, request any) error
+	ValidateQuery(ctx *gin.Context, request any) error
+}
+
 type orderHandler struct {
 	useCase   orderUseCase
 	presenter orderPresenter
+	validator validationHelper
 }
 
-func NewOrderHandler(useCase orderUseCase, presenter orderPresenter) OrderHandler {
+func NewOrderHandler(useCase orderUseCase, presenter orderPresenter, validator validationHelper) OrderHandler {
 	return &orderHandler{
 		useCase:   useCase,
 		presenter: presenter,
+		validator: validator,
 	}
 }
