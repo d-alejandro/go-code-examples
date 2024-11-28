@@ -8,6 +8,7 @@ import (
 	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
 	"github.com/gin-gonic/gin"
 	"github.com/jaswdr/faker/v2"
+	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 )
 
@@ -23,11 +24,14 @@ func TestStore(t *testing.T) {
 		EXPECT().
 		ValidateForm(gomock.Any(), gomock.Any()).
 		DoAndReturn(func(_ *gin.Context, req any) error {
+			reqPointer, isOk := req.(*request.OrderStoreRequest)
+			require.True(t, isOk)
+
 			minDate := time.Now()
 			maxDate := time.Now().AddDate(1, 0, 0)
 			userName := fake.Person().Name()
 
-			storeRequest := &request.OrderStoreRequest{
+			*reqPointer = request.OrderStoreRequest{
 				AgencyName:     fake.Company().Name(),
 				RentalDate:     fake.Time().TimeBetween(minDate, maxDate),
 				GuestCount:     1,
@@ -36,8 +40,6 @@ func TestStore(t *testing.T) {
 				Email:          fake.Internet().Email(),
 				Phone:          fake.Phone().Number(),
 			}
-
-			*(req.(*request.OrderStoreRequest)) = *storeRequest
 
 			return nil
 		})
