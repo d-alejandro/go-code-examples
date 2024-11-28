@@ -17,10 +17,10 @@ func NewValidationHelper() ValidationHelper {
 	return &validationHelper{}
 }
 
-func (validator *validationHelper) ValidateForm(ctx *gin.Context, request any) error {
+func (*validationHelper) ValidateForm(ctx *gin.Context, request any) error {
 	return ctx.ShouldBindWith(request, binding.Form)
 }
 
-func (validator *validationHelper) ValidateQuery(ctx *gin.Context, request any) error {
+func (*validationHelper) ValidateQuery(ctx *gin.Context, request any) error {
 	return ctx.ShouldBindWith(request, binding.Query)
 }

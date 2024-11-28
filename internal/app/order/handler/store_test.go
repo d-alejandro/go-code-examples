@@ -1,13 +1,13 @@
 package handler
 
 import (
-	"github.com/jaswdr/faker/v2"
 	"testing"
 	"time"
 
 	"github.com/d-alejandro/go-code-examples/internal/pkg/mocks"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
 	"github.com/gin-gonic/gin"
+	"github.com/jaswdr/faker/v2"
 	"go.uber.org/mock/gomock"
 )
 
@@ -22,7 +22,7 @@ func TestStore(t *testing.T) {
 	mockValidator.
 		EXPECT().
 		ValidateForm(gomock.Any(), gomock.Any()).
-		DoAndReturn(func(ctx *gin.Context, req any) error {
+		DoAndReturn(func(_ *gin.Context, req any) error {
 			minDate := time.Now()
 			maxDate := time.Now().AddDate(1, 0, 0)
 			userName := fake.Person().Name()

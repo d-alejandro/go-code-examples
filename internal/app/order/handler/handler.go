@@ -37,8 +37,8 @@ type contextExtended interface {
 }
 
 type validationHelper interface {
-	ValidateForm(ctx *gin.Context, request any) error
-	ValidateQuery(ctx *gin.Context, request any) error
+	ValidateForm(ctx *gin.Context, req any) error
+	ValidateQuery(ctx *gin.Context, req any) error
 }
 
 type orderHandler struct {
