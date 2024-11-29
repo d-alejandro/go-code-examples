@@ -8,12 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (*orderPresenter) PresentOrder(ctx *gin.Context, order *models.Order) {
+func (presenter *orderPresenter) PresentOrder(ctx *gin.Context, order *models.Order) {
 	orderResource := resource.NewOrderResource(order)
 
 	responseBody := gin.H{
 		"data": orderResource,
 	}
 
-	ctx.JSON(http.StatusOK, responseBody)
+	presenter.rendering.RenderJSON(ctx, http.StatusOK, responseBody)
 }

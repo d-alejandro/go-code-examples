@@ -16,8 +16,6 @@ func TestStore(t *testing.T) {
 	controller := gomock.NewController(t)
 	defer controller.Finish()
 
-	fake := faker.New()
-
 	mockValidator := mocks.NewMockValidationHelper(controller)
 
 	mockValidator.
@@ -26,6 +24,8 @@ func TestStore(t *testing.T) {
 		DoAndReturn(func(_ *gin.Context, req any) error {
 			reqPointer, isOk := req.(*request.OrderStoreRequest)
 			require.True(t, isOk)
+
+			fake := faker.New()
 
 			minDate := time.Now()
 			maxDate := time.Now().AddDate(1, 0, 0)

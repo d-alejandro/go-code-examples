@@ -8,6 +8,7 @@ import (
 	"github.com/d-alejandro/go-code-examples/internal/app/order/repository"
 	"github.com/d-alejandro/go-code-examples/internal/app/order/usecase"
 	"github.com/d-alejandro/go-code-examples/internal/config"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/helpers"
 	"github.com/d-alejandro/go-code-examples/internal/providers"
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
@@ -30,7 +31,8 @@ func TestMain(m *testing.M) {
 
 	rep := repository.NewOrderRepository(db)
 	uCase = usecase.NewOrderUseCase(rep)
-	present = presenter.NewOrderPresenter()
+	rendering := helpers.NewRenderingHelper()
+	present = presenter.NewOrderPresenter(rendering)
 
 	exitCode := m.Run()
 	os.Exit(exitCode)

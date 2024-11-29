@@ -28,12 +28,7 @@ type orderPresenter interface {
 	PresentOrder(*gin.Context, *models.Order)
 	PresentOrderList(*gin.Context, []*models.Order)
 
-	PresentError(ctx interface{ contextExtended }, statusCode int, errors any)
-}
-
-type contextExtended interface {
-	context.Context
-	JSON(code int, obj any)
+	PresentError(ctx *gin.Context, statusCode int, errors any)
 }
 
 type validationHelper interface {
