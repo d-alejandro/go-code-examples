@@ -11,6 +11,10 @@ type ErrorPresenter struct {
 	rendering RenderingHelper
 }
 
+func (presenter *ErrorPresenter) SetRenderingHelper(rendering RenderingHelper) {
+	presenter.rendering = rendering
+}
+
 func (presenter *ErrorPresenter) PresentError(ctx *gin.Context, statusCode int, errors any) {
 	statusCodeText := http.StatusText(statusCode)
 

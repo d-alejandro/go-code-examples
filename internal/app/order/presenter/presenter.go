@@ -23,7 +23,11 @@ type orderPresenter struct {
 }
 
 func NewOrderPresenter(rendering renderingHelper) OrderPresenter {
-	return &orderPresenter{
+	presenter := &orderPresenter{
 		rendering: rendering,
 	}
+
+	presenter.SetRenderingHelper(rendering)
+
+	return presenter
 }
