@@ -10,7 +10,7 @@ import (
 func (handler *orderHandler) Index(ctx *gin.Context) {
 	var req request.OrderIndexRequest
 
-	if err := req.Validate(ctx); err != nil {
+	if err := handler.validator.ValidateQuery(ctx, &req); err != nil {
 		handler.presenter.PresentError(ctx, http.StatusBadRequest, err)
 		return
 	}
