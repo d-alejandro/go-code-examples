@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/d-alejandro/go-code-examples/internal/app/order/presenter"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/mocks"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/request"
 	"github.com/gin-gonic/gin"
@@ -43,6 +44,15 @@ func TestStore(t *testing.T) {
 
 			return nil
 		})
+
+	mockRendering := mocks.NewMockRenderingHelper(controller)
+
+	mockRendering.
+		EXPECT().
+		RenderJSON(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return()
+
+	present := presenter.NewOrderPresenter(mockRendering)
 
 	handle := NewOrderHandler(uCase, present, mockValidator)
 
