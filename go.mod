@@ -4,14 +4,11 @@ go 1.23.3
 
 require (
 	github.com/gin-gonic/gin v1.10.0
-	github.com/jackc/pgx/v5 v5.7.1
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/lib/pq v1.10.9
-	github.com/mfridman/interpolate v0.0.2
-	github.com/mfridman/xflag v0.0.0-20240825232106-efb77353e578
-	github.com/pressly/goose/v3 v3.22.1
+	github.com/pressly/goose/v3 v3.23.0
 	github.com/sirupsen/logrus v1.9.3
-	gorm.io/driver/postgres v1.5.9
+	gorm.io/driver/postgres v1.5.10
 	gorm.io/gorm v1.25.12
 )
 
@@ -19,6 +16,13 @@ require (
 	github.com/jaswdr/faker/v2 v2.3.3
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/mock v0.5.0
+)
+
+// Custom Goose
+require (
+	github.com/jackc/pgx/v5 v5.7.1
+	github.com/mfridman/interpolate v0.0.2
+	github.com/mfridman/xflag v0.0.0-20240825232106-efb77353e578
 )
 
 require (
@@ -64,5 +68,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	modernc.org/gc/v3 v3.0.0-20241004144649-1aea3fae8852 // indirect
 	modernc.org/libc v1.61.0 // indirect
-	modernc.org/sqlite v1.33.1 // indirect
 )
