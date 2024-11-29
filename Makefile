@@ -6,7 +6,7 @@ include makefile-install-local.mk
 GO_BIN = $(shell go env GOPATH)/bin
 
 EXCLUDE_COVER = internal\/database\/|internal\/providers\/|internal\/routes\/|internal\/server\/
-COVERAGE_TMPDIR := $(CURDIR)/reports
+COVERAGE_TMPDIR := $(CURDIR)/storage/reports
 
 .PHONY: lint
 lint:
@@ -37,10 +37,10 @@ mock:
 
 .PHONY: test
 test:
-	go test -count 3 -race -p 3 -cover -covermode atomic -coverpkg=./internal/... -coverprofile=cover.out ./internal/...
+	go test -count 3 -race -p 3 -cover -covermode atomic -coverpkg=./internal/... -coverprofile=./storage/reports/coverage.out ./internal/...
 
 .PHONY: cover
 cover: test
-	grep -v -E '($(EXCLUDE_COVER))' cover.out > coverage.out
-	go tool cover -func=coverage.out
-	TMPDIR=$(COVERAGE_TMPDIR) go tool cover -html=coverage.out
+	grep -v -E '($(EXCLUDE_COVER))' ./storage/reports/coverage.out > ./storage/reports/cover.out
+	go tool cover -func=./storage/reports/cover.out
+	TMPDIR=$(COVERAGE_TMPDIR) go tool cover -html=./storage/reports/cover.out
