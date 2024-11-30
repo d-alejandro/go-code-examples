@@ -1,14 +1,12 @@
 package handler
 
 import (
-	"net/http"
 	"strconv"
 	"testing"
 
-	"github.com/d-alejandro/go-code-examples/internal/app/order/presenter"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/helpers"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/mocks"
-	"github.com/d-alejandro/go-code-examples/internal/pkg/resource"
+	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/testhelpers"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -28,32 +26,20 @@ func TestPositiveDestroy(t *testing.T) {
 	controller := gomock.NewController(t)
 	defer controller.Finish()
 
-	mockRendering := mocks.NewMockRenderingHelper(controller)
+	presenter := mocks.NewMockOrderPresenter(controller)
 
-	mockRendering.
+	presenter.
 		EXPECT().
-		RenderJSON(gomock.Any(), gomock.Any(), gomock.Any()).
-		DoAndReturn(func(_ *gin.Context, code int, obj any) {
-			assert.Equal(t, http.StatusOK, code)
+		PresentOrder(gomock.Any(), gomock.Any()).
+		DoAndReturn(func(_ *gin.Context, order *models.Order) {
+			require.NotNil(t, order)
 
-			responseBody, isOk := obj.(gin.H)
-			require.True(t, isOk)
-			require.NotNil(t, responseBody)
-
-			resp, isExist := responseBody["data"]
-			require.True(t, isExist)
-			require.NotNil(t, resp)
-
-			orderResource, ok := resp.(*resource.OrderResource)
-			require.True(t, ok)
-			require.NotNil(t, orderResource)
-
-			require.Equal(t, order.ID, orderResource.ID)
+			assert.Equal(t, order.ID, order.ID)
+			assert.NotNil(t, order.DeletedAt)
 		})
 
-	present := presenter.NewOrderPresenter(mockRendering)
 	validator := helpers.NewValidationHelper()
 
-	handle := NewOrderHandler(uCase, present, validator)
+	handle := NewOrderHandler(uCase, presenter, validator)
 	handle.Destroy(ctx)
 }
