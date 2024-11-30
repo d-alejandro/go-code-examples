@@ -31,11 +31,11 @@ func TestPositiveDestroy(t *testing.T) {
 	presenter.
 		EXPECT().
 		PresentOrder(gomock.Any(), gomock.Any()).
-		DoAndReturn(func(_ *gin.Context, order *models.Order) {
-			require.NotNil(t, order)
+		DoAndReturn(func(_ *gin.Context, orderModel *models.Order) {
+			require.NotNil(t, orderModel)
 
-			assert.Equal(t, order.ID, order.ID)
-			assert.NotNil(t, order.DeletedAt)
+			assert.Equal(t, order.ID, orderModel.ID)
+			assert.NotNil(t, orderModel.DeletedAt)
 		})
 
 	validator := helpers.NewValidationHelper()
