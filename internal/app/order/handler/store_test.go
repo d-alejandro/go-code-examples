@@ -40,23 +40,8 @@ func TestPositiveStore(t *testing.T) {
 		Phone:          fake.Phone().Number(),
 	}
 
-	mockValidator := mocks.NewMockValidationHelper(controller)
-
-	mockValidator.
-		EXPECT().
-		ValidateForm(gomock.Any(), gomock.Any()).
-		DoAndReturn(func(_ *gin.Context, req any) error {
-			reqPointer, isOk := req.(*request.OrderStoreRequest)
-			require.True(t, isOk)
-			require.NotNil(t, reqPointer)
-
-			*reqPointer = orderStoreRequest
-			return nil
-		})
-
-	mockRendering := mocks.NewMockRenderingHelper(controller)
-
-	mockRendering.
+	mockRenderingHelper := mocks.NewMockRenderingHelper(controller)
+	mockRenderingHelper.
 		EXPECT().
 		RenderJSON(gomock.Any(), gomock.Any(), gomock.Any()).
 		DoAndReturn(func(_ *gin.Context, code int, obj any) {
@@ -87,8 +72,21 @@ func TestPositiveStore(t *testing.T) {
 			assert.Equal(t, orderStoreRequest.Phone, orderResource.Phone)
 		})
 
-	present := presenter.NewOrderPresenter(mockRendering)
+	present := presenter.NewOrderPresenter(mockRenderingHelper)
 
-	handle := NewOrderHandler(uCase, present, mockValidator)
+	mockValidatorHelper := mocks.NewMockValidationHelper(controller)
+	mockValidatorHelper.
+		EXPECT().
+		ValidateForm(gomock.Any(), gomock.Any()).
+		DoAndReturn(func(_ *gin.Context, req any) error {
+			reqPointer, isOk := req.(*request.OrderStoreRequest)
+			require.True(t, isOk)
+			require.NotNil(t, reqPointer)
+
+			*reqPointer = orderStoreRequest
+			return nil
+		})
+
+	handle := NewOrderHandler(uCase, present, mockValidatorHelper)
 	handle.Store(ctx)
 }
