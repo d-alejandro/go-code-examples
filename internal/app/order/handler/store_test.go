@@ -19,6 +19,8 @@ import (
 )
 
 func TestPositiveStore(t *testing.T) {
+	ctx := &gin.Context{}
+
 	controller := gomock.NewController(t)
 	defer controller.Finish()
 
@@ -88,7 +90,5 @@ func TestPositiveStore(t *testing.T) {
 	present := presenter.NewOrderPresenter(mockRendering)
 
 	handle := NewOrderHandler(uCase, present, mockValidator)
-
-	ctx := &gin.Context{}
 	handle.Store(ctx)
 }
