@@ -7,9 +7,11 @@
 - CRUD
 - Docker Compose (Docker 27.3.1, Docker Compose v2.29.7)
 - Dockerfile with multi-stage builds
+- [Faker](https://github.com/jaswdr/faker)
 - [Gin Web Framework](https://github.com/gin-gonic/gin)
 - Golang 1.23
 - [Golangci-lint](https://github.com/golangci/golangci-lint)
+- [Gomock](https://github.com/uber-go/mock)
 - [Goose](https://github.com/pressly/goose)
 - [GORM Migrator](https://github.com/go-gorm/gorm)
 - Graceful Shutdown of HTTP server
@@ -25,6 +27,7 @@
 - SOLID
 - SQL
 - [SQLX](https://github.com/jmoiron/sqlx)
+- [Testify](https://github.com/stretchr/testify)
 
 ## Installation
 
