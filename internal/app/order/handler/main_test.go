@@ -12,7 +12,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var uCase usecase.OrderUseCase
+var (
+	repos repository.OrderRepository
+	uCase usecase.OrderUseCase
+)
 
 func TestMain(m *testing.M) {
 	cfg := config.NewConfig()
@@ -24,8 +27,8 @@ func TestMain(m *testing.M) {
 		logrus.Fatalf("failed to connect SQLX: %s", err.Error())
 	}
 
-	rep := repository.NewOrderRepository(db)
-	uCase = usecase.NewOrderUseCase(rep)
+	repos = repository.NewOrderRepository(db)
+	uCase = usecase.NewOrderUseCase(repos)
 
 	exitCode := m.Run()
 	os.Exit(exitCode)
