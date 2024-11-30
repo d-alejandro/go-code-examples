@@ -25,14 +25,14 @@ func TestPositiveStore(t *testing.T) {
 	fake := faker.New()
 
 	minDate := time.Now()
-	maxDate := minDate.AddDate(1, 0, 0)
+	maxDate := minDate.AddDate(config.DateYearsMin, config.DateMonthsMin, config.DateDaysMin)
 	userName := fake.Person().Name()
 
 	orderStoreRequest := request.OrderStoreRequest{
 		AgencyName:     fake.Company().Name(),
 		RentalDate:     fake.Time().TimeBetween(minDate, maxDate),
-		GuestCount:     1,
-		TransportCount: 1,
+		GuestCount:     config.GuestCountMin,
+		TransportCount: config.TransportCountMin,
 		UserName:       &userName,
 		Email:          fake.Internet().Email(),
 		Phone:          fake.Phone().Number(),
