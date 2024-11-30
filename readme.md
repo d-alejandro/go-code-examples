@@ -28,6 +28,7 @@
 - SQL
 - [SQLX](https://github.com/jmoiron/sqlx)
 - [Testify](https://github.com/stretchr/testify)
+- Unit tests
 
 ## Installation
 
