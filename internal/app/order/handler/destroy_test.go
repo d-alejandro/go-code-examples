@@ -18,32 +18,34 @@ import (
 )
 
 func TestPositiveDestroy(t *testing.T) {
-	ctx := &gin.Context{}
+	t.Run("Positive case", func(t *testing.T) {
+		ctx := &gin.Context{}
 
-	order, err := testhelpers.CreateOrder(ctx, repos)
-	require.NoError(t, err)
-	require.NotNil(t, order)
+		order, err := testhelpers.CreateOrder(ctx, repos)
+		require.NoError(t, err)
+		require.NotNil(t, order)
 
-	ctx.AddParam("id", strconv.Itoa(order.ID))
+		ctx.AddParam("id", strconv.Itoa(order.ID))
 
-	controller := gomock.NewController(t)
-	defer controller.Finish()
+		controller := gomock.NewController(t)
+		defer controller.Finish()
 
-	present := mocks.NewMockOrderPresenter(controller)
-	present.
-		EXPECT().
-		PresentOrder(gomock.Any(), gomock.Any()).
-		DoAndReturn(func(_ *gin.Context, orderModel *models.Order) {
-			require.NotNil(t, orderModel)
+		present := mocks.NewMockOrderPresenter(controller)
+		present.
+			EXPECT().
+			PresentOrder(gomock.Any(), gomock.Any()).
+			DoAndReturn(func(_ *gin.Context, orderModel *models.Order) {
+				require.NotNil(t, orderModel)
 
-			assert.Equal(t, order.ID, orderModel.ID)
-			assert.NotNil(t, orderModel.DeletedAt)
-		})
+				assert.Equal(t, order.ID, orderModel.ID)
+				assert.NotNil(t, orderModel.DeletedAt)
+			})
 
-	validatorHelper := helpers.NewValidationHelper()
+		validatorHelper := helpers.NewValidationHelper()
 
-	handle := NewOrderHandler(uCase, present, validatorHelper)
-	handle.Destroy(ctx)
+		handle := NewOrderHandler(uCase, present, validatorHelper)
+		handle.Destroy(ctx)
+	})
 }
 
 func TestNegativeDestroy(t *testing.T) {
@@ -70,6 +72,34 @@ func TestNegativeDestroy(t *testing.T) {
 				})
 
 			present := presenter.NewOrderPresenter(mockRenderingHelper)
+
+			validatorHelper := helpers.NewValidationHelper()
+
+			handle := NewOrderHandler(uCase, present, validatorHelper)
+			handle.Destroy(ctx)
+		})
+
+		t.Run("Use case error: order not found", func(t *testing.T) {
+			ctx := &gin.Context{}
+
+			ctx.AddParam("id", "0")
+
+			controller := gomock.NewController(t)
+			defer controller.Finish()
+
+			present := mocks.NewMockOrderPresenter(controller)
+			present.
+				EXPECT().
+				PresentError(gomock.Any(), gomock.Any(), gomock.Any()).
+				DoAndReturn(func(_ *gin.Context, statusCode int, errors any) {
+					assert.Equal(t, http.StatusBadRequest, statusCode)
+
+					errorResponse, isOk := errors.(error)
+					require.True(t, isOk)
+					require.NotNil(t, errorResponse)
+
+					require.EqualError(t, errorResponse, "order not found")
+				})
 
 			validatorHelper := helpers.NewValidationHelper()
 
