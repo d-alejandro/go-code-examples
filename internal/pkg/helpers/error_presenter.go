@@ -11,6 +11,11 @@ type ErrorPresenter struct {
 	rendering RenderingHelper
 }
 
+type ErrorResponse struct {
+	Message string `json:"message"`
+	Errors  string `json:"errors"`
+}
+
 func (presenter *ErrorPresenter) SetRenderingHelper(rendering RenderingHelper) {
 	presenter.rendering = rendering
 }
@@ -18,13 +23,10 @@ func (presenter *ErrorPresenter) SetRenderingHelper(rendering RenderingHelper) {
 func (presenter *ErrorPresenter) PresentError(ctx *gin.Context, statusCode int, errors any) {
 	statusCodeText := http.StatusText(statusCode)
 
-	responseBody := &struct {
-		Message string `json:"message"`
-		Errors  string `json:"errors"`
-	}{
+	errorResponse := &ErrorResponse{
 		Message: statusCodeText,
 		Errors:  fmt.Sprintf("%v", errors),
 	}
 
-	presenter.rendering.RenderJSON(ctx, statusCode, responseBody)
+	presenter.rendering.RenderJSON(ctx, statusCode, errorResponse)
 }
