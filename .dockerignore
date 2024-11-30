@@ -11,10 +11,10 @@
 .pre-commit-config.yaml
 compose.yaml
 Makefile
-makefile-build.mk
-makefile-install-local.mk
+makefile_build.mk
+makefile_install_local.mk
 postman_collection.json
 postman_env_1.json
 postman_env_2.json
 readme.md
-run-golint.sh
+run_golint.sh

@@ -1,5 +1,5 @@
-include makefile-build.mk
-include makefile-install-local.mk
+include makefile_build.mk
+include makefile_install_local.mk
 
 .DEFAULT_GOAL := build-run
 

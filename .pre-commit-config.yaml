@@ -17,7 +17,7 @@ repos:
           )
         name: golint
         language: script
-        entry: run-golint.sh
+        entry: run_golint.sh
         files: \.go$
 
   - repo: https://github.com/dnephin/pre-commit-golang
