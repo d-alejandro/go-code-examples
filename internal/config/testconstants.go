@@ -8,4 +8,7 @@ const (
 
 	GuestCountMin     = 1
 	TransportCountMin = 1
+
+	IndexNumberRequestStart = 0
+	IndexNumberRequestEnd   = 1000
 )
