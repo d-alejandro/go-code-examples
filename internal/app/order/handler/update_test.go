@@ -69,18 +69,15 @@ func TestPositiveUpdate(t *testing.T) {
 				assert.Equal(t, orderUpdateRequest.Email, orderModel.Email)
 				assert.Equal(t, orderUpdateRequest.Phone, orderModel.Phone)
 
-				orderModel.CreatedAt = time.Date(
-					orderModel.CreatedAt.Year(),
-					orderModel.CreatedAt.Month(),
-					orderModel.CreatedAt.Day(),
-					orderModel.CreatedAt.Hour(),
-					orderModel.CreatedAt.Minute(),
-					orderModel.CreatedAt.Second(),
-					0,
-					time.Local,
-				)
+				order.CreatedAt = order.CreatedAt.Round(time.Second)
+				orderModel.CreatedAt = testhelpers.ConvertDateWithSystemLocal(orderModel.CreatedAt)
 
-				assert.Equal(t, order.CreatedAt.Round(time.Second), orderModel.CreatedAt)
+				assert.Equal(t, order.CreatedAt, orderModel.CreatedAt)
+				assert.GreaterOrEqual(
+					t,
+					orderModel.UpdatedAt.Round(time.Second),
+					orderModel.CreatedAt.Add(time.Minute),
+				)
 				assert.Nil(t, orderModel.DeletedAt)
 			})
 
