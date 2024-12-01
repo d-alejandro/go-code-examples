@@ -258,6 +258,16 @@
 						{
 							"key": "sort_type",
 							"value": "asc"
+						},
+						{
+							"key": "id[]",
+							"value": "10000001",
+							"disabled": true
+						},
+						{
+							"key": "id[]",
+							"value": "10000003",
+							"disabled": true
 						}
 					]
 				}
