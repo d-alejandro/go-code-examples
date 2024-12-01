@@ -17,23 +17,26 @@ func CreateOrder(ctx context.Context, repository orderRepository) (*models.Order
 	fake := faker.New()
 
 	timeNow := time.Now()
+	createdAt := timeNow.Add(-time.Minute)
 
 	agency := models.Agency{
 		Name:      fake.Company().Name(),
-		CreatedAt: timeNow,
-		UpdatedAt: timeNow,
+		CreatedAt: createdAt,
+		UpdatedAt: createdAt,
 	}
+
+	maxDate := timeNow.AddDate(config.DateYearsMin, config.DateMonthsMin, config.DateDaysMin)
 
 	order := &models.Order{
 		Agency:         agency,
 		Status:         models.Canceled,
-		RentalDate:     timeNow,
+		RentalDate:     fake.Time().TimeBetween(timeNow, maxDate),
 		GuestCount:     config.GuestCountMin,
 		TransportCount: config.TransportCountMin,
 		Email:          fake.Internet().Email(),
 		Phone:          fake.Phone().Number(),
-		CreatedAt:      timeNow,
-		UpdatedAt:      timeNow,
+		CreatedAt:      createdAt,
+		UpdatedAt:      createdAt,
 	}
 
 	err := repository.Create(ctx, order)
