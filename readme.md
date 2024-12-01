@@ -7,6 +7,7 @@
 - CRUD
 - Docker Compose (Docker 27.3.1, Docker Compose v2.29.7)
 - Dockerfile with multi-stage builds
+- Dynamic SQL
 - [Faker](https://github.com/jaswdr/faker)
 - [Gin Web Framework](https://github.com/gin-gonic/gin)
 - Golang 1.23
@@ -60,11 +61,11 @@ make build-run
 
 ### All Orders with pagination
 
-- Request URL: `http://localhost:8081/api/orders?start=0&end=1&sort_column=id&sort_type=asc`
+- Request URL: `http://localhost:8081/api/orders?start=0&end=3&sort_column=id&sort_type=asc&id[]=10000001&id[]=10000003`
 - Method: `GET`
 - Path: `/orders`
 - Headers: `Accept:application/json, Content-Type:application/json`
-- Parameters: `start, end, sort_column, sort_type`
+- Parameters: `start, end, sort_column, sort_type, id[]`
 - Status Code: `200`
 - Response:
 

@@ -17,6 +17,7 @@ func (useCase *orderUseCase) GetOrderList(ctx context.Context, req *request.Orde
 		req.GetSortType(),
 		limitValue,
 		startValue,
+		req.IDs,
 	)
 
 	return useCase.repository.GetOrderList(ctx, pagination)

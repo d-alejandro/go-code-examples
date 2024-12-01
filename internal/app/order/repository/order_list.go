@@ -6,31 +6,54 @@ import (
 
 	"github.com/d-alejandro/go-code-examples/internal/pkg/dto"
 	"github.com/d-alejandro/go-code-examples/internal/pkg/models"
+	"github.com/jmoiron/sqlx"
 )
 
 func (rep *orderRepository) GetOrderList(ctx context.Context, paginationDTO *dto.PaginationDTO) []*models.Order {
-	if !rep.isValidSortColumn(paginationDTO.GetSortColumn()) {
+	sortColumn := paginationDTO.GetSortColumn()
+	if !rep.isValidSortColumn(sortColumn) {
 		return nil
 	}
 
-	if !rep.isValidSortDirection(paginationDTO.GetSortType()) {
+	sortType := paginationDTO.GetSortType()
+	if !rep.isValidSortDirection(sortType) {
 		return nil
 	}
+
+	rawQuery := `
+select ag.id "agency.id", ag.name "agency.name", ord.*
+  from orders ord
+  join agencies ag on ord.agency_id = ag.id
+                  and ag.deleted_at is null
+ where ord.deleted_at is null%s
+ order by ord.%s %s
+ limit :limit_value offset :offset_value
+`
+	var whereInIDsCriteria string
+
+	if paginationDTO.GetIDs() != nil {
+		whereInIDsCriteria = " and ord.id in (:ids)"
+	}
+
+	query := fmt.Sprintf(rawQuery, whereInIDsCriteria, sortColumn, sortType)
+
+	namedQuery, args, err := sqlx.Named(query, paginationDTO)
+
+	if err != nil {
+		return nil
+	}
+
+	namedQuery, args, err = sqlx.In(namedQuery, args...)
+
+	if err != nil {
+		return nil
+	}
+
+	namedQuery = rep.db.Rebind(namedQuery)
 
 	var orders []*models.Order
 
-	rawQuery := `
-select ag.id "agency.id", ag.name "agency.name", o.*
-  from orders o
-  join agencies ag on o.agency_id = ag.id
-                  and ag.deleted_at is null
- where o.deleted_at is null
- order by o.%s %s
- limit $1 offset $2
-`
-	query := fmt.Sprintf(rawQuery, paginationDTO.GetSortColumn(), paginationDTO.GetSortType())
-
-	err := rep.db.SelectContext(ctx, &orders, query, paginationDTO.GetLimitValue(), paginationDTO.GetOffsetValue())
+	err = rep.db.SelectContext(ctx, &orders, namedQuery, args...)
 
 	if err != nil {
 		return nil

@@ -5,6 +5,7 @@ type OrderIndexRequest struct {
 	End        int    `form:"end" binding:"required,numeric,min=1"`
 	SortColumn string `form:"sort_column" binding:"required,oneof=id status rental_date guest_count created_at"`
 	SortType   string `form:"sort_type" binding:"required,oneof=asc desc"`
+	IDs        []int  `form:"id[]" binding:"omitempty,dive,min=1"`
 }
 
 func (request *OrderIndexRequest) GetStart() int {
@@ -21,4 +22,8 @@ func (request *OrderIndexRequest) GetSortColumn() string {
 
 func (request *OrderIndexRequest) GetSortType() string {
 	return request.SortType
+}
+
+func (request *OrderIndexRequest) GetIDs() []int {
+	return request.IDs
 }
