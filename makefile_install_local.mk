@@ -6,6 +6,11 @@ go-install:
 	go install golang.org/x/lint/golint && \
 	go mod tidy
 
+.PHONY: gomock
+gomock:
+	go install go.uber.org/mock/mockgen@latest && \
+	mockgen -version
+
 .PHONY: pre-commit
 pre-commit:
 	sudo apt update && \

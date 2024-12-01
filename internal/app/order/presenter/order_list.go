@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (*orderPresenter) PresentOrderList(ctx *gin.Context, orders []*models.Order) {
+func (presenter *orderPresenter) PresentOrderList(ctx *gin.Context, orders []*models.Order) {
 	orderResources := make([]*resource.OrderIndexResource, len(orders))
 
 	for index, order := range orders {
@@ -19,5 +19,5 @@ func (*orderPresenter) PresentOrderList(ctx *gin.Context, orders []*models.Order
 		"data": orderResources,
 	}
 
-	ctx.JSON(http.StatusOK, responseBody)
+	presenter.rendering.RenderJSON(ctx, http.StatusOK, responseBody)
 }

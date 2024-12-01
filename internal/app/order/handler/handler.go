@@ -28,22 +28,24 @@ type orderPresenter interface {
 	PresentOrder(*gin.Context, *models.Order)
 	PresentOrderList(*gin.Context, []*models.Order)
 
-	PresentError(ctx interface{ contextExtended }, statusCode int, errors any)
+	PresentError(ctx *gin.Context, statusCode int, errors any)
 }
 
-type contextExtended interface {
-	context.Context
-	JSON(code int, obj any)
+type validationHelper interface {
+	ValidateForm(ctx *gin.Context, req any) error
+	ValidateQuery(ctx *gin.Context, req any) error
 }
 
 type orderHandler struct {
 	useCase   orderUseCase
 	presenter orderPresenter
+	validator validationHelper
 }
 
-func NewOrderHandler(useCase orderUseCase, presenter orderPresenter) OrderHandler {
+func NewOrderHandler(useCase orderUseCase, presenter orderPresenter, validator validationHelper) OrderHandler {
 	return &orderHandler{
 		useCase:   useCase,
 		presenter: presenter,
+		validator: validator,
 	}
 }

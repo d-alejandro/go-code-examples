@@ -1,5 +1,7 @@
 # Go Code Examples
 
+![Code Coverage](https://img.shields.io/badge/Code%20Coverage-82%25-success?style=flat)
+
 ## Topics
 
 - Back-end
@@ -7,9 +9,12 @@
 - CRUD
 - Docker Compose (Docker 27.3.1, Docker Compose v2.29.7)
 - Dockerfile with multi-stage builds
+- Dynamic SQL
+- [Faker](https://github.com/jaswdr/faker)
 - [Gin Web Framework](https://github.com/gin-gonic/gin)
 - Golang 1.23
 - [Golangci-lint](https://github.com/golangci/golangci-lint)
+- [Gomock](https://github.com/uber-go/mock)
 - [Goose](https://github.com/pressly/goose)
 - [GORM Migrator](https://github.com/go-gorm/gorm)
 - Graceful Shutdown of HTTP server
@@ -25,6 +30,12 @@
 - SOLID
 - SQL
 - [SQLX](https://github.com/jmoiron/sqlx)
+- [Testify](https://github.com/stretchr/testify)
+- Unit tests
+
+## Code Coverage Summary
+
+![](storage/img/coverage_summary.png)
 
 ## Installation
 
@@ -56,11 +67,11 @@ make build-run
 
 ### All Orders with pagination
 
-- Request URL: `http://localhost:8081/api/orders?start=0&end=1&sort_column=id&sort_type=asc`
+- Request URL: `http://localhost:8081/api/orders?start=0&end=3&sort_column=id&sort_type=asc&id[]=10000001&id[]=10000003`
 - Method: `GET`
 - Path: `/orders`
 - Headers: `Accept:application/json, Content-Type:application/json`
-- Parameters: `start, end, sort_column, sort_type`
+- Parameters: `start, end, sort_column, sort_type, id[]`
 - Status Code: `200`
 - Response:
 

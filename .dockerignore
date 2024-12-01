@@ -9,12 +9,12 @@
 .gitignore
 .golangci.yml
 .pre-commit-config.yaml
-build.mk
 compose.yaml
-install-local.mk
 Makefile
+makefile_build.mk
+makefile_install_local.mk
 postman_collection.json
 postman_env_1.json
 postman_env_2.json
 readme.md
-run-golint.sh
+run_golint.sh

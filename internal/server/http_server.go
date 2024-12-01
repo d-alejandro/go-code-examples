@@ -1,4 +1,4 @@
-package providers
+package server
 
 import (
 	"context"
@@ -20,15 +20,15 @@ import (
 
 const quitChannelSizeIsOne = 1
 
-type HTTPServerProvider struct {
+type HTTPServer struct {
 	cfg     *config.Config
 	logger  *logrus.Logger
 	db      *sqlx.DB
 	handler *bindings.HandlerProvider
 }
 
-func NewHTTPServerProvider(serverDTO *dto.HTTPServerDTO) *HTTPServerProvider {
-	return &HTTPServerProvider{
+func NewHTTPServer(serverDTO *dto.HTTPServerDTO) *HTTPServer {
+	return &HTTPServer{
 		cfg:     serverDTO.GetConfig(),
 		logger:  serverDTO.GetLogger(),
 		db:      serverDTO.GetDB(),
@@ -36,7 +36,7 @@ func NewHTTPServerProvider(serverDTO *dto.HTTPServerDTO) *HTTPServerProvider {
 	}
 }
 
-func (receiver *HTTPServerProvider) Start() {
+func (receiver *HTTPServer) Start() {
 	defer receiver.closeLogger()
 	defer receiver.closeDB()
 
@@ -67,19 +67,19 @@ func (receiver *HTTPServerProvider) Start() {
 	receiver.logger.Info("server exiting")
 }
 
-func (receiver *HTTPServerProvider) closeLogger() {
+func (receiver *HTTPServer) closeLogger() {
 	if err := receiver.logger.Writer().Close(); err != nil {
 		fmt.Printf("error closing logger: %s", err.Error())
 	}
 }
 
-func (receiver *HTTPServerProvider) closeDB() {
+func (receiver *HTTPServer) closeDB() {
 	if err := receiver.db.Close(); err != nil {
 		receiver.logger.Errorf("error closing SQLX: %s", err.Error())
 	}
 }
 
-func (receiver *HTTPServerProvider) setupGinEngine(router *gin.Engine) *http.Server {
+func (receiver *HTTPServer) setupGinEngine(router *gin.Engine) *http.Server {
 	router.Use(gin.LoggerWithWriter(receiver.logger.Writer()))
 	router.Use(gin.Recovery())
 

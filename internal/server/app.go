@@ -26,6 +26,6 @@ func Run() {
 	handlerProvider := bindings.NewHandlerProvider(useCaseProvider, presenterProvider)
 
 	httpServerDTO := dto.NewHTTPServerDTO(cfg, logger, db, handlerProvider)
-	httpServerProvider := providers.NewHTTPServerProvider(httpServerDTO)
-	httpServerProvider.Start()
+	httpServer := NewHTTPServer(httpServerDTO)
+	httpServer.Start()
 }
