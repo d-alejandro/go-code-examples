@@ -1,6 +1,10 @@
 package testhelpers
 
-import "time"
+import (
+	"time"
+
+	"github.com/d-alejandro/go-code-examples/internal/config"
+)
 
 func ConvertDateWithSystemLocal(date time.Time) time.Time {
 	return time.Date(
@@ -10,7 +14,7 @@ func ConvertDateWithSystemLocal(date time.Time) time.Time {
 		date.Hour(),
 		date.Minute(),
 		date.Second(),
-		0,
+		config.DateNSECMin,
 		time.Local,
 	)
 }

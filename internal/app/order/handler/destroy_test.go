@@ -96,7 +96,7 @@ func TestNegativeDestroy(t *testing.T) {
 
 					errorResponse, isOk := errors.(error)
 					require.True(t, isOk)
-					require.NotNil(t, errorResponse)
+					require.Error(t, errorResponse)
 
 					require.EqualError(t, errorResponse, "order not found")
 				})
