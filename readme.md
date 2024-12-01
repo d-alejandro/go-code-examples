@@ -1,5 +1,7 @@
 # Go Code Examples
 
+![Code Coverage](https://img.shields.io/badge/Code%20Coverage-82%25-success?style=flat)
+
 ## Topics
 
 - Back-end
@@ -30,6 +32,10 @@
 - [SQLX](https://github.com/jmoiron/sqlx)
 - [Testify](https://github.com/stretchr/testify)
 - Unit tests
+
+## Code Coverage Summary
+
+![](storage/img/coverage_summary.png)
 
 ## Installation
 
