@@ -10,7 +10,8 @@ import (
 func (handler *orderHandler) Store(ctx *gin.Context) {
 	var req request.OrderStoreRequest
 
-	if err := handler.validator.ValidateForm(ctx, &req); err != nil {
+	err := handler.validator.ValidateForm(ctx, &req)
+	if err != nil {
 		handler.presenter.PresentError(ctx, http.StatusBadRequest, err)
 		return
 	}
