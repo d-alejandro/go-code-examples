@@ -13,22 +13,22 @@ type OrderRunnerSuite struct {
 	suite.Suite
 }
 
-func (suite *OrderRunnerSuite) TestOrderCreation(t provider.T) {
+func (runner *OrderRunnerSuite) TestOrderCreation(t provider.T) {
 	t.Parallel()
-	suite.RunSuite(t, new(creation.OrderCreationSuite))
+	runner.RunSuite(t, new(creation.OrderCreationSuite))
 }
 
-func (suite *OrderRunnerSuite) TestOrderDeletion(t provider.T) {
+func (runner *OrderRunnerSuite) TestOrderDeletion(t provider.T) {
 	t.Parallel()
-	suite.RunSuite(t, new(deletion.OrderDeletionSuite))
+	runner.RunSuite(t, new(deletion.OrderDeletionSuite))
 }
 
-func (suite *OrderRunnerSuite) TestOrderReading(t provider.T) {
+func (runner *OrderRunnerSuite) TestOrderReading(t provider.T) {
 	t.Parallel()
-	suite.RunSuite(t, new(reading.OrderReadingSuite))
+	runner.RunSuite(t, new(reading.OrderReadingSuite))
 }
 
-func (suite *OrderRunnerSuite) TestOrderUpdate(t provider.T) {
+func (runner *OrderRunnerSuite) TestOrderUpdate(t provider.T) {
 	t.Parallel()
-	suite.RunSuite(t, new(update.OrderUpdateSuite))
+	runner.RunSuite(t, new(update.OrderUpdateSuite))
 }
