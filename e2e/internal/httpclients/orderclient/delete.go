@@ -14,5 +14,9 @@ func (client *orderClient) Delete(id int) (*response.OrderResponse, error) {
 
 	err := client.send(http.MethodDelete, requestUrl, nil, &orderResponse)
 
-	return &orderResponse, err
+	if err != nil {
+		return nil, err
+	}
+
+	return &orderResponse, nil
 }

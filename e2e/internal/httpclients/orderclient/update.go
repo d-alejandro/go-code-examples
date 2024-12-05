@@ -30,5 +30,9 @@ func (client *orderClient) Update(req *request.OrderUpdateRequest) (*response.Or
 
 	err := client.send(http.MethodPut, requestUrl, requestBody, &orderResponse)
 
-	return &orderResponse, err
+	if err != nil {
+		return nil, err
+	}
+
+	return &orderResponse, nil
 }

@@ -14,5 +14,9 @@ func (client *orderClient) Get(id int) (*response.OrderResponse, error) {
 
 	err := client.send(http.MethodGet, requestUrl, nil, &orderResponse)
 
-	return &orderResponse, err
+	if err != nil {
+		return nil, err
+	}
+
+	return &orderResponse, nil
 }

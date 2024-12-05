@@ -32,5 +32,9 @@ func (client *orderClient) Create(req *request.OrderCreationRequest) (*response.
 
 	err := client.send(http.MethodPost, requestUrl, requestBody, &orderResponse)
 
-	return &orderResponse, err
+	if err != nil {
+		return nil, err
+	}
+
+	return &orderResponse, nil
 }

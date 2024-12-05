@@ -25,5 +25,9 @@ func (client *orderClient) Paginate(req *request.OrderPaginationRequest) (*respo
 
 	err := client.send(http.MethodGet, requestUrl, nil, &orderResponse)
 
-	return &orderResponse, err
+	if err != nil {
+		return nil, err
+	}
+
+	return &orderResponse, nil
 }
