@@ -10,7 +10,7 @@ import (
 	"github.com/d-alejandro/go-code-examples/e2e/internal/pkg/response"
 )
 
-func (cli *orderClient) Update(req *request.OrderUpdateRequest) (*response.OrderResponse, *http.Response, error) {
+func (client *orderClient) Update(req *request.OrderUpdateRequest) (*response.OrderResponse, error) {
 	formData := url.Values{}
 
 	formData.Set("guest_count", req.GetGuestCount())
@@ -24,11 +24,11 @@ func (cli *orderClient) Update(req *request.OrderUpdateRequest) (*response.Order
 	encodedFormData := formData.Encode()
 	requestBody := strings.NewReader(encodedFormData)
 
-	requestUrl := fmt.Sprintf("%s/api/orders/%d", cli.connection.HTTPServerUrl, req.ID)
+	requestUrl := fmt.Sprintf("%s/api/orders/%d", client.connection.HTTPServerUrl, req.ID)
 
 	var orderResponse response.OrderResponse
 
-	httpResponse, err := cli.send(http.MethodPut, requestUrl, requestBody, &orderResponse)
+	err := client.send(http.MethodPut, requestUrl, requestBody, &orderResponse)
 
-	return &orderResponse, httpResponse, err
+	return &orderResponse, err
 }

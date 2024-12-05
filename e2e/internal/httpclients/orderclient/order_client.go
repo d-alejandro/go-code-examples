@@ -2,21 +2,21 @@ package orderclient
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 
 	"github.com/d-alejandro/go-code-examples/e2e/internal/config"
+	"github.com/d-alejandro/go-code-examples/e2e/internal/pkg/helpers"
 	"github.com/d-alejandro/go-code-examples/e2e/internal/pkg/request"
 	"github.com/d-alejandro/go-code-examples/e2e/internal/pkg/response"
 )
 
 type OrderClient interface {
-	Create(*request.OrderCreationRequest) (*response.OrderResponse, *http.Response, error)
-	Delete(id int) (*response.OrderResponse, *http.Response, error)
-	Get(id int) (*response.OrderResponse, *http.Response, error)
-	Paginate(*request.OrderPaginationRequest) (*response.OrderListResponse, *http.Response, error)
-	Update(*request.OrderUpdateRequest) (*response.OrderResponse, *http.Response, error)
+	Create(*request.OrderCreationRequest) (*response.OrderResponse, error)
+	Delete(id int) (*response.OrderResponse, error)
+	Get(id int) (*response.OrderResponse, error)
+	Paginate(*request.OrderPaginationRequest) (*response.OrderListResponse, error)
+	Update(*request.OrderUpdateRequest) (*response.OrderResponse, error)
 }
 
 type orderClient struct {
@@ -37,38 +37,32 @@ func NewOrderClient() OrderClient {
 	}
 }
 
-func (cli *orderClient) send(method string, reqUrl string, body io.Reader, resp any) (*http.Response, error) {
+func (client *orderClient) send(method string, reqUrl string, body io.Reader, resp any) error {
 	httpRequest, err := http.NewRequest(method, reqUrl, body)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if resp != nil {
 		httpRequest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	}
 
-	httpResponse, respErr := cli.client.Do(httpRequest)
+	httpResponse, respErr := client.client.Do(httpRequest)
 
 	if respErr != nil {
-		return nil, respErr
+		return respErr
 	}
 
 	responseBody, readErr := io.ReadAll(httpResponse.Body)
 
 	if readErr != nil {
-		return nil, readErr
+		return readErr
 	}
 
 	if httpResponse.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf(string(responseBody))
+		return helpers.NewHTTPError(httpResponse.StatusCode, string(responseBody))
 	}
 
-	err = json.Unmarshal(responseBody, resp)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return httpResponse, nil
+	return json.Unmarshal(responseBody, resp)
 }

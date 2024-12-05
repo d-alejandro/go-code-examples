@@ -10,7 +10,7 @@ import (
 	"github.com/d-alejandro/go-code-examples/e2e/internal/pkg/response"
 )
 
-func (cli *orderClient) Create(req *request.OrderCreationRequest) (*response.OrderResponse, *http.Response, error) {
+func (client *orderClient) Create(req *request.OrderCreationRequest) (*response.OrderResponse, error) {
 	formData := url.Values{}
 
 	formData.Set("agency_name", req.GetAgencyName())
@@ -26,11 +26,11 @@ func (cli *orderClient) Create(req *request.OrderCreationRequest) (*response.Ord
 	encodedFormData := formData.Encode()
 	requestBody := strings.NewReader(encodedFormData)
 
-	requestUrl := fmt.Sprintf("%s/api/orders", cli.connection.HTTPServerUrl)
+	requestUrl := fmt.Sprintf("%s/api/orders", client.connection.HTTPServerUrl)
 
 	var orderResponse response.OrderResponse
 
-	httpResponse, err := cli.send(http.MethodPost, requestUrl, requestBody, &orderResponse)
+	err := client.send(http.MethodPost, requestUrl, requestBody, &orderResponse)
 
-	return &orderResponse, httpResponse, err
+	return &orderResponse, err
 }

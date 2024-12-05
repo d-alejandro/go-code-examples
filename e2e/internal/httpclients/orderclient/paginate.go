@@ -9,11 +9,7 @@ import (
 	"github.com/d-alejandro/go-code-examples/e2e/internal/pkg/response"
 )
 
-func (cli *orderClient) Paginate(req *request.OrderPaginationRequest) (
-	*response.OrderListResponse,
-	*http.Response,
-	error,
-) {
+func (client *orderClient) Paginate(req *request.OrderPaginationRequest) (*response.OrderListResponse, error) {
 	urlData := url.Values{}
 
 	urlData.Set("start", req.GetStart())
@@ -23,11 +19,11 @@ func (cli *orderClient) Paginate(req *request.OrderPaginationRequest) (
 
 	encodedUrlData := urlData.Encode()
 
-	requestUrl := fmt.Sprintf("%s/api/orders?%s%s", cli.connection.HTTPServerUrl, encodedUrlData, req.GetIDs())
+	requestUrl := fmt.Sprintf("%s/api/orders?%s%s", client.connection.HTTPServerUrl, encodedUrlData, req.GetIDs())
 
 	var orderResponse response.OrderListResponse
 
-	httpResponse, err := cli.send(http.MethodGet, requestUrl, nil, &orderResponse)
+	err := client.send(http.MethodGet, requestUrl, nil, &orderResponse)
 
-	return &orderResponse, httpResponse, err
+	return &orderResponse, err
 }

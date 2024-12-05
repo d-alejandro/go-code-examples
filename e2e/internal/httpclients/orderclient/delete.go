@@ -7,12 +7,12 @@ import (
 	"github.com/d-alejandro/go-code-examples/e2e/internal/pkg/response"
 )
 
-func (cli *orderClient) Delete(id int) (*response.OrderResponse, *http.Response, error) {
-	requestUrl := fmt.Sprintf("%s/api/orders/%d", cli.connection.HTTPServerUrl, id)
+func (client *orderClient) Delete(id int) (*response.OrderResponse, error) {
+	requestUrl := fmt.Sprintf("%s/api/orders/%d", client.connection.HTTPServerUrl, id)
 
 	var orderResponse response.OrderResponse
 
-	httpResponse, err := cli.send(http.MethodDelete, requestUrl, nil, &orderResponse)
+	err := client.send(http.MethodDelete, requestUrl, nil, &orderResponse)
 
-	return &orderResponse, httpResponse, err
+	return &orderResponse, err
 }
