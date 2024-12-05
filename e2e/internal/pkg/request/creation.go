@@ -1,6 +1,9 @@
 package request
 
-import "time"
+import (
+	"strconv"
+	"time"
+)
 
 type OrderCreationRequest struct {
 	AgencyName     string
@@ -18,20 +21,23 @@ func (request *OrderCreationRequest) GetAgencyName() string {
 	return request.AgencyName
 }
 
-func (request *OrderCreationRequest) GetRentalDate() time.Time {
-	return request.RentalDate
+func (request *OrderCreationRequest) GetRentalDate() string {
+	return request.RentalDate.String()
 }
 
-func (request *OrderCreationRequest) GetGuestCount() int {
-	return request.GuestCount
+func (request *OrderCreationRequest) GetGuestCount() string {
+	return strconv.Itoa(request.GuestCount)
 }
 
-func (request *OrderCreationRequest) GetTransportCount() int {
-	return request.TransportCount
+func (request *OrderCreationRequest) GetTransportCount() string {
+	return strconv.Itoa(request.TransportCount)
 }
 
-func (request *OrderCreationRequest) GetUserName() *string {
-	return request.UserName
+func (request *OrderCreationRequest) GetUserName() string {
+	if request.UserName != nil {
+		return *request.UserName
+	}
+	return ""
 }
 
 func (request *OrderCreationRequest) GetEmail() string {
@@ -42,10 +48,16 @@ func (request *OrderCreationRequest) GetPhone() string {
 	return request.Phone
 }
 
-func (request *OrderCreationRequest) GetNote() *string {
-	return request.Note
+func (request *OrderCreationRequest) GetNote() string {
+	if request.Note != nil {
+		return *request.Note
+	}
+	return ""
 }
 
-func (request *OrderCreationRequest) GetAdminNote() *string {
-	return request.AdminNote
+func (request *OrderCreationRequest) GetAdminNote() string {
+	if request.AdminNote != nil {
+		return *request.AdminNote
+	}
+	return ""
 }
