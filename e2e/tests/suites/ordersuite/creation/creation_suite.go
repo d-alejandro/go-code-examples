@@ -1,7 +1,9 @@
 package creation
 
-import "github.com/ozontech/allure-go/pkg/framework/suite"
+import (
+	"github.com/d-alejandro/go-code-examples/e2e/tests/suites/ordersuite/base"
+)
 
 type OrderCreationSuite struct {
-	suite.Suite
+	base.OrderBaseSuite
 }

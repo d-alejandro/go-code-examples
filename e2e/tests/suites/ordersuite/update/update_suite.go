@@ -1,7 +1,7 @@
 package update
 
-import "github.com/ozontech/allure-go/pkg/framework/suite"
+import "github.com/d-alejandro/go-code-examples/e2e/tests/suites/ordersuite/base"
 
 type OrderUpdateSuite struct {
-	suite.Suite
+	base.OrderBaseSuite
 }
