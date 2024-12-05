@@ -5,11 +5,11 @@ import (
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 )
 
-func (step *OrderSteps) GetOrder(stepCtx provider.StepCtx, id int) (*response.OrderResponse, error) {
+func (step *OrderSteps) GetOrder(stepCtx provider.StepCtx, id int) *response.OrderResponse {
 	orderResponse, err := step.client.Get(id)
 
 	stepCtx.Require().NoError(err)
 	stepCtx.Require().NotNil(orderResponse)
 
-	return orderResponse, nil
+	return orderResponse
 }

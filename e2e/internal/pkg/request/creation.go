@@ -3,6 +3,8 @@ package request
 import (
 	"strconv"
 	"time"
+
+	"github.com/d-alejandro/go-code-examples/e2e/internal/config"
 )
 
 type OrderCreationRequest struct {
@@ -22,7 +24,7 @@ func (request *OrderCreationRequest) GetAgencyName() string {
 }
 
 func (request *OrderCreationRequest) GetRentalDate() string {
-	return request.RentalDate.String()
+	return request.RentalDate.Format(config.DateLayout)
 }
 
 func (request *OrderCreationRequest) GetGuestCount() string {
