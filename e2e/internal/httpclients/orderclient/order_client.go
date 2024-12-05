@@ -1,4 +1,4 @@
-package httpclient
+package orderclient
 
 import (
 	"encoding/json"
