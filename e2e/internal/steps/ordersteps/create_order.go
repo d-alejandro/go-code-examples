@@ -17,8 +17,8 @@ func (step *OrderSteps) CreateOrder(stepCtx provider.StepCtx) *response.OrderRes
 	maxDate := minDate.AddDate(config.DateYearsMin, config.DateMonthsMin, config.DateDaysMin)
 	userName := fake.Person().Name()
 
-	note := fake.Letter()
-	adminNote := fake.Letter()
+	note := fake.Lorem().Sentence(config.NodeFakeWords)
+	adminNote := fake.Lorem().Sentence(config.AdminNoteFakeWords)
 
 	orderCreationRequest := &request.OrderCreationRequest{
 		AgencyName:     fake.Company().Name(),

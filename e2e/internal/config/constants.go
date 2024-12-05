@@ -9,4 +9,7 @@ const (
 
 	GuestCountMin     = 1
 	TransportCountMin = 1
+
+	NodeFakeWords      = 5
+	AdminNoteFakeWords = 7
 )
