@@ -8,6 +8,11 @@ GO_BIN = $(shell go env GOPATH)/bin
 EXCLUDE_COVER = internal\/database\/|internal\/providers\/|internal\/routes\/|internal\/server\/
 COVERAGE_TMPDIR := $(CURDIR)/storage/reports
 
+ALLURE_OUTPUT_PATH := $(CURDIR)/storage
+ALLURE_OUTPUT_FOLDER = allure-results
+
+E2E_PATH = ./e2e/tests
+
 .PHONY: lint
 lint:
 	pre-commit run -a
@@ -44,3 +49,21 @@ cover: test
 	grep -v -E '($(EXCLUDE_COVER))' ./storage/reports/coverage.out > ./storage/reports/cover.out
 	go tool cover -func=./storage/reports/cover.out
 	TMPDIR=$(COVERAGE_TMPDIR) go tool cover -html=./storage/reports/cover.out
+
+.PHONY: clean
+clean:
+	rm -rf $(ALLURE_OUTPUT_PATH)/$(ALLURE_OUTPUT_FOLDER)
+	go clean -testcache
+
+.PHONY: e2e
+e2e: clean
+	export ALLURE_OUTPUT_PATH=$(ALLURE_OUTPUT_PATH) && \
+	export ALLURE_OUTPUT_FOLDER=$(ALLURE_OUTPUT_FOLDER) && \
+	go test -count 3 -race -p 3 $(E2E_PATH) || true
+
+.PHONY: allure
+allure: clean
+	export ALLURE_OUTPUT_PATH=$(ALLURE_OUTPUT_PATH) && \
+	export ALLURE_OUTPUT_FOLDER=$(ALLURE_OUTPUT_FOLDER) && \
+	go test $(E2E_PATH) || true && \
+	allure serve $(ALLURE_OUTPUT_PATH)/$(ALLURE_OUTPUT_FOLDER)

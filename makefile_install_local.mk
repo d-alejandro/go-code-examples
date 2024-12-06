@@ -17,8 +17,8 @@ pre-commit:
 	sudo apt install -y pre-commit && \
 	pre-commit -V
 
-.PHONY: allure
-allure:
+.PHONY: allure-inst
+allure-inst:
 	sudo apt update && \
 	sudo apt install -y default-jre
 	curl -LO 'https://github.com/allure-framework/allure2/releases/download/2.32.0/allure_2.32.0-1_all.deb' && \
