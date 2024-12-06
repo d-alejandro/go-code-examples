@@ -12,4 +12,10 @@ const (
 
 	NodeFakeWords      = 5
 	AdminNoteFakeWords = 7
+
+	SortColumnID         = "id"
+	SortDirectionDESC    = "desc"
+	OrderStartPagination = 0
+	OrderEndPagination   = 1000
+	NumberPagesIsTwo     = 2
 )
