@@ -55,12 +55,11 @@ func (client *orderClient) send(method string, reqURL string, body io.Reader, re
 	}
 
 	defer func() {
-		if bodyCloseErr := httpResponse.Body.Close(); bodyCloseErr != nil {
-			if err != nil {
-				return
-			}
-			err = bodyCloseErr
+		bodyCloseErr := httpResponse.Body.Close()
+		if err != nil {
+			return
 		}
+		err = bodyCloseErr
 	}()
 
 	var responseBody []byte
