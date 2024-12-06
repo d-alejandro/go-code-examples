@@ -37,32 +37,43 @@ func NewOrderClient() OrderClient {
 	}
 }
 
-func (client *orderClient) send(method string, reqUrl string, body io.Reader, resp any) error {
-	httpRequest, err := http.NewRequest(method, reqUrl, body)
+func (client *orderClient) send(method string, reqUrl string, body io.Reader, resp any) (err error) {
+	var httpRequest *http.Request
 
-	if err != nil {
-		return err
+	if httpRequest, err = http.NewRequest(method, reqUrl, body); err != nil {
+		return
 	}
 
 	if resp != nil {
 		httpRequest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	}
 
-	httpResponse, respErr := client.client.Do(httpRequest)
+	var httpResponse *http.Response
 
-	if respErr != nil {
-		return respErr
+	if httpResponse, err = client.client.Do(httpRequest); err != nil {
+		return
 	}
 
-	responseBody, readErr := io.ReadAll(httpResponse.Body)
+	defer func() {
+		if bodyCloseErr := httpResponse.Body.Close(); bodyCloseErr != nil {
+			if err != nil {
+				return
+			}
+			err = bodyCloseErr
+		}
+	}()
 
-	if readErr != nil {
-		return readErr
+	var responseBody []byte
+
+	if responseBody, err = io.ReadAll(httpResponse.Body); err != nil {
+		return
 	}
 
 	if httpResponse.StatusCode != http.StatusOK {
-		return helpers.NewHTTPError(httpResponse.StatusCode, string(responseBody))
+		err = helpers.NewHTTPError(httpResponse.StatusCode, string(responseBody))
+		return
 	}
 
-	return json.Unmarshal(responseBody, resp)
+	err = json.Unmarshal(responseBody, resp)
+	return
 }
