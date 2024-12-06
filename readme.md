@@ -4,6 +4,8 @@
 
 ## Topics
 
+- [Allure-Go](https://github.com/ozontech/allure-go)
+- API tests (E2E)
 - Back-end
 - Clean Architecture
 - CRUD
@@ -36,6 +38,14 @@
 ## Code Coverage Summary
 
 ![](storage/img/coverage_summary.png)
+
+## Allure Suites
+
+![](storage/img/allure_suites.png)
+
+## Allure Timeline
+
+![](storage/img/allure_timeline.png)
 
 ## Installation
 

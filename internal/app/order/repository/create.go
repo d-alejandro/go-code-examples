@@ -45,6 +45,8 @@ func (*orderRepository) createAgency(ctx context.Context, tx *sqlx.Tx, agency *m
 	query := `
 insert into agencies (name, created_at, updated_at)
 values (:name, :created_at, :updated_at)
+on conflict (name) do update
+set updated_at = :updated_at
 returning id
 `
 	namedQuery, args, err := sqlx.Named(query, agency)
