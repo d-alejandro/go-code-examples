@@ -36,7 +36,7 @@ func (suite *OrderUpdateSuite) TestPositiveUpdate(t provider.T) {
 		stepCtx.Require().NotNil(updateResponse)
 	})
 
-	t.WithNewStep("Show Updated order", func(stepCtx provider.StepCtx) {
+	t.WithNewStep("Show updated order", func(stepCtx provider.StepCtx) {
 		resp := suite.Steps.GetOrder(stepCtx, orderResponse.Data.ID)
 
 		stepCtx.Require().NotNil(resp)
