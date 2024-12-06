@@ -24,11 +24,11 @@ func (client *orderClient) Update(req *request.OrderUpdateRequest) (*response.Or
 	encodedFormData := formData.Encode()
 	requestBody := strings.NewReader(encodedFormData)
 
-	requestUrl := fmt.Sprintf("%s/api/orders/%d", client.connection.HTTPServerUrl, req.ID)
+	requestURL := fmt.Sprintf("%s/api/orders/%d", client.connection.HTTPServerURL, req.ID)
 
 	var orderResponse response.OrderResponse
 
-	err := client.send(http.MethodPut, requestUrl, requestBody, &orderResponse)
+	err := client.send(http.MethodPut, requestURL, requestBody, &orderResponse)
 
 	if err != nil {
 		return nil, err

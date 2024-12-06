@@ -10,7 +10,7 @@ const httpPort = "APP_HTTP_PORT"
 
 type Connection struct {
 	HTTPClientTimeout time.Duration
-	HTTPServerUrl     string
+	HTTPServerURL     string
 }
 
 func NewConnection() *Connection {
@@ -18,6 +18,6 @@ func NewConnection() *Connection {
 
 	return &Connection{
 		HTTPClientTimeout: 10 * time.Second,
-		HTTPServerUrl:     fmt.Sprintf("http://localhost:%s", port),
+		HTTPServerURL:     fmt.Sprintf("http://localhost:%s", port),
 	}
 }

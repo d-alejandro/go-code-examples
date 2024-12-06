@@ -8,11 +8,11 @@ import (
 )
 
 func (client *orderClient) Delete(id int) (*response.OrderResponse, error) {
-	requestUrl := fmt.Sprintf("%s/api/orders/%d", client.connection.HTTPServerUrl, id)
+	requestURL := fmt.Sprintf("%s/api/orders/%d", client.connection.HTTPServerURL, id)
 
 	var orderResponse response.OrderResponse
 
-	err := client.send(http.MethodDelete, requestUrl, nil, &orderResponse)
+	err := client.send(http.MethodDelete, requestURL, nil, &orderResponse)
 
 	if err != nil {
 		return nil, err

@@ -37,10 +37,10 @@ func NewOrderClient() OrderClient {
 	}
 }
 
-func (client *orderClient) send(method string, reqUrl string, body io.Reader, resp any) (err error) {
+func (client *orderClient) send(method string, reqURL string, body io.Reader, resp any) (err error) {
 	var httpRequest *http.Request
 
-	if httpRequest, err = http.NewRequest(method, reqUrl, body); err != nil {
+	if httpRequest, err = http.NewRequest(method, reqURL, body); err != nil {
 		return
 	}
 

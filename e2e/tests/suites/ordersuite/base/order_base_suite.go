@@ -13,8 +13,8 @@ type OrderBaseSuite struct {
 	Steps *ordersteps.OrderSteps
 }
 
-func (suite *OrderBaseSuite) BeforeAll(provider.T) {
+func (receiver *OrderBaseSuite) BeforeAll(provider.T) {
 	client := orderclient.NewOrderClient()
 
-	suite.Steps = ordersteps.NewOrderSteps(client)
+	receiver.Steps = ordersteps.NewOrderSteps(client)
 }

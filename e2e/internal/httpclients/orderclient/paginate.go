@@ -17,13 +17,13 @@ func (client *orderClient) Paginate(req *request.OrderPaginationRequest) (*respo
 	urlData.Set("sort_column", req.GetSortColumn())
 	urlData.Set("sort_type", req.GetSortType())
 
-	encodedUrlData := urlData.Encode()
+	encodedURLData := urlData.Encode()
 
-	requestUrl := fmt.Sprintf("%s/api/orders?%s%s", client.connection.HTTPServerUrl, encodedUrlData, req.GetIDs())
+	requestURL := fmt.Sprintf("%s/api/orders?%s%s", client.connection.HTTPServerURL, encodedURLData, req.GetIDs())
 
 	var orderResponse response.OrderListResponse
 
-	err := client.send(http.MethodGet, requestUrl, nil, &orderResponse)
+	err := client.send(http.MethodGet, requestURL, nil, &orderResponse)
 
 	if err != nil {
 		return nil, err

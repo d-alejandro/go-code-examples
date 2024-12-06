@@ -26,11 +26,11 @@ func (client *orderClient) Create(req *request.OrderCreationRequest) (*response.
 	encodedFormData := formData.Encode()
 	requestBody := strings.NewReader(encodedFormData)
 
-	requestUrl := fmt.Sprintf("%s/api/orders", client.connection.HTTPServerUrl)
+	requestURL := fmt.Sprintf("%s/api/orders", client.connection.HTTPServerURL)
 
 	var orderResponse response.OrderResponse
 
-	err := client.send(http.MethodPost, requestUrl, requestBody, &orderResponse)
+	err := client.send(http.MethodPost, requestURL, requestBody, &orderResponse)
 
 	if err != nil {
 		return nil, err
