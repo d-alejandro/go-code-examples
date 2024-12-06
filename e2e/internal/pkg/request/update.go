@@ -1,6 +1,10 @@
 package request
 
-import "strconv"
+import (
+	"strconv"
+
+	"github.com/d-alejandro/go-code-examples/e2e/internal/config"
+)
 
 type OrderUpdateRequest struct {
 	ID             int
@@ -29,7 +33,7 @@ func (request *OrderUpdateRequest) GetUserName() string {
 	if request.UserName != nil {
 		return *request.UserName
 	}
-	return ""
+	return config.EmptyString
 }
 
 func (request *OrderUpdateRequest) GetEmail() string {
@@ -44,12 +48,12 @@ func (request *OrderUpdateRequest) GetNote() string {
 	if request.Note != nil {
 		return *request.Note
 	}
-	return ""
+	return config.EmptyString
 }
 
 func (request *OrderUpdateRequest) GetAdminNote() string {
 	if request.AdminNote != nil {
 		return *request.AdminNote
 	}
-	return ""
+	return config.EmptyString
 }

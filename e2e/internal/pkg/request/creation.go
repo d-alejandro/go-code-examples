@@ -39,7 +39,7 @@ func (request *OrderCreationRequest) GetUserName() string {
 	if request.UserName != nil {
 		return *request.UserName
 	}
-	return ""
+	return config.EmptyString
 }
 
 func (request *OrderCreationRequest) GetEmail() string {
@@ -54,12 +54,12 @@ func (request *OrderCreationRequest) GetNote() string {
 	if request.Note != nil {
 		return *request.Note
 	}
-	return ""
+	return config.EmptyString
 }
 
 func (request *OrderCreationRequest) GetAdminNote() string {
 	if request.AdminNote != nil {
 		return *request.AdminNote
 	}
-	return ""
+	return config.EmptyString
 }

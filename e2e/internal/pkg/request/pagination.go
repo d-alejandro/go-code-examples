@@ -3,6 +3,9 @@ package request
 import (
 	"fmt"
 	"strconv"
+	"strings"
+
+	"github.com/d-alejandro/go-code-examples/e2e/internal/config"
 )
 
 type OrderPaginationRequest struct {
@@ -31,14 +34,14 @@ func (request *OrderPaginationRequest) GetSortType() string {
 
 func (request *OrderPaginationRequest) GetIDs() string {
 	if request.IDs == nil {
-		return ""
+		return config.EmptyString
 	}
 
-	urlData := ""
+	var urlData strings.Builder
 
 	for _, value := range request.IDs {
-		urlData += fmt.Sprintf("&id[]=%d", value)
+		urlData.WriteString(fmt.Sprintf("&id[]=%d", value))
 	}
 
-	return urlData
+	return urlData.String()
 }

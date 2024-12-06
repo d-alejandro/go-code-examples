@@ -17,7 +17,7 @@ func NewConnection() *Connection {
 	port := os.Getenv(httpPort)
 
 	return &Connection{
-		HTTPClientTimeout: 10 * time.Second,
+		HTTPClientTimeout: 10 * time.Second, //nolint:revive
 		HTTPServerURL:     fmt.Sprintf("http://localhost:%s", port),
 	}
 }
